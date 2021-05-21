@@ -121,7 +121,8 @@
             </li>
           </ul>
         </div>
-        <button *ngIf="currentUser" (click)="createMessage()" [routerLink]="['/checkout']"
+        <button *ngIf="currentUser && currentHouse.id==currentUser.id" (click)="createMessage()"
+                [routerLink]="['/checkout']"
                 style="margin-top: 25px;width: 100%;background: #7fad39;"
                 class="site-btn">Đặt thuê
         </button>

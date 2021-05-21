@@ -56,7 +56,6 @@ export class CheckoutComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
               private billService: BillService,
-              private fb: FormBuilder,
               private authenticationService: AuthenticationService,
               private houseService: HouseService, private activatedRoute: ActivatedRoute,
               private serviceService: ServiceService,
@@ -82,9 +81,6 @@ export class CheckoutComponent implements OnInit {
       this.currentHouse = await this.getHouse(this.idHouse);
     }
     this.getAllHouseDayByHouse(this.idHouse);
-    this.billForm = this.fb.group({
-      email: [{value: this.currentUser.email, disabled: true}, [Validators.required]],
-    });
   }
 
   getAllCategories() {
