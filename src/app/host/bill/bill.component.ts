@@ -9,6 +9,7 @@ import {HouseService} from '../../service/house/house.service';
 import {House} from '../../model/house';
 import {BillService} from '../../service/bill/bill.service';
 import {Bill} from '../../model/bill';
+import {NotificationService} from '../../service/notification/notification.service';
 
 declare var $: any;
 declare var Swal: any;

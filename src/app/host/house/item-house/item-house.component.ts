@@ -232,7 +232,6 @@ export class ItemHouseComponent implements OnInit {
       };
     }
     if (this.isAdd) {
-      console.log(house);
       this.houseService.createHouse(house).subscribe(res => {
           this.closeModalReloadData();
           $(function() {
@@ -358,12 +357,10 @@ export class ItemHouseComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.myItems.push(files[i]);
     }
-    console.log(this.myItems);
     this.uploadAll(this.myItems);
   }
 
   uploadAll(imge) {
-    console.log(imge);
     this.isLoading = true;
     Promise.all(
       imge.map(file => this.putStorageItem(file))
@@ -385,7 +382,6 @@ export class ItemHouseComponent implements OnInit {
   }
 
   putStorageItem(file): Promise<House> {
-    console.log(file);
     // the return value will be a Promise
     const metadata = {
       contentType: 'image/jpeg',

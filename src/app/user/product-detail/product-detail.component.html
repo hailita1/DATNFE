@@ -72,7 +72,7 @@
         <div class="product__details__pic">
           <div class="product__details__pic__item">
             <img class="product__details__pic__item--small" *ngIf="currentHouse.images!=null"
-                 [src]="currentHouse.images[0].link" alt="" style="height: 100%">
+                 [src]="currentHouse.images[0].link" alt="" style="height: 140%">
           </div>
         </div>
       </div>
@@ -121,7 +121,7 @@
             </li>
           </ul>
         </div>
-        <button *ngIf="currentUser && currentHouse.id==currentUser.id" (click)="createMessage()"
+        <button *ngIf="currentUser && currentHouse.user.id!==currentUser.id" (click)="createMessage()"
                 [routerLink]="['/checkout']"
                 style="margin-top: 25px;width: 100%;background: #7fad39;"
                 class="site-btn">Đặt thuê
@@ -195,9 +195,10 @@
     </div>
     <div class="row">
       <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let house of relatedHouses">
-        <div class="product__item">
-          <div class="product__item__pic set-bg" *ngIf="house.images != null"
-               [style.background]="'url('+house.images[0].link+')'">
+        <div class="product__discount__item">
+          <div class="product__discount__item__pic set-bg" *ngIf="house.images != null"
+               [style.background]="'url('+house.images[0].link+')'" style="background-size: 270px 270px">
+            <div *ngIf="house.discount!=0" class="product__discount__percent">-{{house.discount}}%</div>
             <ul class="product__item__pic__hover">
               <li><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a></li>
               <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -206,9 +207,15 @@
               </li>
             </ul>
           </div>
-          <div class="product__item__text">
-            <h6>{{house.name}}</h6>
-            <h5>{{house.price}}</h5>
+          <div class="product__discount__item__text">
+            <span>{{house.category.name}}</span>
+            <h5>{{house.name}}</h5>
+            <h5>{{house.address}}</h5>
+            <div
+              class="product__item__price">
+              <h5 style="font-weight: bold; color: red">{{house.price - house.price * (house.discount / 100)}}( VNĐ /
+                Ngày)</h5>
+              <span *ngIf="house.discount!=0">{{house.price}}( VNĐ / Ngày)</span></div>
           </div>
         </div>
       </div>

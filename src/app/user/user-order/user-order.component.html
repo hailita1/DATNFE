@@ -81,10 +81,20 @@
                 {{bill.totalPrice}} VNĐ
               </td>
               <td>
-                <a [routerLink]="['/house',bill.houseBill.id]" class="btn btn-primary"
-                   style="color: white; width: 80px; text-align: center">
-                  <i class="fas fa-info"></i>
-                </a>
+                <div class="row">
+                  <div class="col-4" style="margin-left: auto; margin-right: auto">
+                    <button (click)="initModal(bill, 'show')" class="btn btn-block btn-warning"
+                            style="color: white; width: 80px; text-align: center">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </div>
+                  <div class="col-4" style="margin-left: auto; margin-right: auto">
+                    <a [routerLink]="['/house',bill.houseBill.id]" class="btn btn-primary"
+                       style="color: white; width: 80px; text-align: center">
+                      <i class="fas fa-info"></i>
+                    </a>
+                  </div>
+                </div>
               </td>
               <td>
                 <div>
@@ -215,3 +225,4 @@
   <!-- /.modal-dialog -->
 </div>
 <app-footer></app-footer>
+<app-item-user-order></app-item-user-order>

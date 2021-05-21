@@ -3,21 +3,21 @@ import {ModalDirective} from 'ngx-bootstrap/modal';
 import {UserToken} from '../../../model/user-token';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {CategoryService} from '../../../service/category/category.service';
-import {AuthenticationService} from '../../../service/auth/authentication.service';
 import {BillService} from '../../../service/bill/bill.service';
+import {CategoryService} from '../../../service/category/category.service';
 import {NotificationService} from '../../../service/notification/notification.service';
-import {HouseService} from '../../../service/house/house.service';
+import {AuthenticationService} from '../../../service/auth/authentication.service';
 
 declare var $: any;
 declare var Swal: any;
 
 @Component({
-  selector: 'app-item-bill',
-  templateUrl: './item-bill.component.html',
-  styleUrls: ['./item-bill.component.scss']
+  selector: 'app-item-user-order',
+  templateUrl: './item-user-order.component.html',
+  styleUrls: ['./item-user-order.component.scss']
 })
-export class ItemBillComponent implements OnInit {
+export class ItemUserOrderComponent implements OnInit {
+
   @ViewChild('content', {static: false}) public childModal!: ModalDirective;
   @Input() listcategorys: Array<any>;
   @Output() eventEmit: EventEmitter<any> = new EventEmitter<any>();
@@ -45,8 +45,7 @@ export class ItemBillComponent implements OnInit {
   constructor(private modalService: NgbModal,
               private fb: FormBuilder,
               private billService: BillService,
-              private categoryService: CategoryService,
-              private houseService: HouseService,
+              private  categoryService: CategoryService,
               private notificationService: NotificationService,
               private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
@@ -236,7 +235,6 @@ export class ItemBillComponent implements OnInit {
               });
             });
             this.createNotification();
-            this.updateNumberHires();
             this.modalReference.dismiss();
           },
           err => {
@@ -303,11 +301,4 @@ export class ItemBillComponent implements OnInit {
     this.notificationService.createNotification(notification).subscribe();
   }
 
-  updateNumberHires() {
-    const house = {
-      id: this.model.houseBill.id,
-      numberHires: this.model.houseBill.numberHires + 1
-    };
-    this.houseService.updateNumberHires(house).subscribe();
-  }
 }

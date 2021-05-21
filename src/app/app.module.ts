@@ -37,6 +37,7 @@ import {ConfirmComponent} from './user/confirm/confirm.component';
 import {UserItemComponent} from './shared/header/user-item/user-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
+import { ItemUserOrderComponent } from './user/user-order/item-user-order/item-user-order.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular
     Register1Component,
     ConfirmComponent,
     UserItemComponent,
+    ItemUserOrderComponent,
 
   ],
   imports: [

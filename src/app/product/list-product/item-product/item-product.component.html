@@ -54,7 +54,7 @@
             <label for="discount">Giảm giá (%)</label>
             <select class="form-control select2 select2-primary" id="discount" name="discount"
                     formControlName="discount" data-dropdown-css-class="select2-primary"
-                    style="width: 100%;">
+                    style="width: 100%; margin-left: 0px">
               <option value="0">0</option>
               <option value="5">5</option>
               <option value="10">10</option>
@@ -78,7 +78,7 @@
             <label for="category">Thể loại</label>
             <select class="form-control select2 select2-primary" id="category" name="category"
                     formControlName="category" data-dropdown-css-class="select2-primary"
-                    style="width: 100%;">
+                    style="width: 100%; margin-left: 0px">
               <option *ngFor="let category of listCategory" [value]="category.id">{{category.name}}</option>
             </select>
             <div *ngIf="submitted && formGroup.controls['category'].errors?.required">
@@ -129,10 +129,10 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="category">Thêm tiện ích cho HomeStay</label>
+            <label for="category">Tiện ích của HomeStay</label>
             <select class="form-control select2 select2-primary" id="utilitie" name="utilitie"
                     formControlName="utilitie" data-dropdown-css-class="select2-primary"
-                    style="width: 100%;" (ngModelChange)="addUtilitieToHouse($event)">
+                    style="width: 100%; margin-left: 0px" (ngModelChange)="addUtilitieToHouse($event)">
               <option *ngFor="let utilitie of listUtilitie"
                       [value]="utilitie.id">{{utilitie.name}}</option>
             </select>

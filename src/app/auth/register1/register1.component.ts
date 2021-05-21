@@ -3,6 +3,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {UserService} from '../../service/user/user.service';
 import {Router} from '@angular/router';
 import {User} from '../../model/user';
+import {NotificationService} from '../../service/notification/notification.service';
 
 declare var $: any;
 declare var Swal: any;
@@ -17,6 +18,7 @@ export class Register1Component implements OnInit {
     email: new FormControl(''),
     password: new FormControl(''),
     fullName: new FormControl(''),
+    telephoneNumber: new FormControl(''),
     terms: new FormControl('')
   });
   isSubmitted = false;
@@ -43,11 +45,16 @@ export class Register1Component implements OnInit {
           terms: {
             required: true
           },
+          telephoneNumber: {
+            required: true
+          }
         },
         messages: {
           email: {
             required: 'Nhập địa chỉ email',
             email: 'Không đúng định dạng'
+          }, telephoneNumber: {
+            required: 'Nhập số điện thoại',
           },
           password: {
             required: 'Nhập mật khẩu',
@@ -75,9 +82,10 @@ export class Register1Component implements OnInit {
     const user: User = {
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
-      fullName: this.registerForm.value.fullName
+      fullName: this.registerForm.value.fullName,
+      telephoneNumber: this.registerForm.value.telephoneNumber
     };
-    if (user.email !== '' && user.password !== '' && user.fullName !== '') {
+    if (user.email !== '' && user.password !== '' && user.fullName !== '' && user.telephoneNumber !== '') {
       this.userService.register(user).subscribe(() => {
         this.registerForm.reset();
         this.router.navigate(['/login']).finally(() => {
@@ -121,7 +129,7 @@ export class Register1Component implements OnInit {
 
         Toast.fire({
           type: 'error',
-          title: 'Đăng ký thất bại'
+          title: 'Bạn hãy nhập đầy đủ dữ liệu'
         });
       });
     }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Category} from '../../model/category';
 import {CategoryService} from '../../service/category/category.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -13,6 +13,8 @@ import {Review} from '../../model/review';
 import {ReviewService} from '../../service/review/review.service';
 import {BillService} from '../../service/bill/bill.service';
 import {Bill} from '../../model/bill';
+import {ItemBillComponent} from '../../host/bill/item-bill/item-bill.component';
+import {ItemUserOrderComponent} from './item-user-order/item-user-order.component';
 
 declare var $: any;
 declare var Swal: any;
@@ -23,6 +25,8 @@ declare var Swal: any;
   styleUrls: ['./user-order.component.scss']
 })
 export class UserOrderComponent implements OnInit {
+  // @ts-ignore
+  @ViewChild(ItemUserOrderComponent) view!: ItemUserOrderComponent;
   listCategory: Category[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
@@ -74,6 +78,10 @@ export class UserOrderComponent implements OnInit {
     } else {
       this.star = star;
     }
+  }
+
+  initModal(model: any, type = null): void {
+    this.view.view(model, type);
   }
 
   getOrderId(id: number) {

@@ -59,6 +59,10 @@ export class HouseService {
     return this.http.put<House>(API_URL + `/houses/${id}`, house);
   }
 
+  updateNumberHires(house: House): Observable<House> {
+    return this.http.put<House>(API_URL + `/houses/updateNumberHires`, house);
+  }
+
   deleteHouse(id: number): Observable<House> {
     return this.http.delete<House>(API_URL + `/houses/${id}`);
   }

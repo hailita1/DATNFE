@@ -3,5 +3,5 @@ export interface NotificationUser {
   content?: string;
   status?: boolean;
   checked?: boolean;
-  user?: [];
+  user?: any;
 }
