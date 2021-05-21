@@ -32,6 +32,9 @@ export class CategoryDetailComponent implements OnInit {
   sub: Subscription;
   currentUser: UserToken;
   listHouseLatest: House[] = [];
+  isSelected = true;
+  page = 1;
+  pageSize = 9;
 
   constructor(private categoryService: CategoryService,
               private houseService: HouseService,
@@ -137,8 +140,8 @@ export class CategoryDetailComponent implements OnInit {
 
   getAllHouseLatest() {
     this.houseService.getAllHouseStatusTrue().subscribe(listProduct => {
-      if (listProduct.length > 3) {
-        for (let i = 0; i < 3; i++) {
+      if (listProduct.length > 2) {
+        for (let i = 0; i < 2; i++) {
           this.listHouseLatest.push(listProduct[i]);
         }
       } else {
@@ -150,5 +153,19 @@ export class CategoryDetailComponent implements OnInit {
   search() {
     const address = this.searchForm.value.name;
     this.router.navigate(['../houses'], {queryParams: {address: address}});
+  }
+
+  changeStatus(event: any) {
+    // tslint:disable-next-line: radix
+    switch (parseInt(event)) {
+      case -1:
+        break;
+      case 1:
+        break;
+      case 0:
+        break;
+      default:
+        break;
+    }
   }
 }

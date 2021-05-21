@@ -27,6 +27,14 @@ export class HouseService {
     return this.http.get<House[]>(API_URL + '/houses');
   }
 
+  getAllHousePriceDesc(): Observable<House[]> {
+    return this.http.get<House[]>(API_URL + '/houses/priceDesc');
+  }
+
+  getAllHousePriceAsc(): Observable<House[]> {
+    return this.http.get<House[]>(API_URL + '/houses/priceAsc');
+  }
+
   findByStatusTrueOrderByDiscountDesc(): Observable<House[]> {
     return this.http.get<House[]>(API_URL + '/houses/discount');
   }

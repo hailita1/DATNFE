@@ -66,7 +66,7 @@
               <li><a [routerLink]="['../../category',category.id]">{{category.name}}</a></li>
             </ul>
           </div>
-        
+
           <div class="sidebar__item">
             <div class="latest-product__text">
               <h4>HomeStay mới</h4>
@@ -115,19 +115,22 @@
                 <div class="product__discount__item">
                   <div class="product__discount__item__pic set-bg" *ngIf="house.images != null"
                        [style.background]="'url('+house.images[0].link+')'" style="background-size: 270px 270px">
-                    <div class="product__discount__percent">-{{house.price}}</div>
+                    <div class="product__discount__percent" *ngIf="house.discount>0">-{{house.discount}} %</div>
                     <ul class="product__item__pic__hover">
                       <li><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a></li>
                       <li><a href="#"><i class="fa fa-retweet"></i></a></li>
                       <li>
-                        <a [routerLink]="['../../house',house.id]"><i class="fa fa-info-circle"></i></a>
+                        <a [routerLink]="['../house',house.id]"><i class="fa fa-info-circle"></i></a>
                       </li>
                     </ul>
                   </div>
                   <div class="product__discount__item__text">
                     <span>{{house.category.name}}</span>
-                    <h5><a [routerLink]="['../product',house.id]">{{house.name}}</a></h5>
-                    <div class="product__item__price">{{house.price}}( VNĐ / Ngày)
+                    <h5>{{house.name}}</h5>
+                    <h5>{{house.address}}</h5>
+                    <div
+                      class="product__item__price">{{house.price - house.price * (house.discount / 100)}}
+                      ( VNĐ / Ngày)
                       <span>{{house.price}}( VNĐ / Ngày)</span></div>
                   </div>
                 </div>
@@ -136,19 +139,26 @@
           </div>
         </div>
         <div class="filter__item">
-          <div class="row">
+          <div class="section-title product__discount__title" style="padding-top: 50px">
+            <h2>Danh sách HomeStay đang cho thuê</h2>
+          </div>
+          <h3 *ngIf="listHouse.length ==0" style="text-align: center">Không có HomeStay nào !!!</h3>
+          <div class="row" *ngIf="this.listHouse.length > 0">
             <div class="col-lg-4 col-md-5">
               <div class="filter__sort">
-                <span>Sắp xếp</span>
-                <select>
-                  <option value="0">Default</option>
-                  <option value="0">Default</option>
+                <span>Sắp xếp theo: </span>
+                <select (change)="changeStatus($event.target.value)" class="custom-select"
+                        style="margin-right: 10px; width: 150px">
+                  <option [selected]="isSelected" disabled>----- Giá -----</option>
+                  <option value="-1">Mặc định</option>
+                  <option value="1">Tăng dần</option>
+                  <option value="0">Giảm dần</option>
                 </select>
               </div>
             </div>
             <div class="col-lg-4 col-md-4">
               <div class="filter__found">
-                <h6><span>{{listHouse.length}}</span> sản phẩm</h6>
+                <h6><span>{{listHouse.length}}</span> HomeStay</h6>
               </div>
             </div>
             <div class="col-lg-4 col-md-3">
@@ -160,31 +170,39 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-4 col-md-6 col-sm-6" *ngFor="let house of listHouse">
-            <div class="product__item">
-              <div class="product__item__pic set-bg" *ngIf="house.images!=null"
-                   [style.background]="'url('+ house.images[0].link+')'">
+          <div class="col-lg-4 col-md-6 col-sm-6"
+               *ngFor="let house of listHouse  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;">
+            <div class="product__discount__item">
+              <div class="product__discount__item__pic set-bg" *ngIf="house.images != null"
+                   [style.background]="'url('+house.images[0].link+')'" style="background-size: 270px 270px">
+                <div class="product__discount__percent" *ngIf="house.discount>0">-{{house.discount}} %</div>
                 <ul class="product__item__pic__hover">
                   <li><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a></li>
                   <li><a href="#"><i class="fa fa-retweet"></i></a></li>
                   <li>
-                    <a [routerLink]="['../../house',house.id]"><i class="fa fa-info-circle"></i></a>
+                    <a [routerLink]="['../house',house.id]"><i class="fa fa-info-circle"></i></a>
                   </li>
                 </ul>
               </div>
-              <div class="product__item__text">
-                <h6>{{house.name}}</h6>
+              <div class="product__discount__item__text">
+                <span>{{house.category.name}}</span>
+                <h5>{{house.name}}</h5>
                 <h5>{{house.address}}</h5>
-                <h5>{{house.price}}( VNĐ / Ngày)</h5>
+                <div
+                  class="product__item__price"
+                  *ngIf="house.discount>0">{{house.price - house.price * (house.discount / 100)}}
+                  ( VNĐ / Ngày)
+                  <span>{{house.price}}( VNĐ / Ngày)</span></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="product__pagination">
-          <a href="#">1</a>
-          <a href="#">2</a>
-          <a href="#">3</a>
-          <a href="#"><i class="fas fa-long-arrow-alt-right"></i></a>
+        <div class="col-12" style="display: flex; justify-content: center;align-items: center">
+          <ngb-pagination *ngIf="listHouse.length > 9"
+                          [ellipses]="true" [rotate]="true"
+                          [boundaryLinks]="true" [(page)]="page"
+                          [pageSize]="pageSize"
+                          [collectionSize]="this.listHouse.length"></ngb-pagination>
         </div>
       </div>
     </div>

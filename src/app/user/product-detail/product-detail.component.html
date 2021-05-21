@@ -58,6 +58,15 @@
 </section>
 <section class="product-details spad" *ngIf="currentHouse != null">
   <div class="container">
+    <div
+      style="width: 100%; text-align:center;margin:0; padding:0;">
+      <ng-image-slider #nav
+                       [images]="imageObject"
+                       [infinite]="true"
+                       [autoSlide]="1"
+                       [imageSize]="{width: '25%', height: 200}"
+                       slideImage="1"></ng-image-slider>
+    </div>
     <div class="row">
       <div class="col-lg-8 col-md-6">
         <div class="product__details__pic">
@@ -80,9 +89,8 @@
             <span><i class="fas fa-star mr-2 {{starAverage==5?'rated':'unrated'}}"></i></span>
             <span>({{listReview.length}} reviews)</span>
           </div>
-          <h5 *ngIf="currentHouse.discount!=0" style="margin-bottom: 10px; color: red">Giảm giá
-            : {{currentHouse.discount}}%
-            tiền thuê HomeStay
+          <h5 *ngIf="currentHouse.discount!=0" style="margin-bottom: 10px; color: red">Giảm
+            : {{currentHouse.discount}}% từ chủ nhà
           </h5>
           <div class="product__details__price">{{currentHouse.price}} ( VNĐ / Ngày)</div>
           <p style="margin-bottom: 10px"><b>Địa chỉ:</b> {{currentHouse.address}}</p>
@@ -91,8 +99,13 @@
             <li><b>Trạng thái</b> <span>{{currentHouse.status == true ? "Còn trống" : "Đã đặt"}}</span></li>
             <li><b>Thể loại</b><span>{{currentHouse.category.name}}</span></li>
             <li><b>Số lượng phòng</b> <span>{{currentHouse.numberRoom}}</span></li>
-            <li><b>Tiện ích có sẵn</b> <span
-              *ngFor="let utilitie of currentHouse.utilitie"> - {{utilitie.name}} </span>
+            <li><b>Tiện ích có sẵn</b>
+              <div *ngFor="let utilitie of currentHouse.utilitie">
+                <div class="row">
+                  <span class="col-6"></span>
+                  <span class="col-6"> - {{utilitie.name}} </span>
+                </div>
+              </div>
             </li>
             <li><b>Thông tin chủ nhà</b>
               <div>
@@ -116,15 +129,6 @@
                 style="margin-top: 25px;width: 100%;background: #7fad39;"
                 class="site-btn">Đặt thuê
         </button>
-      </div>
-      <div
-        style="width: 100%; text-align:center;margin:0; padding:0;">
-        <ng-image-slider #nav
-                         [images]="imageObject"
-                         [infinite]="true"
-                         [autoSlide]="1"
-                         [imageSize]="{width: '25%', height: 200}"
-                         slideImage="1"></ng-image-slider>
       </div>
       <div class="col-lg-12">
         <div class="product__details__tab">

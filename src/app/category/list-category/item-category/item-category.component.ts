@@ -220,5 +220,4 @@ export class ItemCategoryComponent implements OnInit {
     this.submitted = false;
     this.eventEmit.emit('success');
   }
-
 }

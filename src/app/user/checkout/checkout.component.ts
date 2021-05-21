@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Category} from '../../model/category';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CategoryService} from '../../service/category/category.service';
 import {Item} from '../../model/item';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
@@ -56,6 +56,7 @@ export class CheckoutComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
               private billService: BillService,
+              private fb: FormBuilder,
               private authenticationService: AuthenticationService,
               private houseService: HouseService, private activatedRoute: ActivatedRoute,
               private serviceService: ServiceService,
@@ -81,6 +82,9 @@ export class CheckoutComponent implements OnInit {
       this.currentHouse = await this.getHouse(this.idHouse);
     }
     this.getAllHouseDayByHouse(this.idHouse);
+    this.billForm = this.fb.group({
+      email: [{value: this.currentUser.email, disabled: true}, [Validators.required]],
+    });
   }
 
   getAllCategories() {

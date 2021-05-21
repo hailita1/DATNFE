@@ -347,7 +347,8 @@ export class ItemHouseComponent implements OnInit {
   }
 
   delete(id) {
-    this.listUtilitieAddToHouse.splice(id, 1);
+    const indexOf = this.listUtilitieAddToHouse.indexOf(id);
+    this.listUtilitieAddToHouse.splice(indexOf, 1);
   }
 
   // Upload avt
@@ -357,16 +358,17 @@ export class ItemHouseComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.myItems.push(files[i]);
     }
-    this.uploadAll();
+    console.log(this.myItems);
+    this.uploadAll(this.myItems);
   }
 
-  uploadAll() {
+  uploadAll(imge) {
+    console.log(imge);
     this.isLoading = true;
     Promise.all(
-      this.myItems.map(file => this.putStorageItem(file))
+      imge.map(file => this.putStorageItem(file))
     )
       .then((url) => {
-        console.log(`All success`, url);
         this.arrayPicture = url;
         for (var i = 0; i < this.arrayPicture.length; i++) {
           this.urlPicture.push(this.arrayPicture[i]);
@@ -378,12 +380,12 @@ export class ItemHouseComponent implements OnInit {
         this.isLoading = false;
       })
       .catch((error) => {
-        console.log(`Some failed: `, error.message);
         this.isLoading = false;
       });
   }
 
   putStorageItem(file): Promise<House> {
+    console.log(file);
     // the return value will be a Promise
     const metadata = {
       contentType: 'image/jpeg',
@@ -402,7 +404,8 @@ export class ItemHouseComponent implements OnInit {
   }
 
   pushDeleteImage(i) {
-    this.urlPicture.splice(i, 1);
+    const indexOf = this.urlPicture.indexOf(i);
+    this.urlPicture.splice(indexOf, 1);
   }
 
   onClick() {

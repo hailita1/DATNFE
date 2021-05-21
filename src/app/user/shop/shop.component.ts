@@ -41,6 +41,7 @@ export class ShopComponent implements OnInit {
   currentUser: UserToken;
   page = 1;
   pageSize = 9;
+  isSelected = true;
 
   constructor(private categoryService: CategoryService,
               private activatedRoute: ActivatedRoute,
@@ -102,6 +103,21 @@ export class ShopComponent implements OnInit {
     this.getAllHouseSaleOff();
   }
 
+  search() {
+    const address = this.searchForm.value.name;
+    console.log(address);
+    if (address != null) {
+      if (address == '') {
+        this.router.navigate(['/houses']);
+      } else {
+        this.houseService.getAllHousetByName(address).subscribe(listHouse => {
+          this.listHouse = listHouse;
+          this.router.navigate(['/houses'], {queryParams: {address: address}});
+        });
+      }
+    }
+  }
+
   getAllHouse() {
     this.houseService.getAllHouseStatusTrue().subscribe(listHouse => {
       this.listHouse = listHouse;
@@ -147,8 +163,8 @@ export class ShopComponent implements OnInit {
 
   getAllHouseLatest() {
     this.houseService.getAllHouseStatusTrue().subscribe(listProduct => {
-      if (listProduct.length > 3) {
-        for (let i = 0; i < 3; i++) {
+      if (listProduct.length > 2) {
+        for (let i = 0; i < 2; i++) {
           this.listHouseLatest.push(listProduct[i]);
         }
       } else {
@@ -157,20 +173,6 @@ export class ShopComponent implements OnInit {
     });
   }
 
-
-  search() {
-    const address = this.searchForm.value.name;
-    if (address != null) {
-      if (address == '') {
-        this.router.navigate(['/houses']);
-      } else {
-        this.houseService.getAllHousetByName(address).subscribe(listHouse => {
-          this.listHouse = listHouse;
-          this.router.navigate(['/houses'], {queryParams: {address: address}});
-        });
-      }
-    }
-  }
 
   searchAdvanced() {
     const address = this.searchFormAdvanced.value.address;
@@ -208,6 +210,29 @@ export class ShopComponent implements OnInit {
       this.houseService.searchAdvanced(address, numberRoom, upperBound, lowerBound).subscribe(listHouse => {
         this.listHouse = listHouse;
       });
+    }
+  }
+
+  changeStatus(event: any) {
+    // tslint:disable-next-line: radix
+    switch (parseInt(event)) {
+      case -1:
+        this.houseService.getAllHouseStatusTrue().subscribe(listHouse => {
+          this.listHouse = listHouse;
+        });
+        break;
+      case 1:
+        this.houseService.getAllHousePriceAsc().subscribe(listHouse => {
+          this.listHouse = listHouse;
+        });
+        break;
+      case 0:
+        this.houseService.getAllHousePriceDesc().subscribe(listHouse => {
+          this.listHouse = listHouse;
+        });
+        break;
+      default:
+        break;
     }
   }
 }
