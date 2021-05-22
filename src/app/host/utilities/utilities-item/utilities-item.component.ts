@@ -116,7 +116,7 @@ export class UtilitiesItemComponent implements OnInit {
     this.modalReference = this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
       centered: true,
-      size: 'xl',
+      size: 'sl',
     });
     this.modalReference.result.then(
       (result: any) => {

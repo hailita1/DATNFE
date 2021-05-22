@@ -1,0 +1,137 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ title }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formGroup" (ngSubmit)="save()">
+      <div class="form-group">
+        <label>Tiêu đề</label>
+        <input type="text" name="" class="form-control" formControlName="title" id="title"/>
+        <div *ngIf="submitted && formGroup.controls['title'].errors?.required">
+          <div
+            *ngIf="formGroup.controls['title'].errors?.required"
+            style="color: red"
+          >
+            * Tiêu đề không được để trống
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Mã giảm giá</label>
+        <input
+          type="text"
+          name=""
+          class="form-control"
+          formControlName="voucher_code"
+          id="voucher_code"
+        />
+        <div *ngIf="submitted && formGroup.controls['voucher_code'].errors?.required">
+          <div
+            *ngIf="formGroup.controls['voucher_code'].errors?.required"
+            style="color: red"
+          >
+            * Mã giảm giá không được để trống
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Phần trăm giảm giá (%)</label>
+        <input
+          type="number"
+          name=""
+          class="form-control"
+          formControlName="discount"
+          id="discount"
+        />
+        <div *ngIf="submitted && formGroup.controls['discount'].errors?.required">
+          <div
+            *ngIf="formGroup.controls['discount'].errors?.required"
+            style="color: red"
+          >
+            * Phần trăm giảm giá không được để trống
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Số lượng</label>
+        <input
+          type="number"
+          name=""
+          class="form-control"
+          formControlName="quantity"
+          id="quantity"
+        />
+        <div *ngIf="submitted && formGroup.controls['quantity'].errors?.required">
+          <div
+            *ngIf="formGroup.controls['quantity'].errors?.required"
+            style="color: red"
+          >
+            * Số lượng không được để trống
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Ngày áp dụng</label>
+        <input
+          type="date"
+          name=""
+          class="form-control"
+          formControlName="startDate"
+          id="startDate"
+        />
+        <div *ngIf="submitted && formGroup.controls['startDate'].errors?.required">
+          <div
+            *ngIf="formGroup.controls['startDate'].errors?.required"
+            style="color: red"
+          >
+            * Ngày áp dụng không được để trống
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Ngày kết thúc</label>
+        <input
+          type="date"
+          name=""
+          class="form-control"
+          formControlName="expiredDate"
+          id="expiredDate"
+        />
+        <div *ngIf="submitted && formGroup.controls['expiredDate'].errors?.required">
+          <div
+            *ngIf="formGroup.controls['expiredDate'].errors?.required"
+            style="color: red"
+          >
+            * Ngày kết thúc không được để trống
+          </div>
+        </div>
+      </div>
+      <div class="form-group" align="center">
+        <button
+          [hidden]="checkButton"
+          type="submit"
+          class="btn btn-success"
+          style="width: 100px"
+          *ngIf="isEdit || isAdd"
+        >
+          Lưu
+        </button>
+        <button
+          class="btn btn-danger"
+          style="width: 100px; margin-left: 20px"
+          (click)="modal.dismiss('Cross click')"
+        >
+          Thoát
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>

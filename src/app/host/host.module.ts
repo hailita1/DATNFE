@@ -4,9 +4,7 @@ import {CommonModule} from '@angular/common';
 import {HostRoutingModule} from './host-routing.module';
 import {HouseComponent} from './house/house.component';
 import {CategoryComponent} from './category/category.component';
-import {GraphComponent} from './graph/graph.component';
 import {ServiceComponent} from './service/service.component';
-import {ReportComponent} from './report/report.component';
 import {BillComponent} from './bill/bill.component';
 import {UtilitiesComponent} from './utilities/utilities.component';
 import {CategoryItemComponent} from './category/category-item/category-item.component';
@@ -20,7 +18,7 @@ import {ItemBillComponent} from './bill/item-bill/item-bill.component';
 
 
 @NgModule({
-  declarations: [HouseComponent, CategoryComponent, GraphComponent, ServiceComponent, ReportComponent, BillComponent, UtilitiesComponent, CategoryItemComponent, ServiceItemComponent, UtilitiesItemComponent, ItemHouseComponent, ItemBillComponent],
+  declarations: [HouseComponent, CategoryComponent, ServiceComponent, BillComponent, UtilitiesComponent, CategoryItemComponent, ServiceItemComponent, UtilitiesItemComponent, ItemHouseComponent, ItemBillComponent],
   imports: [
     CommonModule,
     HostRoutingModule,

@@ -35,9 +35,10 @@ import {NgImageSliderModule} from 'ng-image-slider';
 import {NgbModalModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmComponent} from './user/confirm/confirm.component';
 import {UserItemComponent} from './shared/header/user-item/user-item.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
-import { ItemUserOrderComponent } from './user/user-order/item-user-order/item-user-order.component';
+import {ItemUserOrderComponent} from './user/user-order/item-user-order/item-user-order.component';
+import {VoucherModule} from './voucher/voucher.module';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,6 @@ import { ItemUserOrderComponent } from './user/user-order/item-user-order/item-u
     ConfirmComponent,
     UserItemComponent,
     ItemUserOrderComponent,
-
   ],
   imports: [
     BrowserModule,

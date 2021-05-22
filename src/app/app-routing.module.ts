@@ -52,6 +52,10 @@ const routes: Routes = [
       {
         path: 'user',
         loadChildren: () => import('./users/users.module').then(module => module.UsersModule)
+      },
+      {
+        path: 'voucher',
+        loadChildren: () => import('./voucher/voucher.module').then(module => module.VoucherModule)
       }
     ],
   }, {
