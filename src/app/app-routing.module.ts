@@ -19,6 +19,7 @@ import {AuthGuard} from './helper/auth-guard';
 import {Login1Component} from './auth/login1/login1.component';
 import {Register1Component} from './auth/register1/register1.component';
 import {ConfirmComponent} from './user/confirm/confirm.component';
+import {VoucherComponent} from './user/voucher/voucher.component';
 
 
 const routes: Routes = [
@@ -108,6 +109,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: Login1Component
+  },
+  {
+    path: 'voucher',
+    component: VoucherComponent
   },
   {
     path: 'register',

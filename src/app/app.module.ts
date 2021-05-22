@@ -39,6 +39,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import {ItemUserOrderComponent} from './user/user-order/item-user-order/item-user-order.component';
 import {VoucherModule} from './voucher/voucher.module';
+import { VoucherComponent } from './user/voucher/voucher.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import {VoucherModule} from './voucher/voucher.module';
     ConfirmComponent,
     UserItemComponent,
     ItemUserOrderComponent,
+    VoucherComponent,
   ],
   imports: [
     BrowserModule,

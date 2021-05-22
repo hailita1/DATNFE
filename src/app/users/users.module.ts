@@ -4,16 +4,18 @@ import {CommonModule} from '@angular/common';
 import {UsersRoutingModule} from './users-routing.module';
 import {ListuserComponent} from './listuser/listuser.component';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ItemUserComponent} from './item-user/item-user.component';
 
 
 @NgModule({
-  declarations: [ListuserComponent],
+  declarations: [ListuserComponent, ItemUserComponent],
   imports: [
     CommonModule,
     UsersRoutingModule,
-    NgbModalModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    NgbModalModule
   ]
 })
 export class UsersModule {

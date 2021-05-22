@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {User} from '../../model/User';
 import {UserToken} from '../../model/user-token';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserService} from '../../service/user/user.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ItemUserComponent} from '../item-user/item-user.component';
 
 declare var $: any;
 declare var Swal: any;
@@ -14,6 +15,8 @@ declare var Swal: any;
   styleUrls: ['./listuser.component.scss']
 })
 export class ListuserComponent implements OnInit {
+  // @ts-ignore
+  @ViewChild(ItemUserComponent) view!: ItemUserComponent;
   listUser: User[];
   currentUser: UserToken;
   hasRoleUser = false;
@@ -49,6 +52,7 @@ export class ListuserComponent implements OnInit {
   getUserId(id: number) {
     this.id = id;
   }
+
   deleteUser() {
     this.userService.deleteUser(this.id).subscribe(() => {
       this.userService.getAllUser().subscribe(listUser => {
@@ -103,6 +107,10 @@ export class ListuserComponent implements OnInit {
         });
       });
     });
+  }
+
+  initModal(model: any, type = null): void {
+    this.view.view(model, type);
   }
 
   changeStatus(event: any) {

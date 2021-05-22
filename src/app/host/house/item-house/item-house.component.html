@@ -65,12 +65,12 @@
               <option value="35">35</option>
               <option value="40">40</option>
             </select>
-            <div *ngIf="submitted && formGroup.controls['category'].errors?.required">
+            <div *ngIf="submitted && formGroup.controls['discount'].errors?.required">
               <div
-                *ngIf="formGroup.controls['category'].errors?.required"
+                *ngIf="formGroup.controls['discount'].errors?.required"
                 style="color: red"
               >
-                * Thể loại không được để trống
+                * Giảm giá không được để trống
               </div>
             </div>
           </div>

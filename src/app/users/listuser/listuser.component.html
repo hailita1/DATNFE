@@ -26,6 +26,9 @@
         <option value="1">Admin</option>
         <option value="0">Chủ nhà</option>
       </select>
+      <button (click)="initModal({}, 'add')" *ngIf="hasRoleAdmin" class="btn btn-success" style="width: 200px">
+        Tạo mới tài khoản Admin
+      </button>
     </div>
     <div class="card-body">
       <table class="table table-bordered" id="table-user">
@@ -85,3 +88,4 @@
     <!-- /.modal-dialog -->
   </div>
 </section>
+<app-item-user (eventEmit)="getAllUser()"></app-item-user>

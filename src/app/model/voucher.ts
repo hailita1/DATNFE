@@ -1,6 +1,7 @@
 export interface Voucher {
   id?: number;
   voucher_code?: string;
+  typeVoucher?: string;
   title?: string;
   quantity?: number;
   discount?: number;
@@ -10,5 +11,4 @@ export interface Voucher {
   update_at?: Date;
   expiredDate?: Date;
   checked?: boolean;
-  user: any;
 }

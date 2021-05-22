@@ -53,7 +53,6 @@ export class Login1Component implements OnInit {
   login() {
     this.submitted = true;
     this.loading = true;
-    console.log(this.loginForm.value.password);
     this.authenticationService.login(this.loginForm.value.email, this.loginForm.value.password)
       .pipe(first())
       .subscribe(

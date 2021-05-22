@@ -43,7 +43,24 @@
         </div>
       </div>
       <div class="form-group">
-        <label>Phần trăm giảm giá (%)</label>
+        <label for="category">Loại giảm giá</label>
+        <select class="form-control select2 select2-primary" id="category" name="category"
+                formControlName="category" data-dropdown-css-class="select2-primary"
+                style="width: 100%; margin-left: 0px">
+          <option value="0">Giảm theo tiền (VNĐ)</option>
+          <option value="1">Giảm theo phần trăm (%)</option>
+        </select>
+        <div *ngIf="submitted && formGroup.controls['category'].errors?.required">
+          <div
+            *ngIf="formGroup.controls['category'].errors?.required"
+            style="color: red"
+          >
+            * Giảm giá không được để trống
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Giảm giá</label>
         <input
           type="number"
           name=""
@@ -56,7 +73,7 @@
             *ngIf="formGroup.controls['discount'].errors?.required"
             style="color: red"
           >
-            * Phần trăm giảm giá không được để trống
+            * Giảm giá không được để trống
           </div>
         </div>
       </div>
