@@ -14,6 +14,8 @@ import {BillService} from '../../service/bill/bill.service';
 import {House} from '../../model/house';
 import {Bill} from '../../model/bill';
 import {HouseDay} from '../../model/houseDay';
+import {Voucher} from '../../model/voucher';
+import {VoucherService} from '../../service/voucher/voucher.service';
 
 declare var $: any;
 declare var Swal: any;
@@ -36,6 +38,7 @@ export class CheckoutComponent implements OnInit {
     email: new FormControl(''),
     startDate: new FormControl(''),
     endDate: new FormControl(''),
+    voucher: new FormControl(''),
     service: new FormControl(''),
   });
   items: Item[] = [];
@@ -46,6 +49,7 @@ export class CheckoutComponent implements OnInit {
   idHouse: any;
   listServiceOfHouse: Service[] = [];
   listHouseDay: HouseDay[] = [];
+  listVoucher: Voucher[] = [];
   page = 1;
   pageSize = 5;
   idUser: any;
@@ -53,11 +57,14 @@ export class CheckoutComponent implements OnInit {
   currentHouse: House = {price: 0};
   minDate = new Date();
   priceHomStay: number;
+  voucher: Voucher;
+  totalPrice: number;
 
   constructor(private categoryService: CategoryService,
               private billService: BillService,
               private authenticationService: AuthenticationService,
               private houseService: HouseService, private activatedRoute: ActivatedRoute,
+              private voucherService: VoucherService,
               private serviceService: ServiceService,
               private router: Router) {
     this.authenticationService.currentUser.subscribe(value => {
@@ -77,10 +84,11 @@ export class CheckoutComponent implements OnInit {
     this.getBill();
     this.houseService.currentMessage.subscribe(id => this.idHouse = id);
     this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
-    if (this.idHouse != null) {
+    if (this.idHouse != null && this.idHouse !== undefined) {
       this.currentHouse = await this.getHouse(this.idHouse);
+      this.getAllHouseDayByHouse(this.idHouse);
     }
-    this.getAllHouseDayByHouse(this.idHouse);
+    this.getAllVoucher();
   }
 
   getAllCategories() {
@@ -100,14 +108,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   getAllHouseDayByHouse(idHouse: number) {
-    if (this.idHouse != null) {
-      const houseDay = {
-        id: idHouse
-      };
-      this.billService.getAllHouseDayByHouse(houseDay).subscribe(listDateByHouse => {
-        this.listHouseDay = listDateByHouse;
-      });
-    }
+    const houseDay = {
+      id: idHouse
+    };
+    this.billService.getAllHouseDayByHouse(houseDay).subscribe(listDateByHouse => {
+      this.listHouseDay = listDateByHouse;
+    });
   }
 
   getBill() {
@@ -125,6 +131,17 @@ export class CheckoutComponent implements OnInit {
     if (this.billForm.get('nameUser').value != '' && this.billForm.get('telephoneNumber').value != '' && this.billForm.get('startDate').value != ''
       && this.billForm.get('endDate').value != '' && this.billForm.get('email').value != '') {
       this.isSubmitted = true;
+      if (this.voucher != null || this.voucher !== undefined) {
+        if (this.voucher.typeVoucher == '0') {
+          // tslint:disable-next-line:max-line-length
+          this.totalPrice = (this.priceService + this.priceHomStay * (100 - this.currentHouse.discount) / 100) - this.voucher.discount;
+        } else {
+          // tslint:disable-next-line:max-line-length
+          this.totalPrice = (this.priceService + this.priceHomStay * (100 - this.currentHouse.discount) / 100) * ((100 - this.voucher.discount) / 100);
+        }
+      } else {
+        this.totalPrice = (this.priceService + this.priceHomStay * (100 - this.currentHouse.discount) / 100);
+      }
       bill = {
         id: this.bill.id + 1,
         nameUser: this.billForm.get('nameUser').value,
@@ -140,7 +157,7 @@ export class CheckoutComponent implements OnInit {
           id: this.idHouse
         },
         service: this.listServiceOfHouse,
-        totalPrice: this.priceService + this.priceHomStay - this.priceHomStay * (this.currentHouse.discount / 100),
+        totalPrice: this.totalPrice
       };
     }
     if (this.isSubmitted) {
@@ -188,10 +205,13 @@ export class CheckoutComponent implements OnInit {
               });
             });
             this.billForm.reset();
+            this.isLoading = false;
             this.listServiceOfHouse = [];
             this.priceService = 0;
+            this.priceHomStay = 0;
             this.currentHouse.price = 0;
-            this.isLoading = false;
+            this.currentHouse.discount = 0;
+            this.voucher.discount = 0;
           },
           err => {
             $(function() {
@@ -227,7 +247,7 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  addUtilitieToHouse(id) {
+  addServiceToHouse(id) {
     const utilitie1 = this.listService
       .filter((utilitie) => utilitie.id == id);
 
@@ -261,7 +281,6 @@ export class CheckoutComponent implements OnInit {
     const sd = new Date(this.billForm.get('startDate').value).getTime();
     const ed = new Date(this.billForm.get('endDate').value).getTime();
     this.priceHomStay = (((ed - sd) / 86400000) + 1) * this.currentHouse.price;
-    console.log((ed - sd) / 86400000);
     const day = (d || new Date());
     let isHide = false;
     for (let i = 0; i < this.listHouseDay.length; i++) {
@@ -273,4 +292,50 @@ export class CheckoutComponent implements OnInit {
     }
     return !isHide;
   };
+
+  getAllVoucher() {
+    this.voucherService.getAllVoucher().subscribe(listVoucher => {
+      this.listVoucher = listVoucher;
+    });
+  }
+
+  checkVoucher() {
+    // tslint:disable-next-line:prefer-const
+    let code, index = -1;
+    code = this.billForm.get('voucher').value;
+    for (let i = 0; i < this.listVoucher.length; i++) {
+      if (code === (this.listVoucher[i].voucher_code).toUpperCase()) {
+        index = i;
+        break;
+      }
+    }
+    if (index != -1) {
+      this.voucher = this.listVoucher[index];
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+        Toast.fire({
+          type: 'success',
+          title: 'Mã voucher chính xác'
+        });
+      });
+    } else {
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+        Toast.fire({
+          type: 'error',
+          title: 'Mã voucher không chính xác'
+        });
+      });
+    }
+  }
 }

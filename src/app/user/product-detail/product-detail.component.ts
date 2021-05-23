@@ -47,7 +47,6 @@ export class ProductDetailComponent implements OnInit {
     this.sub = this.activatedRoute.paramMap.subscribe(async (paramMap: ParamMap) => {
       this.id = +paramMap.get('id');
       this.currentHouse = await this.getHouse(this.id);
-      console.log(this.currentHouse);
       for (var i = 0; i < this.currentHouse.images.length; i++) {
         this.imageObject[i] = {
           image: this.currentHouse.images[i].link,
@@ -102,7 +101,6 @@ export class ProductDetailComponent implements OnInit {
       });
     });
     this.getAllCategories();
-    console.log(this.currentUser);
   }
 
   // getAllReview(productId: number) {
@@ -126,7 +124,7 @@ export class ProductDetailComponent implements OnInit {
   getHouse(id: number) {
     return this.houseService.getHouse(id).toPromise();
   }
-
+l
   getAllHouseRelated(category: Category) {
     this.categoryService.getHouseByCategory(category.id).subscribe(listHouse => {
       if (listHouse.length > 4) {

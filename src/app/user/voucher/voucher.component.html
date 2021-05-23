@@ -82,12 +82,7 @@
               Mã voucher: {{voucher.voucher_code}}
             </p>
           </div>
-          <span style="margin-left: 50px">
-              Số lượng: {{voucher.quantity}}
-            </span>
-          <a style="background-color: #D8DDE0" *ngIf="voucher.quantity==0">Đã hết</a>
-          <a style="background-color: #037FDD" *ngIf="voucher.expiredDate<this.now">Đã hết</a>
-          <a href="#" *ngIf="voucher.quantity>0">Lưu</a>
+          <a [routerLink]="['/houses']" *ngIf="currentUser">Sử dụng</a>
         </section>
       </article>
     </div>

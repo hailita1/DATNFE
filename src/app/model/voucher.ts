@@ -3,7 +3,6 @@ export interface Voucher {
   voucher_code?: string;
   typeVoucher?: string;
   title?: string;
-  quantity?: number;
   discount?: number;
   status?: boolean;
   create_at?: Date;

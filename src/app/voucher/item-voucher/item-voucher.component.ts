@@ -82,7 +82,6 @@ export class ItemVoucherComponent implements OnInit {
         discount: [{value: null, disabled: this.isInfo}, [Validators.required]],
         startDate: [{value: null, disabled: this.isInfo}, [Validators.required]],
         expiredDate: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        quantity: [{value: null, disabled: this.isInfo}, [Validators.required]],
         category: [{value: null, disabled: this.isInfo}, [Validators.required]],
       });
     } else {
@@ -92,7 +91,6 @@ export class ItemVoucherComponent implements OnInit {
         discount: [{value: this.model.discount, disabled: this.isInfo}, [Validators.required]],
         startDate: [{value: this.model.startDate, disabled: this.isInfo}, [Validators.required]],
         expiredDate: [{value: this.model.expiredDate, disabled: this.isInfo}, [Validators.required]],
-        quantity: [{value: this.model.quantity, disabled: this.isInfo}, [Validators.required]],
         category: [{value: this.model.typeVoucher, disabled: this.isInfo}, [Validators.required]],
       });
     }
@@ -141,7 +139,6 @@ export class ItemVoucherComponent implements OnInit {
         discount: this.formGroup.get('discount').value,
         startDate: this.formGroup.get('startDate').value,
         expiredDate: this.formGroup.get('expiredDate').value,
-        quantity: this.formGroup.get('quantity').value,
         typeVoucher: this.formGroup.get('category').value,
         status: true,
         id: this.model.id,
@@ -153,7 +150,6 @@ export class ItemVoucherComponent implements OnInit {
         discount: this.formGroup.get('discount').value,
         startDate: this.formGroup.get('startDate').value,
         expiredDate: this.formGroup.get('expiredDate').value,
-        quantity: this.formGroup.get('quantity').value,
         typeVoucher: this.formGroup.get('category').value,
         status: true,
       };

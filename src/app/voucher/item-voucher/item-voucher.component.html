@@ -78,24 +78,6 @@
         </div>
       </div>
       <div class="form-group">
-        <label>Số lượng</label>
-        <input
-          type="number"
-          name=""
-          class="form-control"
-          formControlName="quantity"
-          id="quantity"
-        />
-        <div *ngIf="submitted && formGroup.controls['quantity'].errors?.required">
-          <div
-            *ngIf="formGroup.controls['quantity'].errors?.required"
-            style="color: red"
-          >
-            * Số lượng không được để trống
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
         <label>Ngày áp dụng</label>
         <input
           type="date"

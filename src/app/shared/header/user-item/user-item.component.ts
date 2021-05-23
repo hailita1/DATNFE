@@ -218,7 +218,6 @@ export class UserItemComponent implements OnInit {
         });
     }
     if (this.isEdit) {
-      console.log(user);
       this.userService.updateUser(user).subscribe(res => {
           this.closeModalReloadData();
           $(function() {

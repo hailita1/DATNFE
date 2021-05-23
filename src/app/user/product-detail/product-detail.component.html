@@ -78,8 +78,8 @@
       </div>
       <div class="col-lg-4 col-md-6" style="padding-left: 30px;padding-right: 30px;">
         <div class="product__details__text">
-          <h3 *ngIf="currentUser">{{currentHouse.name}}          <a [routerLink]="['/favorite', { id:currentHouse.id }]"
-                                                                    class="heart-icon"><span
+          <h3 *ngIf="currentUser">{{currentHouse.name}}<a [routerLink]="['/favorite', { id:currentHouse.id }]"
+                                                          class="heart-icon"><span
             class="icon_heart_alt"></span></a></h3>
           <div class="rating" style="margin-bottom: 10px">
             <span><i class="fas fa-star mr-2 {{starAverage>=1?'rated':'unrated'}}"></i></span>
@@ -89,8 +89,8 @@
             <span><i class="fas fa-star mr-2 {{starAverage==5?'rated':'unrated'}}"></i></span>
             <span>({{listReview.length}} reviews)</span>
           </div>
-          <h5 *ngIf="currentHouse.discount!=0" style="margin-bottom: 10px; color: red">Giảm
-            : {{currentHouse.discount}}% từ chủ nhà
+          <h5 *ngIf="currentHouse.discount!=0" style="margin-bottom: 10px; color: red">Giảm {{currentHouse.discount}}%
+            tiền thuê từ chủ nhà
           </h5>
           <div class="product__details__price">{{currentHouse.price}} ( VNĐ / Ngày)</div>
           <p style="margin-bottom: 10px"><b>Địa chỉ:</b> {{currentHouse.address}}</p>

@@ -37,4 +37,8 @@ export class VoucherService {
   deleteListVoucher(id: number[]): Observable<Voucher> {
     return this.http.post<Voucher>(API_URL + '/vouchers/deleteList', id);
   }
+
+  addVoucherToUser(voucher: Voucher): Observable<Voucher> {
+    return this.http.post<Voucher>(API_URL + '/vouchers/addVouchers', voucher);
+  }
 }

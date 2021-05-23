@@ -5,8 +5,11 @@ import {CategoryService} from '../../service/category/category.service';
 import {Router} from '@angular/router';
 import {VoucherService} from '../../service/voucher/voucher.service';
 import {Voucher} from '../../model/voucher';
+import {UserToken} from '../../model/user-token';
+import {AuthenticationService} from '../../service/auth/authentication.service';
 
 declare var $: any;
+declare var Swal: any;
 
 @Component({
   selector: 'app-voucher',
@@ -19,8 +22,7 @@ export class VoucherComponent implements OnInit {
   listVoucher: Voucher[] = [];
   page = 1;
   pageSize = 8;
-  now = new Date().getTime();
-  expired: Date;
+  currentUser: UserToken;
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
   });
@@ -30,8 +32,12 @@ export class VoucherComponent implements OnInit {
   });
 
   constructor(private categoryService: CategoryService,
+              private authenticationService: AuthenticationService,
               private router: Router,
               private voucherService: VoucherService) {
+    this.authenticationService.currentUser.subscribe(value => {
+      this.currentUser = value;
+    });
   }
 
   ngOnInit() {
@@ -56,6 +62,31 @@ export class VoucherComponent implements OnInit {
   getAllVoucher() {
     this.voucherService.getAllVoucher().subscribe(listVoucher => {
       this.listVoucher = listVoucher;
+    });
+  }
+
+  addVoucher(item) {
+    console.log(item);
+    const voucher = {
+      id: item.id,
+      quantity: item.quantity
+    };
+    this.voucherService.addVoucherToUser(voucher).subscribe(res => {
+      this.voucherService.getAllVoucher().subscribe(listVoucher => {
+        this.listVoucher = listVoucher;
+      });
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+        Toast.fire({
+          type: 'success',
+          title: 'Lưu voucher thành công'
+        });
+      });
     });
   }
 }

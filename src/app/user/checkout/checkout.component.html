@@ -112,7 +112,7 @@
               <label>Thêm dịch vụ trả phí</label>
               <select class="form-control select2 select2-primary" id="service" name="service"
                       formControlName="service" data-dropdown-css-class="select2-primary"
-                      style="width: 100%; margin-left: 0px" (ngModelChange)="addUtilitieToHouse($event)">
+                      style="width: 100%; margin-left: 0px" (ngModelChange)="addServiceToHouse($event)">
                 <option *ngFor="let service of listService"
                         [value]="service.id">{{service.name}}, giá {{service.price}}, thời gian sử
                   dụng: {{service.times}}</option>
@@ -143,6 +143,18 @@
                                 [pageSize]="pageSize"
                                 [collectionSize]="this.listServiceOfHouse.length"></ngb-pagination>
               </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="checkout__input">
+                    <p>Nhập mã giảm giá<span>*</span></p>
+                    <input class="col-md-8" type="text" formControlName="voucher" placeholder="Nhập mã giảm giá">
+                    <button style="border-radius: 10px; width: 70px; margin-left: 20px; padding-left: 28px"
+                            (click)="checkVoucher()"
+                            class="site-btn col-md-3"><i
+                      class="fas fa-spinner"></i></button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6">
@@ -151,11 +163,28 @@
               <div class="checkout__order__products">Dịch vụ <span>Giá</span></div>
               <div class="checkout__order__subtotal">Giá thuê theo ngày <span>{{currentHouse.price}} VNĐ</span></div>
               <div class="checkout__order__subtotal">Giảm giá <span>{{currentHouse.discount}} %</span></div>
+              <div *ngIf="voucher">
+                <div class="checkout__order__subtotal" *ngIf="voucher.typeVoucher == '0'">Voucher
+                  <span>{{voucher.discount}} VNĐ</span>
+                </div>
+                <div class="checkout__order__subtotal" *ngIf="voucher.typeVoucher == '1'">Voucher
+                  <span>{{voucher.discount}} %</span>
+                </div>
+              </div>
               <div class="checkout__order__subtotal">Tổng tiền dịch vụ <span>{{priceService}}VNĐ</span></div>
               <div class="checkout__order__subtotal">Tiền thuê HomeStay <span>{{this.priceHomStay}}VNĐ</span></div>
-              <div class="checkout__order__total">Tổng tiền
-                <span>{{priceService + priceHomStay - priceHomStay * (currentHouse.discount / 100)}}
-                  VNĐ</span></div>
+              <div class="checkout__order__total" *ngIf="!voucher">Tổng tiền
+                <span>{{(priceService + priceHomStay * (100 - currentHouse.discount) / 100)}}
+                  VNĐ</span>
+              </div>
+              <div class="checkout__order__total" *ngIf="voucher">Tổng tiền
+                <span
+                  *ngIf="voucher.typeVoucher == '0'">{{(priceService + priceHomStay * (100 - currentHouse.discount) / 100) - voucher.discount}}
+                  VNĐ</span>
+                <span
+                  *ngIf="voucher.typeVoucher == '1'">{{(priceService + priceHomStay * (100 - currentHouse.discount) / 100) * ((100 - voucher.discount) / 100)}}
+                  VNĐ</span>
+              </div>
               <div class="checkout__input__checkbox">
                 <label for="paypal">
                   Thanh toán khi trả HomeStay

@@ -193,14 +193,12 @@ export class UserOrderComponent implements OnInit {
   getAllBillStatusTrue(id: number) {
     this.billService.getAllBillByUserTrue(id).subscribe(listBill => {
       this.listBill = listBill;
-      console.log(this.listBill);
     });
   }
 
   getAllBillStatusFalse(id: number) {
     this.billService.getAllBillByFalse(id).subscribe(listBill => {
       this.listBill = listBill;
-      console.log(this.listBill);
     });
   }
 
