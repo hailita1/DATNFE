@@ -65,9 +65,10 @@
             <thead>
             <tr>
               <th>#</th>
-              <th>Tên HomeStay</th>
-              <th>Tổng đặt đơn</th>
-              <th>Xem chi tiết</th>
+              <th style="text-align: center; width: 200px">Tên HomeStay</th>
+              <th style="text-align: center">Tổng đặt đơn</th>
+              <th style="text-align: center">Trạng thái</th>
+              <th style="text-align: center; width: 300px">Thao tác</th>
               <th style="text-align: center">Đánh giá</th>
             </tr>
             </thead>
@@ -81,18 +82,28 @@
                 {{bill.totalPrice}} VNĐ
               </td>
               <td>
+                {{bill.status}}
+              </td>
+              <td style="text-align: center;">
                 <div class="row">
-                  <div class="col-4" style="margin-left: auto; margin-right: auto">
+                  <div style="margin-left: auto; margin-right: auto">
                     <button (click)="initModal(bill, 'show')" class="btn btn-block btn-warning"
                             style="color: white; width: 80px; text-align: center">
                       <i class="fas fa-check"></i>
                     </button>
                   </div>
-                  <div class="col-4" style="margin-left: auto; margin-right: auto">
+                  <div style="margin-left: auto; margin-right: auto">
                     <a [routerLink]="['/house',bill.houseBill.id]" class="btn btn-primary"
                        style="color: white; width: 80px; text-align: center">
                       <i class="fas fa-info"></i>
                     </a>
+                  </div>
+                  <div style="margin-left: auto; margin-right: auto" *ngIf="bill.status !== 'Đã thanh toán'">
+                    <button type="button" class="btn btn-block btn-danger"
+                            style="color: white;  width: 80px; text-align: center" data-toggle="modal"
+                            data-target="#modal-delete" (click)="getBill(bill)">
+                      <i class="fas fa-trash"></i>
+                    </button>
                   </div>
                 </div>
               </td>
@@ -126,7 +137,6 @@
               <th>Mã đơn đặt</th>
               <th>Ngày đặt</th>
               <th>Trạng thái</th>
-              <th style="width: 160px"></th>
             </tr>
             </thead>
             <tbody>
@@ -140,18 +150,6 @@
               </td>
               <td>
                 {{bill.status}}
-              </td>
-              <td>
-                <div class="row">
-                  <div class="col-6">
-                  </div>
-                  <div class="col-6">
-                    <button type="button" class="btn btn-block btn-danger" style="color: white" data-toggle="modal"
-                            data-target="#modal-delete" (click)="getOrderId(bill.id)">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
               </td>
             </tr>
             </tbody>
@@ -217,7 +215,7 @@
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-danger" (click)="deleteBill(id)">Xóa</button>
+        <button type="button" class="btn btn-danger" (click)="deleteBill()">Xóa</button>
       </div>
     </div>
     <!-- /.modal-content -->

@@ -33,11 +33,13 @@ export class UserOrderComponent implements OnInit {
   });
   currentUser: UserToken;
   listBill: Bill[] = [];
+  bill: Bill;
   status: boolean;
   id: number;
   productId: number;
   star: number = 0;
   currentReview: Review;
+  now = new Date().getTime();
 
   constructor(private categoryService: CategoryService,
               private router: Router,
@@ -152,28 +154,49 @@ export class UserOrderComponent implements OnInit {
     });
   }
 
-  deleteBill(id: number) {
-    this.billService.deleteBill(id).subscribe(() => {
-      this.billService.getAllBillByFalse(this.currentUser.id).subscribe(listBill => {
-        this.listBill = listBill;
-      });
-      $(function() {
-        $('#modal-delete').modal('hide');
-      });
-      $(function() {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000
-        });
+  getBill(item: Bill) {
+    this.bill = item;
+  }
 
-        Toast.fire({
-          type: 'success',
-          title: 'Hủy đơn hàng thành công'
+  deleteBill() {
+    const sd = new Date(this.bill.startDate).getTime();
+    if (sd - this.now > 86400000) {
+      this.billService.deleteBill(this.bill).subscribe(() => {
+        this.billService.getAllBillByUserTrue(this.currentUser.id).subscribe(listBill => {
+          this.listBill = listBill;
+        });
+        $(function() {
+          $('#modal-delete').modal('hide');
+        });
+        $(function() {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'success',
+            title: 'Hủy đơn đặt thành công'
+          });
+        });
+      }, () => {
+        $(function() {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'error',
+            title: 'Hủy đơn đặt thất bại'
+          });
         });
       });
-    }, () => {
+    } else {
       $(function() {
         const Toast = Swal.mixin({
           toast: true,
@@ -184,10 +207,10 @@ export class UserOrderComponent implements OnInit {
 
         Toast.fire({
           type: 'error',
-          title: 'Hủy đơn hàng thất bại'
+          title: 'Đơn đặt chỉ được hủy trước 24h'
         });
       });
-    });
+    }
   }
 
   getAllBillStatusTrue(id: number) {

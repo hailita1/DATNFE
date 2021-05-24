@@ -57,8 +57,8 @@ export class BillService {
   }
 
 
-  deleteBill(id: number): Observable<Bill> {
-    return this.http.delete<Bill>(API_URL + `/bills/${id}`);
+  deleteBill(bill: Bill): Observable<Bill> {
+    return this.http.post<Bill>(API_URL + `/bills/deleteBill`, bill);
   }
 
   deleteListBill(id: number[]): Observable<Bill> {

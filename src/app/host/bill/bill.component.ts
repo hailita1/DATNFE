@@ -28,7 +28,7 @@ export class BillComponent implements OnInit {
   hasRoleUser = false;
   hasRoleAdmin = false;
   isDelete = true;
-  id: number;
+  bill: Bill;
   listDelete: number[] = [];
   listFilterResult: Bill[] = [];
   isSelected = true;
@@ -58,8 +58,8 @@ export class BillComponent implements OnInit {
     this.getllHouseByHost();
   }
 
-  getCategoryId(id: number) {
-    this.id = id;
+  getBill(item: Bill) {
+    this.bill = item;
   }
 
   initModal(model: any, type = null): void {
@@ -82,8 +82,8 @@ export class BillComponent implements OnInit {
     }
   }
 
-  deleteCategory() {
-    this.billService.deleteBill(this.id).subscribe(() => {
+  deleteBill() {
+    this.billService.deleteBill(this.bill).subscribe(() => {
       $(function() {
         $('#modal-delete').modal('hide');
       });
