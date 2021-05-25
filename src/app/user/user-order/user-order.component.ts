@@ -175,7 +175,6 @@ export class UserOrderComponent implements OnInit {
             showConfirmButton: false,
             timer: 3000
           });
-
           Toast.fire({
             type: 'success',
             title: 'Hủy đơn đặt thành công'

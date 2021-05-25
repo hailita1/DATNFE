@@ -299,7 +299,6 @@ export class ItemBillComponent implements OnInit {
         }
       ]
     };
-    console.log(notification);
     this.notificationService.createNotification(notification).subscribe();
   }
 
