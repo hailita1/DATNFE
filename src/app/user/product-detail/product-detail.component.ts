@@ -15,6 +15,8 @@ import {Review} from '../../model/review';
 import {ReviewService} from '../../service/review/review.service';
 import {House} from '../../model/house';
 import {HouseService} from '../../service/house/house.service';
+import {BillService} from '../../service/bill/bill.service';
+import {Bill} from '../../model/bill';
 
 declare var $: any;
 
@@ -32,7 +34,7 @@ export class ProductDetailComponent implements OnInit {
   sub: Subscription;
   relatedHouses: House[] = [];
   currentUser: UserToken;
-  listReview: Review[] = [];
+  listReview: Bill[] = [];
   starAverage: number = 0;
   imageObject: Array<object> = [];
   id: any;
@@ -41,12 +43,14 @@ export class ProductDetailComponent implements OnInit {
               private houseService: HouseService,
               private reviewService: ReviewService,
               private activatedRoute: ActivatedRoute,
+              private  billService: BillService,
               private authenticationService: AuthenticationService,
               private itemService: ItemService,
               private router: Router) {
     this.sub = this.activatedRoute.paramMap.subscribe(async (paramMap: ParamMap) => {
       this.id = +paramMap.get('id');
       this.currentHouse = await this.getHouse(this.id);
+      this.getAllReview(this.id);
       for (var i = 0; i < this.currentHouse.images.length; i++) {
         this.imageObject[i] = {
           image: this.currentHouse.images[i].link,
@@ -103,17 +107,19 @@ export class ProductDetailComponent implements OnInit {
     this.getAllCategories();
   }
 
-  // getAllReview(productId: number) {
-  //   this.productService.getAllReviewByProduct(productId).subscribe(listReview => {
-  //     let sum = 0;
-  //     this.listReview = listReview;
-  //     this.listReview.map(review => {
-  //       review.createDate = new Date(review.createDate);
-  //       sum += review.evaluate;
-  //     });
-  //     this.starAverage = sum / this.listReview.length;
-  //   });
-  // }
+  getAllReview(id) {
+    const bill = {
+      id: this.id
+    };
+    this.billService.getAllBillByHouse(bill).subscribe(listReview => {
+      this.listReview = listReview;
+      let sum = 0;
+      this.listReview.map(review => {
+        sum += review.evaluate;
+      });
+      this.starAverage = sum / this.listReview.length;
+    });
+  }
 
   getAllCategories() {
     this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
@@ -124,7 +130,7 @@ export class ProductDetailComponent implements OnInit {
   getHouse(id: number) {
     return this.houseService.getHouse(id).toPromise();
   }
-l
+
   getAllHouseRelated(category: Category) {
     this.categoryService.getHouseByCategory(category.id).subscribe(listHouse => {
       if (listHouse.length > 4) {
