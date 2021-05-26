@@ -115,7 +115,7 @@ export class VoucherComponent implements OnInit {
   }
 
   getAllVoucher() {
-    this.voucherService.getAllVoucher().subscribe(listVoucher => {
+    this.voucherService.getAll().subscribe(listVoucher => {
       this.listVoucher = listVoucher;
       this.listFilterResult = this.listVoucher;
       $(function() {

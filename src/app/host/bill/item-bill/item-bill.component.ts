@@ -151,6 +151,7 @@ export class ItemBillComponent implements OnInit {
     let bill: any;
     this.submitted = true;
     if (this.formGroup.invalid) {
+      // tslint:disable-next-line:only-arrow-functions
       $(function() {
         const Toast = Swal.mixin({
           toast: true,
@@ -187,6 +188,7 @@ export class ItemBillComponent implements OnInit {
     if (this.isAdd) {
       this.categoryService.createCategory(bill).subscribe(res => {
           this.closeModalReloadData();
+          // tslint:disable-next-line:only-arrow-functions
           $(function() {
             const Toast = Swal.mixin({
               toast: true,
@@ -203,6 +205,7 @@ export class ItemBillComponent implements OnInit {
           this.modalReference.dismiss();
         },
         err => {
+          // tslint:disable-next-line:only-arrow-functions
           $(function() {
             const Toast = Swal.mixin({
               toast: true,
@@ -219,9 +222,11 @@ export class ItemBillComponent implements OnInit {
         });
     }
     if (this.isEdit) {
+      // tslint:disable-next-line:triple-equals
       if (this.model.status == 'Chờ chủ nhà xác nhận') {
         this.billService.confirmBillByHost(bill).subscribe(res => {
             this.closeModalReloadData();
+            // tslint:disable-next-line:only-arrow-functions
             $(function() {
               const Toast = Swal.mixin({
                 toast: true,
@@ -240,6 +245,7 @@ export class ItemBillComponent implements OnInit {
             this.modalReference.dismiss();
           },
           err => {
+            // tslint:disable-next-line:only-arrow-functions
             $(function() {
               const Toast = Swal.mixin({
                 toast: true,
@@ -255,6 +261,7 @@ export class ItemBillComponent implements OnInit {
             });
           });
       } else {
+        // tslint:disable-next-line:only-arrow-functions
         $(function() {
           const Toast = Swal.mixin({
             toast: true,

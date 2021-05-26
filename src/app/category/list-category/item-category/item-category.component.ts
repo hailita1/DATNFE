@@ -109,6 +109,7 @@ export class ItemCategoryComponent implements OnInit {
     let category: any;
     this.submitted = true;
     if (this.formGroup.invalid) {
+      // tslint:disable-next-line:only-arrow-functions
       $(function() {
         const Toast = Swal.mixin({
           toast: true,
@@ -139,6 +140,7 @@ export class ItemCategoryComponent implements OnInit {
     if (this.isAdd) {
       this.categoryService.createCategory(category).subscribe(res => {
           this.closeModalReloadData();
+          // tslint:disable-next-line:only-arrow-functions
           $(function() {
             const Toast = Swal.mixin({
               toast: true,
@@ -155,6 +157,7 @@ export class ItemCategoryComponent implements OnInit {
           this.modalReference.dismiss();
         },
         err => {
+          // tslint:disable-next-line:only-arrow-functions
           $(function() {
             const Toast = Swal.mixin({
               toast: true,
@@ -173,6 +176,7 @@ export class ItemCategoryComponent implements OnInit {
     if (this.isEdit) {
       this.categoryService.updateCategory(category.id, category).subscribe(res => {
           this.closeModalReloadData();
+          // tslint:disable-next-line:only-arrow-functions
           $(function() {
             const Toast = Swal.mixin({
               toast: true,
@@ -189,6 +193,7 @@ export class ItemCategoryComponent implements OnInit {
           this.modalReference.dismiss();
         },
         err => {
+          // tslint:disable-next-line:only-arrow-functions
           $(function() {
             const Toast = Swal.mixin({
               toast: true,

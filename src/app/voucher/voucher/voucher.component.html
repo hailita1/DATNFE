@@ -47,10 +47,10 @@
           </th>
           <th style="width: 10px">#</th>
           <th style="text-align: center">Mã giảm giá</th>
-          <th style="text-align: center">Phần trăm giảm</th>
+          <th style="text-align: center">Giảm giá</th>
+          <th style="text-align: center">Loại giảm giá</th>
           <th style="text-align: center">Ngày áp dụng</th>
           <th style="text-align: center">Ngày kết thúc</th>
-          <th style="text-align: center">Số lượng</th>
           <th style="text-align: center">Trạng thái</th>
           <th style="width: 200px; text-align: center" *ngIf="hasRoleAdmin">Thao tác</th>
         </tr>
@@ -69,17 +69,19 @@
           <td style="text-align: center">
             <p>{{voucher.voucher_code}}</p>
           </td>
+
           <td style="text-align: center">
             <p>{{voucher.discount}}</p>
+          </td>
+          <td style="text-align: center">
+            <p class="status" *ngIf="voucher.typeVoucher === 0">Giảm tiền</p>
+            <p class="status" *ngIf="voucher.typeVoucher === 1">Giảm phần trăm</p>
           </td>
           <td style="text-align: center">
             <p>{{voucher.startDate}}</p>
           </td>
           <td style="text-align: center">
             <p>{{voucher.expiredDate}}</p>
-          </td>
-          <td style="text-align: center">
-            <p>{{voucher.quantity}}</p>
           </td>
           <td style="text-align: center">
             <label class="status"

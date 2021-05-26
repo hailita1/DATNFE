@@ -18,6 +18,10 @@ export class VoucherService {
     return this.http.get<Voucher[]>(API_URL + '/vouchers');
   }
 
+  getAll(): Observable<Voucher[]> {
+    return this.http.get<Voucher[]>(API_URL + '/vouchers/getAll');
+  }
+
   createVoucher(voucher: Voucher): Observable<Utilitie> {
     return this.http.post<Voucher>(API_URL + '/vouchers', voucher);
   }

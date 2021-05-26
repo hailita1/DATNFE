@@ -64,29 +64,4 @@ export class VoucherComponent implements OnInit {
       this.listVoucher = listVoucher;
     });
   }
-
-  addVoucher(item) {
-    console.log(item);
-    const voucher = {
-      id: item.id,
-      quantity: item.quantity
-    };
-    this.voucherService.addVoucherToUser(voucher).subscribe(res => {
-      this.voucherService.getAllVoucher().subscribe(listVoucher => {
-        this.listVoucher = listVoucher;
-      });
-      $(function() {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000
-        });
-        Toast.fire({
-          type: 'success',
-          title: 'Lưu voucher thành công'
-        });
-      });
-    });
-  }
 }

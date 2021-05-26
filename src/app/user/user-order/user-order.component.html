@@ -108,7 +108,7 @@
                 </div>
               </td>
               <td>
-                <div>
+                <div *ngIf="bill.status == 'Đã thanh toán'">
                   <button type="button" class="btn btn-primary" style="color: white; width: 80px"
                           data-toggle="modal"
                           data-target="#modal-review" (click)="getProductId(currentUser.id,bill.houseBill.id)">
@@ -134,9 +134,10 @@
             <thead>
             <tr>
               <th>#</th>
-              <th>Mã đơn đặt</th>
               <th>Ngày đặt</th>
+              <th>Tổng tiền</th>
               <th>Trạng thái</th>
+              <th>Xem chi tiết</th>
             </tr>
             </thead>
             <tbody>
@@ -146,10 +147,26 @@
                 {{bill.id}}
               </td>
               <td>
-                {{bill.bookingDate}}
+                {{bill.totalPrice}}
               </td>
               <td>
                 {{bill.status}}
+              </td>
+              <td style="text-align: center;">
+                <div class="row">
+                  <div style="margin-left: auto; margin-right: auto">
+                    <button (click)="initModal(bill, 'show')" class="btn btn-block btn-warning"
+                            style="color: white; width: 80px; text-align: center">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </div>
+                  <div style="margin-left: auto; margin-right: auto">
+                    <a [routerLink]="['/house',bill.houseBill.id]" class="btn btn-primary"
+                       style="color: white; width: 80px; text-align: center">
+                      <i class="fas fa-info"></i>
+                    </a>
+                  </div>
+                </div>
               </td>
             </tr>
             </tbody>

@@ -79,9 +79,11 @@ export class ListCategoryComponent implements OnInit {
       this.categoryService.getAllCategory().subscribe(listCategory => {
         this.listCategory = listCategory;
       });
+      // tslint:disable-next-line:only-arrow-functions
       $(function() {
         $('#modal-delete').modal('hide');
       });
+      // tslint:disable-next-line:only-arrow-functions
       $(function() {
         const Toast = Swal.mixin({
           toast: true,
@@ -96,6 +98,7 @@ export class ListCategoryComponent implements OnInit {
         });
       });
     }, () => {
+      // tslint:disable-next-line:only-arrow-functions
       $(function() {
         const Toast = Swal.mixin({
           toast: true,
@@ -116,31 +119,35 @@ export class ListCategoryComponent implements OnInit {
     this.categoryService.getAllCategory().subscribe(listCategory => {
       this.listCategory = listCategory;
       this.listFilterResult = this.listCategory;
+      // tslint:disable-next-line:only-arrow-functions
       $(function() {
         $('#table-category').DataTable({
-          'paging': true,
-          'lengthChange': true,
-          'retrieve': true,
-          'searching': true,
-          'ordering': false,
-          'info': false,
-          'autoWidth': true,
+          paging: true,
+          lengthChange: true,
+          retrieve: true,
+          searching: true,
+          ordering: false,
+          info: false,
+          autoWidth: true,
         });
       });
     });
   }
 
   deleteListCategory() {
-    for (var i = 0; i < this.listCategory.length; i++) {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.listCategory.length; i++) {
       if (this.listCategory[i].checked === true) {
         this.listDelete.push(this.listCategory[i].id);
       }
     }
     this.categoryService.deleteListCategory(this.listDelete).subscribe(res => {
         this.getAllCategory();
+        // tslint:disable-next-line:only-arrow-functions
         $(function() {
           $('#modal-delete-list').modal('hide');
         });
+        // tslint:disable-next-line:only-arrow-functions
         $(function() {
           const Toast = Swal.mixin({
             toast: true,
@@ -158,6 +165,7 @@ export class ListCategoryComponent implements OnInit {
         this.isDelete = true;
       },
       err => {
+        // tslint:disable-next-line:only-arrow-functions
         $(function() {
           const Toast = Swal.mixin({
             toast: true,

@@ -154,73 +154,91 @@ export class ItemVoucherComponent implements OnInit {
         status: true,
       };
     }
-    if (this.isAdd) {
-      this.voucherService.createVoucher(voucher).subscribe(res => {
-          this.closeModalReloadData();
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
-
-            Toast.fire({
-              type: 'success',
-              title: 'Thêm mới thành công'
-            });
-          });
-          this.modalReference.dismiss();
-        },
-        err => {
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
-
-            Toast.fire({
-              type: 'error',
-              title: 'Thêm mới thất bại'
-            });
-          });
+    const sd = new Date(this.formGroup.get('startDate').value).getTime();
+    const ed = new Date(this.formGroup.get('expiredDate').value).getTime();
+    if (sd > ed) {
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
         });
-    }
-    if (this.isEdit) {
-      this.voucherService.updateVoucher(voucher.id, voucher).subscribe(res => {
-          this.closeModalReloadData();
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
 
-            Toast.fire({
-              type: 'success',
-              title: 'Cập nhật thành công'
-            });
-          });
-          this.modalReference.dismiss();
-        },
-        err => {
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
-
-            Toast.fire({
-              type: 'error',
-              title: 'Cập nhật thất bại'
-            });
-          });
+        Toast.fire({
+          type: 'error',
+          title: 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc'
         });
+      });
+    } else {
+      if (this.isAdd) {
+        this.voucherService.createVoucher(voucher).subscribe(res => {
+            this.closeModalReloadData();
+            $(function() {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              });
+
+              Toast.fire({
+                type: 'success',
+                title: 'Thêm mới thành công'
+              });
+            });
+            this.modalReference.dismiss();
+          },
+          err => {
+            $(function() {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              });
+
+              Toast.fire({
+                type: 'error',
+                title: 'Thêm mới thất bại'
+              });
+            });
+          });
+      }
+      if (this.isEdit) {
+        this.voucherService.updateVoucher(voucher.id, voucher).subscribe(res => {
+            this.closeModalReloadData();
+            $(function() {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              });
+
+              Toast.fire({
+                type: 'success',
+                title: 'Cập nhật thành công'
+              });
+            });
+            this.modalReference.dismiss();
+          },
+          err => {
+            $(function() {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              });
+
+              Toast.fire({
+                type: 'error',
+                title: 'Cập nhật thất bại'
+              });
+            });
+          });
+      }
     }
   }
 
