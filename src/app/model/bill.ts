@@ -4,7 +4,7 @@ export interface Bill {
   telephoneNumber?: string;
   email?: string;
   comment?: string;
-  evaluate?: string;
+  evaluate?: number;
   totalPrice?: number;
   bookingDate?: Date;
   startDate?: Date;

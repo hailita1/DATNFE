@@ -38,7 +38,8 @@ export class UserOrderComponent implements OnInit {
   id: number;
   productId: number;
   star: number = 0;
-  currentReview: Review;
+  currentReview: Bill;
+  checkReview = false;
   now = new Date().getTime();
 
   constructor(private categoryService: CategoryService,
@@ -74,6 +75,14 @@ export class UserOrderComponent implements OnInit {
     });
   }
 
+  loadWeb() {
+    if (this.status === true) {
+      this.getAllBillStatusTrue(this.currentUser.id);
+    } else {
+      this.getAllBillStatusFalse(this.currentUser.id);
+    }
+  }
+
   rate(star: number) {
     if (this.star == star) {
       this.star = 0;
@@ -90,35 +99,32 @@ export class UserOrderComponent implements OnInit {
     this.id = id;
   }
 
-  async getProductId(userId: number, productId: number) {
-    this.productId = productId;
-    this.currentReview = await this.getReview(userId, productId);
-    if (this.currentReview != null) {
+  detailBill(bill) {
+    this.currentReview = bill;
+    if (this.currentReview.comment) {
       $('#comment').summernote('pasteHTML', this.currentReview.comment);
       $('.textarea').summernote('disable');
     } else {
       $('#comment').summernote('reset');
       $('.textarea').summernote('enable');
     }
+    if (this.currentReview.evaluate === null) {
+      this.checkReview = true;
+      this.currentReview.evaluate = 0;
+    } else {
+      this.checkReview = false;
+    }
+
   }
 
-  getReview(userId: number, productId: number) {
-    return this.reviewService.getReviewByUserAndProduct(userId, productId).toPromise();
-  }
-
-
-  createReview(star: number, productId: number) {
-    const review: Review = {
+  createReview() {
+    let bill: any;
+    bill = {
+      id: this.currentReview.id,
       comment: $('.textarea').val(),
-      user: {
-        id: this.currentUser.id
-      },
-      evaluate: star,
-      product: {
-        id: productId
-      }
+      evaluate: this.star
     };
-    this.reviewService.createReview(review).subscribe(() => {
+    this.billService.confirmBillByHost(bill).subscribe(() => {
       $(function() {
         $('#modal-review').modal('hide');
       });
@@ -137,6 +143,7 @@ export class UserOrderComponent implements OnInit {
           title: 'Đánh giá thành công'
         });
       });
+      this.loadWeb();
     }, () => {
       $(function() {
         const Toast = Swal.mixin({

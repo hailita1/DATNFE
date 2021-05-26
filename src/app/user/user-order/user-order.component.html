@@ -108,10 +108,10 @@
                 </div>
               </td>
               <td>
-                <div *ngIf="bill.status == 'Đã thanh toán'">
+                <div>
                   <button type="button" class="btn btn-primary" style="color: white; width: 80px"
                           data-toggle="modal"
-                          data-target="#modal-review" (click)="getProductId(currentUser.id,bill.houseBill.id)">
+                          data-target="#modal-review" (click)="detailBill(bill)">
                     <i class="fas fa-edit"></i>
                   </button>
                 </div>
@@ -180,27 +180,33 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Đánh giá HomeStay {{currentReview == null ? "" : " (Đã đánh giá)"}}</h4>
+        <h4 class="modal-title">Đánh giá
+          HomeStay {{currentReview ? currentReview.comment == null ? "" : " (Đã đánh giá)" : ""}}</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="rating text-center" *ngIf="currentReview== null">
+        <div class="rating text-center" *ngIf="checkReview">
           <span><i class="fas fa-star mr-2 {{star>=1?'rated':'unrated'}}" id="one" (click)="rate(1)"></i></span>
-          <span><i class="fas fa-star mr-2 {{star>=2?'rated':'unrated'}}" id="tưo" (click)="rate(2)"></i></span>
+          <span><i class="fas fa-star mr-2 {{star>=2?'rated':'unrated'}}" id="two" (click)="rate(2)"></i></span>
           <span><i class="fas fa-star mr-2 {{star>=3?'rated':'unrated'}}" id="three" (click)="rate(3)"></i></span>
           <span><i class="fas fa-star mr-2 {{star>=4?'rated':'unrated'}}" id="four" (click)="rate(4)"></i></span>
           <span><i class="fas fa-star mr-2 {{star==5?'rated':'unrated'}}" id="five" (click)="rate(5)"></i></span>
           <span>({{star}} sao)</span>
         </div>
-        <div class="rating text-center" *ngIf="currentReview!= null">
-          <span><i class="fas fa-star mr-2 {{currentReview.evaluate>=1?'rated':'unrated'}}"></i></span>
-          <span><i class="fas fa-star mr-2 {{currentReview.evaluate>=2?'rated':'unrated'}}"></i></span>
-          <span><i class="fas fa-star mr-2 {{currentReview.evaluate>=3?'rated':'unrated'}}"></i></span>
-          <span><i class="fas fa-star mr-2 {{currentReview.evaluate>=4?'rated':'unrated'}}"></i></span>
-          <span><i class="fas fa-star mr-2 {{currentReview.evaluate==5?'rated':'unrated'}}"></i></span>
-          <span>({{currentReview.evaluate}} sao)</span>
+        <div class="rating text-center" *ngIf="!checkReview">
+          <span><i
+            class="fas fa-star mr-2 {{currentReview?currentReview.evaluate?currentReview.evaluate>=1?'rated':'unrated':'unrated':'unrated'}}"></i></span>
+          <span><i
+            class="fas fa-star mr-2 {{currentReview?currentReview.evaluate?currentReview.evaluate>=2?'rated':'unrated':'unrated':'unrated'}}"></i></span>
+          <span><i
+            class="fas fa-star mr-2 {{currentReview?currentReview.evaluate?currentReview.evaluate>=3?'rated':'unrated':'unrated':'unrated'}}"></i></span>
+          <span><i
+            class="fas fa-star mr-2 {{currentReview?currentReview.evaluate?currentReview.evaluate>=4?'rated':'unrated':'unrated':'unrated'}}"></i></span>
+          <span><i
+            class="fas fa-star mr-2 {{currentReview?currentReview.evaluate?currentReview.evaluate>=5?'rated':'unrated':'unrated':'unrated'}}"></i></span>
+          <span>({{currentReview ? currentReview.evaluate ? currentReview.evaluate : 0 : 0}} sao)</span>
         </div>
         <br>
         <div class="form-group">
@@ -211,7 +217,7 @@
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" (click)="createReview(star, productId)">Xác nhận</button>
+        <button type="button" class="btn btn-primary" (click)="createReview()">Xác nhận</button>
       </div>
     </div>
     <!-- /.modal-content -->

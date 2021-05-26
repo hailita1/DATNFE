@@ -38,8 +38,7 @@ import {UserItemComponent} from './shared/header/user-item/user-item.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import {ItemUserOrderComponent} from './user/user-order/item-user-order/item-user-order.component';
-import {VoucherModule} from './voucher/voucher.module';
-import { VoucherComponent } from './user/voucher/voucher.component';
+import {VoucherComponent} from './user/voucher/voucher.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +66,7 @@ import { VoucherComponent } from './user/voucher/voucher.component';
     ConfirmComponent,
     UserItemComponent,
     ItemUserOrderComponent,
-    VoucherComponent,
+    VoucherComponent
   ],
   imports: [
     BrowserModule,
