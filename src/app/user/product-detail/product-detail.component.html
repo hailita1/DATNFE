@@ -153,15 +153,14 @@
             <div class="tab-pane" id="tabs-3" role="tabpanel">
               <h5>Đánh giá HomeStay</h5>
               <div class="product__details__tab__desc" *ngIf="listReview.length != 0">
-                <div class="post" *ngFor="let review of listReview">
+                <div class="post" *ngFor="let review of listReview | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
+                      let i = index">
                   <div class="user-block">
                     <img class="img-circle img-bordered-sm" [src]="review.user.avt" alt="user">
                     <span class="username" *ngIf="review.user != null">
                           {{review.user.email}}
                         </span>
-                    <span class="description">{{review.startDate | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
-                  </div>
-                  <div class="rating">
+                    <span class="description">{{review.startDate | date: 'dd/MM/yyyy'}}</span>
                     <span><i class="fas fa-star mr-2 {{review.evaluate>=1?'rated':'unrated'}}"></i></span>
                     <span><i class="fas fa-star mr-2 {{review.evaluate>=2?'rated':'unrated'}}"></i></span>
                     <span><i class="fas fa-star mr-2 {{review.evaluate>=3?'rated':'unrated'}}"></i></span>
@@ -172,6 +171,13 @@
                   <!-- /.user-block -->
                   <p [innerHTML]="review.comment"></p>
                 </div>
+              </div>
+              <div class="col-12" style="display: flex; justify-content: center;align-items: center">
+                <ngb-pagination *ngIf="listReview.length>10"
+                                [ellipses]="true" [rotate]="true"
+                                [boundaryLinks]="true" [(page)]="page"
+                                [pageSize]="pageSize"
+                                [collectionSize]="this.listReview.length"></ngb-pagination>
               </div>
               <div class="product__details__tab__desc" *ngIf="listReview.length==0">
                 <p>Chưa có đánh giá nào</p>

@@ -34,6 +34,8 @@ export class ProductDetailComponent implements OnInit {
   starAverage: number = 0;
   imageObject: Array<object> = [];
   id: any;
+  page = 1;
+  pageSize = 10;
 
   constructor(private categoryService: CategoryService,
               private houseService: HouseService,
