@@ -2,16 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Category} from '../../model/category';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CategoryService} from '../../service/category/category.service';
-import {Product} from '../../model/product';
-import {ProductService} from '../../service/product/product.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {AuthenticationService} from '../../service/auth/authentication.service';
-import {ShoppingCartService} from '../../service/shopping-cart/shopping-cart.service';
 import {ItemService} from '../../service/item/item.service';
 import {UserToken} from '../../model/user-token';
-import {ShoppingCart} from '../../model/shopping-cart';
-import {Review} from '../../model/review';
 import {ReviewService} from '../../service/review/review.service';
 import {House} from '../../model/house';
 import {HouseService} from '../../service/house/house.service';
@@ -35,6 +30,7 @@ export class ProductDetailComponent implements OnInit {
   relatedHouses: House[] = [];
   currentUser: UserToken;
   listReview: Bill[] = [];
+  listReview1: Bill[] = [];
   starAverage: number = 0;
   imageObject: Array<object> = [];
   id: any;
@@ -108,14 +104,18 @@ export class ProductDetailComponent implements OnInit {
   }
 
   getAllReview(id) {
+    this.listReview = [];
     const bill = {
       id: this.id
     };
     this.billService.getAllBillByHouse(bill).subscribe(listReview => {
-      this.listReview = listReview;
+      this.listReview1 = listReview;
       let sum = 0;
-      this.listReview.map(review => {
-        sum += review.evaluate;
+      this.listReview1.map(review => {
+        if (review.evaluate != null && review.comment != null) {
+          this.listReview.push(review);
+          sum += review.evaluate;
+        }
       });
       this.starAverage = sum / this.listReview.length;
     });
