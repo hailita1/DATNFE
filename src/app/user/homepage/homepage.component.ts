@@ -183,4 +183,18 @@ export class HomepageComponent implements OnInit {
     this.router.navigate(['../houses'], {queryParams: {address}});
   }
 
+  searchDL() {
+    const address = 'Đà Lạt';
+    this.router.navigate(['../houses'], {queryParams: {address}});
+  }
+
+  searchHA() {
+    const address = 'Hội An';
+    this.router.navigate(['../houses'], {queryParams: {address}});
+  }
+
+  searchNT() {
+    const address = 'Nha Trang';
+    this.router.navigate(['../houses'], {queryParams: {address}});
+  }
 }
