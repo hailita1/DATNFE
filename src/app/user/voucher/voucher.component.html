@@ -72,8 +72,8 @@
           <div class="even-date">
             <i class="fa fa-calendar"> </i>
             <time>
-              <span>Từ {{voucher.startDate}}</span>
-              <span>Đến {{voucher.expiredDate}}</span>
+              <span>Từ {{voucher.startDate | date: 'dd/MM/yyyy'}}
+                Đến {{voucher.expiredDate | date: 'dd/MM/yyyy'}}</span>
             </time>
           </div>
           <div class="even-info">

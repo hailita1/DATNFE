@@ -66,7 +66,7 @@ import {VoucherComponent} from './user/voucher/voucher.component';
     ConfirmComponent,
     UserItemComponent,
     ItemUserOrderComponent,
-    VoucherComponent
+    VoucherComponent,
   ],
   imports: [
     BrowserModule,

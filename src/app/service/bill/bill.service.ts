@@ -48,6 +48,10 @@ export class BillService {
     return this.http.put<Bill>(API_URL + `/bills/confirm`, bill);
   }
 
+  pay(bill: Bill): Observable<Bill> {
+    return this.http.put<Bill>(API_URL + `/bills/pay`, bill);
+  }
+
   getAllBillByUserTrue(id: number): Observable<Bill[]> {
     return this.http.get<Bill[]>(API_URL + `/bills/usersTrue/${id}`);
   }

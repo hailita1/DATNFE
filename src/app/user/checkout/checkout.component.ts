@@ -8,7 +8,6 @@ import {UserToken} from '../../model/user-token';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {ServiceService} from '../../service/service/service.service';
 import {Service} from '../../model/service';
-import {Subscription} from 'rxjs';
 import {HouseService} from '../../service/house/house.service';
 import {BillService} from '../../service/bill/bill.service';
 import {House} from '../../model/house';
@@ -157,7 +156,8 @@ export class CheckoutComponent implements OnInit {
           id: this.idHouse
         },
         service: this.listServiceOfHouse,
-        totalPrice: this.totalPrice
+        totalPrice: this.totalPrice,
+        voucher: this.voucher ? this.voucher.title : null
       };
     }
     if (this.isSubmitted) {
@@ -212,6 +212,7 @@ export class CheckoutComponent implements OnInit {
             this.currentHouse.price = 0;
             this.currentHouse.discount = 0;
             this.voucher.discount = 0;
+            this.voucher.title = '';
           },
           err => {
             $(function() {

@@ -62,13 +62,13 @@
             <p>{{bill.telephoneNumber}}</p>
           </td>
           <td style="text-align: center">
-            <p>{{bill.bookingDate}}</p>
+            <p>{{bill.bookingDate | date:'dd/MM/yyyy'}}</p>
           </td>
           <td style="text-align: center">
-            <p>{{bill.startDate}}</p>
+            <p>{{bill.startDate | date:'dd/MM/yyyy'}}</p>
           </td>
           <td style="text-align: center">
-            <p>{{bill.endDate}}</p>
+            <p>{{bill.endDate | date:'dd/MM/yyyy'}}</p>
           </td>
           <td style="text-align: center">
             <p>{{bill.totalPrice}}</p>

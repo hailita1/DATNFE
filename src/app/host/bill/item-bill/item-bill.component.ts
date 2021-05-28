@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import {UserToken} from '../../../model/user-token';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -18,6 +18,28 @@ declare var Swal: any;
   styleUrls: ['./item-bill.component.scss']
 })
 export class ItemBillComponent implements OnInit {
+
+  constructor(private modalService: NgbModal,
+              private fb: FormBuilder,
+              private billService: BillService,
+              private categoryService: CategoryService,
+              private houseService: HouseService,
+              private notificationService: NotificationService,
+              private authenticationService: AuthenticationService) {
+    this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
+    if (this.currentUser) {
+      const roleList = this.currentUser.roles;
+      for (const role of roleList) {
+        if (role.authority === 'ROLE_USER') {
+          this.hasRoleUser = true;
+        }
+        if (role.authority === 'ROLE_ADMIN') {
+          this.hasRoleAdmin = true;
+        }
+      }
+    }
+  }
+
   @ViewChild('content', {static: false}) public childModal!: ModalDirective;
   @Input() listcategorys: Array<any>;
   @Output() eventEmit: EventEmitter<any> = new EventEmitter<any>();
@@ -41,27 +63,9 @@ export class ItemBillComponent implements OnInit {
   arrCheck = [];
   formGroup: FormGroup;
   formName = 'Đơn đặt HomeStay';
-
-  constructor(private modalService: NgbModal,
-              private fb: FormBuilder,
-              private billService: BillService,
-              private categoryService: CategoryService,
-              private houseService: HouseService,
-              private notificationService: NotificationService,
-              private authenticationService: AuthenticationService) {
-    this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
-    if (this.currentUser) {
-      const roleList = this.currentUser.roles;
-      for (const role of roleList) {
-        if (role.authority === 'ROLE_USER') {
-          this.hasRoleUser = true;
-        }
-        if (role.authority === 'ROLE_ADMIN') {
-          this.hasRoleAdmin = true;
-        }
-      }
-    }
-  }
+  currentDate = new Date();
+  priceHomeStay: number;
+  priceService: 0;
 
   updateFormType(type: any) {
     switch (type) {
@@ -96,13 +100,25 @@ export class ItemBillComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
-    console.log(model);
+    this.priceService = 0;
     this.listService = model.service;
     this.idHouse = model.houseBill.id;
     this.arrCheck = this.listcategorys;
     this.open(this.childModal);
     this.type = type;
     this.model = model;
+    const sd = new Date(this.model.startDate).getTime();
+    const ed = new Date(this.model.endDate).getTime();
+    this.priceHomeStay = ((((ed - sd) / 86400000) + 1) * model.houseBill.price) * ((100 - model.houseBill.discount) / 100);
+    console.log(model.service);
+    if (model.service != null) {
+      for (let i = 0; i < model.service.length; i++) {
+        this.priceService = this.priceService + model.service[i].price;
+      }
+    } else {
+      this.priceService = 0;
+    }
+
     this.submitted = false;
     this.updateFormType(type);
     if (model.id === null || model.id === undefined) {
@@ -315,5 +331,32 @@ export class ItemBillComponent implements OnInit {
       numberHires: this.model.houseBill.numberHires + 1
     };
     this.houseService.updateNumberHires(house).subscribe();
+  }
+
+  PrintElem(elem) {
+    var mywindow = window.open('', 'PRINT', 'height=' + screen.height + ',width=' + screen.width + ' fullscreen=yes');
+    mywindow.document.write('<html>');
+    mywindow.document.write('<head>');
+    mywindow.document.write('<link rel="stylesheet" href="../../../../assets/static/css/bootstrap.min.css" type="text/css">');
+    mywindow.document.write('<link media="all" rel="stylesheet" href="../../../../assets/static/css/styleprint.css"/>');
+    mywindow.document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>');
+    mywindow.document.write('<script media="all" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>');
+    mywindow.document.write('</head>');
+    mywindow.document.write('<body >');
+    mywindow.document.write(document.getElementById(elem).innerHTML);
+    mywindow.document.write('</body></html>');
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+    setTimeout(function() {
+      mywindow.print();
+      mywindow.close();
+    }, 2000);
+    let bill;
+    bill = {
+      id: this.model.id
+    };
+    this.billService.pay(bill).subscribe(res => {
+      this.closeModalReloadData();
+    });
   }
 }

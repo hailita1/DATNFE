@@ -10,6 +10,7 @@ export interface Bill {
   startDate?: Date;
   endDate?: Date;
   status?: string;
+  voucher?: string;
   houseBill: any;
   checked: any;
   user?: any;

@@ -131,6 +131,9 @@
         >
           Lưu
         </button>
+        <button *ngIf="model.status == 'Đã thuê thành công'" class="btn btn-warning" style="margin-left: 20px"
+                (click)="PrintElem('pdf')">Xuất hóa đơn
+        </button>
         <button
           class="btn btn-danger"
           style="width: 100px; margin-left: 20px"
@@ -140,5 +143,96 @@
         </button>
       </div>
     </form>
+  </div>
+
+  <div id="pdf" [hidden]="true">
+    <div class="in-bao-gia-container">
+      <div class="in-bao-gia-header">
+        <div class="in-bao-gia-header-left"><img src="../../../../assets/static/img/logo.png"/></div>
+        <div class="in-bao-gia-header-right">
+          <p class="ten-cong-ty">CÔNG TY CHUYÊN CUNG CẤP DỊCH VỤ HOMESTAY OGANI</p>
+          <p>Trụ sở chính: Đồng Mạc - Tiên Hội - Đại Từ - Thái Nguyên</p>
+          <p>Số nhà 4 ngách 34 ngõ 27 Lạc Long Quân - Nghĩa Đô - Cầu giấy - Hà Nội</p>
+          <p>Hotline: 0396355470 * Website: www.ogani.vn</p>
+        </div>
+      </div>
+      <div class="in-bao-gia-title">HÓA ĐƠN ĐẶT THUÊ HOMESTAY VÀ DỊCH VỤ</div>
+      <div class="date-currency">
+        <p>Ngày báo giá: <span id="price_time">{{currentDate | date: 'dd/MM/yyyy HH:mm:ss'}}</span></p>
+        <p>Đơn vị tính: <span class="currency">VNĐ</span></p>
+      </div>
+      <div class="in-bao-gia-title"><h3>HomeStay</h3></div>
+      <table class="list_table">
+        <tbody>
+        <tr style="white-space: nowrap;background-color: #f5f5f5;">
+          <td style="text-align: center"><strong>Thông tin HomeStay</strong></td>
+          <td style="text-align: center"><strong>Ngày nhận HomeStay</strong></td>
+          <td style="text-align: center"><strong>Ngày trả HomeStay</strong></td>
+          <td style="text-align: center"><strong>Giảm giá từ chủ nhà</strong></td>
+          <td style="text-align: center; width: 200px"><strong>Giá thuê</strong></td>
+          <td style="text-align: center"><strong>Thành tiền</strong></td>
+        </tr> <!--  -->
+        <tr valign="middle">
+          <td>- Tên HomeStay: {{model.houseBill.name}} <br> - Địa chỉ: {{model.houseBill.address}} <br> - Thể
+            loại: {{model.houseBill.category.name}}
+            <br> - Số lượng phòng: {{model.houseBill.numberRoom}}</td>
+          <td style="text-align: center">{{model.startDate | date:'dd/MM/yyyy' }}</td>
+          <td style="text-align: center">{{model.endDate | date:'dd/MM/yyyy' }}</td>
+          <td style="text-align: center"> {{model.houseBill.discount}}%</td>
+          <td style="text-align: center">{{model.houseBill.price}} VNĐ / Ngày</td>
+          <td style="text-align: center">
+            {{(model.houseBill.price)}}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4"></td>
+          <td style="text-align: center" colspan="-1"><strong>Tổng tiền</strong></td>
+          <td><strong style="color: red; text-align: center">{{(priceHomeStay)}}đ</strong>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div *ngIf="model.service" class="in-bao-gia-title"><h3>Dịch vụ</h3></div>
+      <table class="list_table" *ngIf="model.service">
+        <tbody>
+        <tr style="white-space: nowrap;background-color: #f5f5f5;">
+          <td style="text-align: center"><strong>STT</strong></td>
+          <td style="text-align: center"><strong>Tên dịch vụ</strong></td>
+          <td style="text-align: center"><strong>Giá</strong></td>
+        </tr>
+        <tr *ngFor="let service of model.service;let i = index">
+          <td style="text-align: center">
+            {{i + 1}}
+          </td>
+          <td style="text-align: center">
+            {{service.name}}
+          </td>
+          <td style="text-align: center">
+            {{service.price}}
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: center" colspan="1"></td>
+          <td style="text-align: center" colspan="-1"><strong>Tổng tiền</strong></td>
+          <td style="text-align: center"><strong
+            style="color: red;">{{priceService}}đ</strong></td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div class="in-bao-gia-footer">
+        <p *ngIf="model.voucher">Bạn sử dụng voucher: {{model.voucher}}</p>
+        <p *ngIf="!model.voucher">Bạn không sử dụng vocher </p>
+        <h3 style="color: red; text-align: center">Tổng tiền cần phải thanh toán là: {{model.totalPrice}}đ</h3>
+        <p><i class="fas fa-exclamation-circle"></i> Quý khách lưu ý: Khách hàng kiểm tra kỹ hóa đơn trước khi thanh
+          toán, xin cảm ơn !</p>
+      </div>
+      <div class="in-bao-gia-footer center">
+        <p>Để biết thêm chi tiết, vui lòng liên hệ:</p>
+        <p>Hotline: 0396355470 (8h00-21h30 hàng ngày)</p>
+        <p>Email: <a href="mailto:haidevutc@gmail.com">haidevutc@gmail.com</a></p>
+        <p>OGANI CHÂN THÀNH CẢM ƠN QUÝ KHÁCH HÀNG!</p>
+      </div>
+    </div>
   </div>
 </ng-template>
