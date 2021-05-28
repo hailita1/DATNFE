@@ -78,10 +78,10 @@
             <p class="status" *ngIf="voucher.typeVoucher === 1">Giảm phần trăm</p>
           </td>
           <td style="text-align: center">
-            <p>{{voucher.startDate}}</p>
+            <p>{{voucher.startDate | date:'dd/MM/yyyy'}}</p>
           </td>
           <td style="text-align: center">
-            <p>{{voucher.expiredDate}}</p>
+            <p>{{voucher.expiredDate | date:'dd/MM/yyyy'}}</p>
           </td>
           <td style="text-align: center">
             <label class="status"

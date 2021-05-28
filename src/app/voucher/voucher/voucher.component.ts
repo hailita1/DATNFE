@@ -78,7 +78,7 @@ export class VoucherComponent implements OnInit {
 
   deleteVoucher() {
     this.voucherService.deleteVoucher(this.id).subscribe(() => {
-      this.voucherService.getAllVoucher().subscribe(listVoucher => {
+      this.voucherService.getAll().subscribe(listVoucher => {
         this.listVoucher = listVoucher;
       });
       $(function() {

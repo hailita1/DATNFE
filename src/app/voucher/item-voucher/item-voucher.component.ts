@@ -170,6 +170,19 @@ export class ItemVoucherComponent implements OnInit {
           title: 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc'
         });
       });
+    } else if (this.formGroup.get('category').value === '1' && this.formGroup.get('discount').value > 100) {
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+        Toast.fire({
+          type: 'error',
+          title: 'Phần trăm giảm giá phải bé hơn 100'
+        });
+      });
     } else {
       if (this.isAdd) {
         this.voucherService.createVoucher(voucher).subscribe(res => {
