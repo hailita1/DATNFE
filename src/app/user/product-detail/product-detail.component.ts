@@ -114,8 +114,11 @@ export class ProductDetailComponent implements OnInit {
       this.listReview1.map(review => {
         if (review.evaluate != null && review.comment != null) {
           this.listReview.push(review);
-          sum += review.evaluate;
         }
+      });
+      this.listReview.map(review => {
+        const evaluate = Number(review.evaluate);
+        sum += evaluate;
       });
       this.starAverage = sum / this.listReview.length;
     });
