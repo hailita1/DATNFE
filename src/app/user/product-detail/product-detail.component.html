@@ -68,7 +68,7 @@
                        slideImage="1"></ng-image-slider>
     </div>
     <div class="row">
-      <div class="col-lg-8 col-md-6">
+      <div class="col-lg-7">
         <div class="product__details__pic">
           <div class="product__details__pic__item">
             <img class="product__details__pic__item--small" *ngIf="currentHouse.images!=null"
@@ -76,7 +76,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6" style="padding-left: 30px;padding-right: 30px;">
+      <div class="col-lg-5" style="padding-left: 30px;padding-right: 30px;">
         <div class="product__details__text">
           <h3 *ngIf="currentUser">{{currentHouse.name}}<a [routerLink]="['/favorite', { id:currentHouse.id }]"
                                                           class="heart-icon"><span
@@ -92,7 +92,7 @@
           <h5 *ngIf="currentHouse.discount!=0" style="margin-bottom: 10px; color: red">Giảm {{currentHouse.discount}}%
             tiền thuê từ chủ nhà
           </h5>
-          <div class="product__details__price">{{currentHouse.price}} ( VNĐ / Ngày)</div>
+          <div class="product__details__price">{{currentHouse.price| currency: 'VND'}} ( VNĐ / Ngày)</div>
           <p style="margin-bottom: 10px"><b>Địa chỉ:</b> {{currentHouse.address}}</p>
           <p style="margin-bottom: 0px"><b>Số lượt thuê:</b> {{currentHouse.numberHires}} lượt</p>
           <ul style="margin-top: 0px; padding-top: 0px">
@@ -124,11 +124,11 @@
         </div>
         <button *ngIf="currentUser && currentHouse.user.id!==currentUser.id" (click)="createMessage()"
                 [routerLink]="['/checkout']"
-                style="margin-top: 25px;width: 100%;background: #7fad39;"
+                style="margin-top: 25px;width: 60%;background: #7fad39;margin-right: auto;margin-left: auto;display: block"
                 class="site-btn">Đặt thuê
         </button>
         <button *ngIf="!currentUser" [routerLink]="['../../login']"
-                style="margin-top: 25px;width: 100%;background: #7fad39;"
+                style="margin-top: 25px;width: 60%;background: #7fad39;margin-right: auto;margin-left: auto;display: block"
                 class="site-btn">Đặt thuê
         </button>
       </div>
@@ -147,13 +147,13 @@
           <div class="tab-content">
             <div class="tab-pane active" id="tabs-1" role="tabpanel">
               <div class="product__details__tab__desc">
-                <h6><b>Giới thiệu về {{currentHouse.name}} </b></h6>
+                <h5 style="text-align: center; font-weight: bold">Giới thiệu về {{currentHouse.name}} </h5>
                 <p [innerHTML]="currentHouse.description"></p>
               </div>
             </div>
             <div class="tab-pane" id="tabs-3" role="tabpanel">
-              <h5>Đánh giá HomeStay</h5>
               <div class="product__details__tab__desc" *ngIf="listReview.length != 0">
+                <h5 style="text-align: center; font-weight: bold">Đánh giá HomeStay</h5>
                 <div class="post" *ngFor="let review of listReview | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
                       let i = index">
                   <div class="user-block">
@@ -219,9 +219,11 @@
             <h5>{{house.address}}</h5>
             <div
               class="product__item__price">
-              <h5 style="font-weight: bold; color: red">{{house.price - house.price * (house.discount / 100)}}( VNĐ /
+              <h5
+                style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)) |currency: 'VND'}}
+                ( VNĐ /
                 Ngày)</h5>
-              <span *ngIf="house.discount!=0">{{house.price}}( VNĐ / Ngày)</span></div>
+              <span *ngIf="house.discount!=0">{{house.price | currency: 'VND'}}( VNĐ / Ngày)</span></div>
           </div>
         </div>
       </div>

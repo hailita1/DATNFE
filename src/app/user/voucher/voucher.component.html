@@ -63,7 +63,8 @@
       <article class="card fl-left">
         <section class="date">
           <time datetime="23th feb">
-            <span>{{voucher.discount}}</span><span *ngIf="voucher.typeVoucher == 0"> VNĐ</span><span
+            <span>{{voucher.discount}}</span>
+            <span *ngIf="voucher.typeVoucher == 0"> VNĐ</span><span
             *ngIf="voucher.typeVoucher == 1"> %</span>
           </time>
         </section>

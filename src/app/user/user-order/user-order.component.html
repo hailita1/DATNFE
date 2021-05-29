@@ -79,7 +79,7 @@
                 <h5>{{bill.houseBill.name}}  </h5>
               </td>
               <td>
-                {{bill.totalPrice}} VNĐ
+                {{bill.totalPrice |currency: 'VND'}} VNĐ
               </td>
               <td>
                 {{bill.status}}

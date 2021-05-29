@@ -1,10 +1,12 @@
 <div class="hailit">
-  <div class="container"><a href="#" class="social-auth-links text-center"><img
+  <div class="container"><a href="#" style="margin-left: auto; margin-right: auto; display: block"
+                            class="social-auth-links text-center"><img
     src="../../../assets/static/img/logo.png" alt=""></a>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="title">Đăng nhập</div>
       <div class="input-box underline" style="width: 70%; margin-left: auto; margin-right: auto">
-        <input style="padding-left: 15px; border-radius: 5px; height: 45px; border-bottom-width: 2px" type="text" placeholder="Enter Your Email"
+        <input style="padding-left: 15px; border-radius: 5px; height: 45px; border-bottom-width: 2px" type="text"
+               placeholder="Enter Your Email"
                formControlName="email" required>
         <div class="underline"></div>
       </div>

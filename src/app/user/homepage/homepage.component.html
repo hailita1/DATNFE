@@ -163,9 +163,11 @@
             <h5>{{house.address}}</h5>
             <div
               class="product__item__price">
-              <h5 style="font-weight: bold; color: red">{{house.price - house.price * (house.discount / 100)}}( VNĐ /
+              <h5
+                style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)) | currency: 'VND'}}
+                ( VNĐ /
                 Ngày)</h5>
-              <span *ngIf="house.discount!=0">{{house.price}}( VNĐ / Ngày)</span></div>
+              <span *ngIf="house.discount!=0">{{house.price | currency: 'VND'}}( VNĐ / Ngày)</span></div>
           </div>
         </div>
       </div>
@@ -188,7 +190,7 @@
                 </div>
                 <div class="latest-product__item__text">
                   <h6>{{house.name}}</h6>
-                  <span>{{house.price}} (VNĐ / Ngày)</span>
+                  <span>{{house.price | currency: 'VND'}} (VNĐ / Ngày)</span>
                 </div>
               </a>
             </div>
@@ -201,7 +203,7 @@
                 </div>
                 <div class="latest-product__item__text">
                   <h6>{{house.name}}</h6>
-                  <span>{{house.price}} (VNĐ / Ngày)</span>
+                  <span>{{house.price | currency: 'VND'}} (VNĐ / Ngày)</span>
                 </div>
               </a>
             </div>
@@ -221,7 +223,7 @@
                 </div>
                 <div class="latest-product__item__text">
                   <h6>{{house.name}}</h6>
-                  <span>{{house.price}} (VNĐ / Ngày)</span>
+                  <span>{{house.price | currency: 'VND'}} (VNĐ / Ngày)</span>
                   <span>{{house.numberHires}} lượt thuê</span>
                 </div>
               </a>
@@ -235,7 +237,7 @@
                 </div>
                 <div class="latest-product__item__text">
                   <h6>{{house.name}}</h6>
-                  <span>{{house.price}} (VNĐ / Ngày)</span>
+                  <span>{{house.price | currency: 'VND'}} (VNĐ / Ngày)</span>
                   <span>{{house.numberHires}} lượt thuê</span>
                 </div>
               </a>
@@ -257,9 +259,9 @@
                 <div class="product__discount__item__text">
                   <h5>{{house.name}}</h5>
                   <div
-                    class="product__item__price">{{house.price - house.price * (house.discount / 100)}}
+                    class="product__item__price">{{(house.price - house.price * (house.discount / 100) | currency: 'VND')}}
                     ( VNĐ / Ngày)
-                    <span *ngIf="house.discount>0">{{house.price}}( VNĐ / Ngày)</span></div>
+                    <span *ngIf="house.discount>0">{{house.price| currency: 'VND'}}( VNĐ / Ngày)</span></div>
                 </div>
               </a>
             </div>
@@ -273,9 +275,9 @@
                 <div class="product__discount__item__text">
                   <h5>{{house.name}}</h5>
                   <div
-                    class="product__item__price">{{house.price - house.price * (house.discount / 100)}}
+                    class="product__item__price">{{(house.price - house.price * (house.discount / 100)| currency: 'VND')}}
                     ( VNĐ / Ngày)
-                    <span>{{house.price}}( VNĐ / Ngày)</span>
+                    <span>{{house.price | currency: 'VND'}}( VNĐ / Ngày)</span>
                   </div>
                 </div>
               </a>

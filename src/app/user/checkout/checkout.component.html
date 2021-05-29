@@ -114,7 +114,7 @@
                       formControlName="service" data-dropdown-css-class="select2-primary"
                       style="width: 100%; margin-left: 0px" (ngModelChange)="addServiceToHouse($event)">
                 <option *ngFor="let service of listService"
-                        [value]="service.id">{{service.name}}, giá {{service.price}}, thời gian sử
+                        [value]="service.id">{{service.name}}, giá {{service.price |currency: 'VND'}}, thời gian sử
                   dụng: {{service.times}}</option>
               </select>
 
@@ -127,7 +127,8 @@
                       let service of listServiceOfHouse  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
                       let i = index
                     ">
-                  <td><label>- {{service.name}}, giá {{service.price}}, thời gian sử dụng {{service.times}}</label></td>
+                  <td><label>- {{service.name}}, giá {{service.price |currency: 'VND'}}, thời gian sử
+                    dụng {{service.times}}</label></td>
                   <td style="width: 30px">
                     <button type="button" class="btn btn-block btn-danger" style="color: white"
                             (click)="delete(i)">
@@ -161,29 +162,29 @@
             <div class="checkout__order">
               <h4>Đơn đặt của bạn</h4>
               <div class="checkout__order__products">Dịch vụ <span>Giá</span></div>
-              <div class="checkout__order__subtotal">Giá thuê theo ngày <span>{{currentHouse.price}} VNĐ</span></div>
+              <div class="checkout__order__subtotal">Giá thuê theo ngày
+                <span>{{currentHouse.price |currency: 'VND'}}</span></div>
               <div class="checkout__order__subtotal">Giảm giá <span>{{currentHouse.discount}} %</span></div>
               <div *ngIf="voucher">
                 <div class="checkout__order__subtotal" *ngIf="voucher.typeVoucher == '0'">Voucher
-                  <span>{{voucher.discount}} VNĐ</span>
+                  <span>{{voucher.discount |currency: 'VND'}} </span>
                 </div>
                 <div class="checkout__order__subtotal" *ngIf="voucher.typeVoucher == '1'">Voucher
                   <span>{{voucher.discount}} %</span>
                 </div>
               </div>
-              <div class="checkout__order__subtotal">Tổng tiền dịch vụ <span>{{priceService}}VNĐ</span></div>
-              <div class="checkout__order__subtotal">Tiền thuê HomeStay <span>{{this.priceHomStay}}VNĐ</span></div>
+              <div class="checkout__order__subtotal">Tổng tiền dịch vụ <span>{{priceService |currency: 'VND'}}</span>
+              </div>
+              <div class="checkout__order__subtotal">Tiền thuê HomeStay
+                <span>{{this.priceHomStay |currency: 'VND'}}</span></div>
               <div class="checkout__order__total" *ngIf="!voucher">Tổng tiền
-                <span>{{(priceService + priceHomStay * (100 - currentHouse.discount) / 100)}}
-                  VNĐ</span>
+                <span>{{((priceService + priceHomStay * (100 - currentHouse.discount) / 100)|currency: 'VND')}}</span>
               </div>
               <div class="checkout__order__total" *ngIf="voucher">Tổng tiền
                 <span
-                  *ngIf="voucher.typeVoucher == '0'">{{(priceService + priceHomStay * (100 - currentHouse.discount) / 100) - voucher.discount}}
-                  VNĐ</span>
+                  *ngIf="voucher.typeVoucher == '0'">{{((priceService + priceHomStay * (100 - currentHouse.discount) / 100) - voucher.discount)|currency: 'VND'}}</span>
                 <span
-                  *ngIf="voucher.typeVoucher == '1'">{{(priceService + priceHomStay * (100 - currentHouse.discount) / 100) * ((100 - voucher.discount) / 100)}}
-                  VNĐ</span>
+                  *ngIf="voucher.typeVoucher == '1'">{{((priceService + priceHomStay * (100 - currentHouse.discount) / 100) * ((100 - voucher.discount) / 100))|currency: 'VND'}}</span>
               </div>
               <div class="checkout__input__checkbox">
                 <label for="paypal">

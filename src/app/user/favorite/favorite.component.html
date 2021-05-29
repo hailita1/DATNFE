@@ -76,7 +76,7 @@
                 <h5 style="font-size: 16px">{{item.product.name}} <br> {{item.product.address}}</h5>
               </td>
               <td>
-                {{item.product.price}} ( VNĐ / Ngày )
+                {{item.product.price |currency: 'VND'}} ( VNĐ / Ngày )
               </td>
               <td>
                 <a [routerLink]="['/house',item.product.id]" class="btn btn-primary"
