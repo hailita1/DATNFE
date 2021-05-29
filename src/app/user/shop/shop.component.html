@@ -81,7 +81,7 @@
                     </div>
                     <div class="latest-product__item__text">
                       <h6>{{house.name}}</h6>
-                      <span>{{house.price | currency: 'VND'}} VNĐ</span>
+                      <span>{{house.price | currency: 'VND'}}</span>
                       <span *ngIf="house.discount!=0">Giảm: {{house.discount}}%</span>
                     </div>
                   </a>
@@ -95,7 +95,7 @@
                     </div>
                     <div class="latest-product__item__text">
                       <h6>{{house.name}}</h6>
-                      <span>{{house.price | currency: 'VND'}} VNĐ</span>
+                      <span>{{house.price | currency: 'VND'}}</span>
                       <span *ngIf="house.discount!=0">Giảm: {{house.discount}}%</span>
                     </div>
                   </a>
@@ -157,8 +157,8 @@
                     <div
                       class="product__item__price"
                       style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)| currency: 'VND') }}
-                      ( VNĐ / Ngày)
-                      <span *ngIf="house.discount>0">{{house.price | currency: 'VND'}}( VNĐ / Ngày)</span></div>
+                      / Ngày <br>
+                      <span *ngIf="house.discount>0">{{house.price | currency: 'VND'}} / Ngày</span></div>
                   </div>
                 </div>
               </div>
@@ -218,8 +218,8 @@
                 <div
                   class="product__item__price"
                   style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)| currency: 'VND')}}
-                  ( VNĐ / Ngày)
-                  <span *ngIf="house.discount>0">{{house.price | currency: 'VND'}}( VNĐ / Ngày)</span></div>
+                  / Ngày <br>
+                  <span *ngIf="house.discount>0">{{house.price | currency: 'VND'}} / Ngày</span></div>
               </div>
             </div>
           </div>

@@ -92,7 +92,7 @@
           <h5 *ngIf="currentHouse.discount!=0" style="margin-bottom: 10px; color: red">Giảm {{currentHouse.discount}}%
             tiền thuê từ chủ nhà
           </h5>
-          <div class="product__details__price">{{currentHouse.price| currency: 'VND'}} ( VNĐ / Ngày)</div>
+          <div class="product__details__price">{{currentHouse.price| currency: 'VND'}} / Ngày</div>
           <p style="margin-bottom: 10px"><b>Địa chỉ:</b> {{currentHouse.address}}</p>
           <p style="margin-bottom: 0px"><b>Số lượt thuê:</b> {{currentHouse.numberHires}} lượt</p>
           <ul style="margin-top: 0px; padding-top: 0px">
@@ -220,10 +220,8 @@
             <div
               class="product__item__price">
               <h5
-                style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)) |currency: 'VND'}}
-                ( VNĐ /
-                Ngày)</h5>
-              <span *ngIf="house.discount!=0">{{house.price | currency: 'VND'}}( VNĐ / Ngày)</span></div>
+                style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)) |currency: 'VND'}} / Ngày</h5>
+              <span *ngIf="house.discount!=0">{{house.price | currency: 'VND'}} / Ngày</span></div>
           </div>
         </div>
       </div>
