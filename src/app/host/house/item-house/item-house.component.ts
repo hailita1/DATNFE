@@ -130,6 +130,7 @@ export class ItemHouseComponent implements OnInit {
         category: [{value: null, disabled: this.isInfo}, [Validators.required]],
         utilitie: [{value: null, disabled: this.isInfo}, [Validators.required]],
         discount: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        acreage: [{value: null, disabled: this.isInfo}, [Validators.required]],
         status: [{value: false, disabled: true}],
       });
     } else {
@@ -150,6 +151,7 @@ export class ItemHouseComponent implements OnInit {
         discount: [{value: this.model.discount, disabled: this.isInfo}, [Validators.required]],
         category: [{value: this.model.category.id, disabled: this.isInfo}, [Validators.required]],
         utilitie: [{value: this.model.utilitie, disabled: this.isInfo}, [Validators.required]],
+        acreage: [{value: this.model.acreage, disabled: this.isInfo}, [Validators.required]],
         status: [{value: this.model.status, disabled: true}]
       });
     }
@@ -197,6 +199,7 @@ export class ItemHouseComponent implements OnInit {
         name: this.formGroup.get('name').value,
         address: this.formGroup.get('address').value,
         description: this.formGroup.get('description').value,
+        acreage: this.formGroup.get('acreage').value,
         numberRoom: this.formGroup.get('numberRoom').value,
         discount: this.formGroup.get('discount').value,
         status: this.formGroup.get('status').value,
@@ -216,6 +219,7 @@ export class ItemHouseComponent implements OnInit {
         name: this.formGroup.get('name').value,
         address: this.formGroup.get('address').value,
         description: this.formGroup.get('description').value,
+        acreage: this.formGroup.get('acreage').value,
         numberRoom: this.formGroup.get('numberRoom').value,
         discount: this.formGroup.get('discount').value,
         status: this.formGroup.get('status').value,

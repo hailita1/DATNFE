@@ -3,6 +3,7 @@ export interface House {
   name?: string;
   address?: string;
   description?: string;
+  acreage?: string;
   numberRoom?: number;
   price?: number;
   discount?: number;

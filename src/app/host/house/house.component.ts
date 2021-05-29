@@ -75,9 +75,7 @@ export class HouseComponent implements OnInit {
 
   deleteHouse() {
     this.houseService.deleteHouse(this.id).subscribe(() => {
-      this.houseService.getAllHouse().subscribe(listHouse => {
-        this.listHouse = listHouse;
-      });
+      this.getAllHouse();
       $(function() {
         $('#modal-delete').modal('hide');
       });
