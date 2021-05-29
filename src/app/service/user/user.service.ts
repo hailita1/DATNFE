@@ -21,6 +21,10 @@ export class UserService {
     return this.http.post<User>(API_URL + '/register', user);
   }
 
+  registerGoogle(user: User): Observable<User> {
+    return this.http.post<User>(API_URL + '/registerGoogle', user);
+  }
+
   getAllUser(): Observable<User[]> {
     return this.http.get<User[]>(API_URL + '/accounts');
   }

@@ -39,6 +39,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import {ItemUserOrderComponent} from './user/user-order/item-user-order/item-user-order.component';
 import {VoucherComponent} from './user/voucher/voucher.component';
+import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 
 @NgModule({
   declarations: [
@@ -82,11 +83,30 @@ import {VoucherComponent} from './user/voucher/voucher.component';
     BrowserAnimationsModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    SocialLoginModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '889288761010-tiingh7s2qldq6gjv4rihqnohrgos743.apps.googleusercontent.com'
+            )
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('3962944720479540')
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

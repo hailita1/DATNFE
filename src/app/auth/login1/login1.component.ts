@@ -4,6 +4,9 @@ import {UserToken} from '../../model/user-token';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {first} from 'rxjs/operators';
+import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthService} from 'angularx-social-login';
+import {User} from '../../model/user';
+import {UserService} from '../../service/user/user.service';
 
 declare var $: any;
 declare var Swal: any;
@@ -27,6 +30,8 @@ export class Login1Component implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
+              private userService: UserService,
+              private authService: SocialAuthService,
               private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
     if (this.currentUser) {
@@ -96,5 +101,121 @@ export class Login1Component implements OnInit {
             });
           });
         });
+  }
+
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(res => {
+      const user: User = {
+        email: res.email + 'gg',
+        password: '123456',
+        fullName: res.name,
+        avt: res.photoUrl,
+        telephoneNumber: '0359989702',
+        provider: res.provider
+      };
+      this.userService.registerGoogle(user).subscribe(user1 => {
+        this.authenticationService.login(user1.email, '123456')
+          .pipe(first())
+          .subscribe(
+            data => {
+              localStorage.setItem('ACCESS_TOKEN', data.accessToken);
+              const roleList = data.roles;
+              for (const role of roleList) {
+                if (role.authority === 'ROLE_ADMIN') {
+                  this.returnUrl = '/admin';
+                }
+              }
+              this.router.navigate([this.returnUrl]).finally(() => {
+              });
+              $(function() {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+
+                Toast.fire({
+                  type: 'success',
+                  title: 'Đăng nhập thành công'
+                });
+              });
+            },
+            () => {
+              this.loading = false;
+              $(function() {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+
+                Toast.fire({
+                  type: 'error',
+                  title: 'Đăng nhập thất bại'
+                });
+              });
+            });
+      });
+    });
+  }
+
+  signInWithFB(): void {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(res => {
+      const user: User = {
+        email: res.email + 'fb',
+        password: '123456',
+        fullName: res.name,
+        avt: res.photoUrl,
+        telephoneNumber: '0359989702',
+        provider: res.provider
+      };
+      this.userService.registerGoogle(user).subscribe(user1 => {
+        this.authenticationService.login(user1.email, '123456')
+          .pipe(first())
+          .subscribe(
+            data => {
+              localStorage.setItem('ACCESS_TOKEN', data.accessToken);
+              const roleList = data.roles;
+              for (const role of roleList) {
+                if (role.authority === 'ROLE_ADMIN') {
+                  this.returnUrl = '/admin';
+                }
+              }
+              this.router.navigate([this.returnUrl]).finally(() => {
+              });
+              $(function() {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+
+                Toast.fire({
+                  type: 'success',
+                  title: 'Đăng nhập thành công'
+                });
+              });
+            },
+            () => {
+              this.loading = false;
+              $(function() {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+
+                Toast.fire({
+                  type: 'error',
+                  title: 'Đăng nhập thất bại'
+                });
+              });
+            });
+      });
+    });
   }
 }

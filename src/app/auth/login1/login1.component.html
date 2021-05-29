@@ -22,10 +22,11 @@
     </form>
     <div class="option">Hoặc</div>
     <div class="twitter" style="width: 70%; margin-left: auto; margin-right: auto">
-      <a href="#" style="text-align: center"><i class="fab fa-twitter"></i>Đăng nhập bằng Twitter</a>
+      <a (click)="signInWithGoogle()" style="text-align: center"><i class="fab fa-google"></i>Đăng nhập bằng Google</a>
     </div>
     <div class="facebook" style="width: 70%; margin-left: auto; margin-right: auto">
-      <a href="#" style="text-align: center"><i class="fab fa-facebook-f"></i>Đăng nhập bằng Facebook</a>
+      <a (click)="signInWithFB()" style="text-align: center"><i class="fab fa-facebook-f"></i>Đăng nhập bằng
+        Facebook</a>
     </div>
     <div class="facebook" style="width: 70%; margin-left: auto; margin-right: auto">
       <a [routerLink]="['/register']" class="fab" style="text-align: center">
