@@ -8,6 +8,7 @@ import {AuthenticationService} from '../../../service/auth/authentication.servic
 import {BillService} from '../../../service/bill/bill.service';
 import {NotificationService} from '../../../service/notification/notification.service';
 import {HouseService} from '../../../service/house/house.service';
+import {Bill} from '../../../model/bill';
 
 declare var $: any;
 declare var Swal: any;
@@ -66,6 +67,7 @@ export class ItemBillComponent implements OnInit {
   currentDate = new Date();
   priceHomeStay: number;
   priceService: 0;
+  itemPrint: Bill;
 
   updateFormType(type: any) {
     switch (type) {
@@ -350,7 +352,7 @@ export class ItemBillComponent implements OnInit {
     setTimeout(function() {
       mywindow.print();
       mywindow.close();
-    }, 2000);
+    }, 1000);
     let bill;
     bill = {
       id: this.model.id

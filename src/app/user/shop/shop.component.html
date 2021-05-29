@@ -155,10 +155,10 @@
                     <h5>{{house.name}}</h5>
                     <h5>{{house.address}}</h5>
                     <div
-                      class="product__item__price" style="font-weight: bold; color: red"
-                      *ngIf="house.discount>0 ">{{house.price - house.price * (house.discount / 100)}}
+                      class="product__item__price"
+                      style="font-weight: bold; color: red">{{house.price - house.price * (house.discount / 100)}}
                       ( VNĐ / Ngày)
-                      <span>{{house.price}}( VNĐ / Ngày)</span></div>
+                      <span *ngIf="house.discount>0">{{house.price}}( VNĐ / Ngày)</span></div>
                   </div>
                 </div>
               </div>
@@ -216,10 +216,10 @@
                 <h5>{{house.name}}</h5>
                 <h5>{{house.address}}</h5>
                 <div
-                  class="product__item__price" style="font-weight: bold; color: red"
-                  *ngIf="house.discount>0">{{house.price - house.price * (house.discount / 100)}}
+                  class="product__item__price"
+                  style="font-weight: bold; color: red">{{house.price - house.price * (house.discount / 100)}}
                   ( VNĐ / Ngày)
-                  <span>{{house.price}}( VNĐ / Ngày)</span></div>
+                  <span *ngIf="house.discount>0">{{house.price}}( VNĐ / Ngày)</span></div>
               </div>
             </div>
           </div>

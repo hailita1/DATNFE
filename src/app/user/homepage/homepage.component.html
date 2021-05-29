@@ -106,7 +106,7 @@
             </div>
           </a>
         </div>
-        <div class="col-lg-3" (click)="searchVT()">
+        <div class="col-lg-3" (click)="searchDL()">
           <a>
             <div class="categories__item set-bg"
                  [style.background]="'url(../../../assets/static/img/categories/DL.png)'">
@@ -114,7 +114,7 @@
             </div>
           </a>
         </div>
-        <div class="col-lg-3" (click)="searchVT()">
+        <div class="col-lg-3" (click)="searchHA()">
           <a>
             <div class="categories__item set-bg"
                  [style.background]="'url(../../../assets/static/img/categories/HA.png)'">
@@ -122,7 +122,7 @@
             </div>
           </a>
         </div>
-        <div class="col-lg-3" (click)="searchVT()">
+        <div class="col-lg-3" (click)="searchNT()">
           <a>
             <div class="categories__item set-bg"
                  [style.background]="'url(../../../assets/static/img/categories/NT.png)'">
@@ -275,7 +275,8 @@
                   <div
                     class="product__item__price">{{house.price - house.price * (house.discount / 100)}}
                     ( VNĐ / Ngày)
-                    <span>{{house.price}}( VNĐ / Ngày)</span></div>
+                    <span>{{house.price}}( VNĐ / Ngày)</span>
+                  </div>
                 </div>
               </a>
             </div>
