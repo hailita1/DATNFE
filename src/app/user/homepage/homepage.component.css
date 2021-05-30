@@ -1,18 +1,21 @@
 .product__discount__item__pic.set-bg {
-  background-size: cover!important;
-  background-position: center!important;
-  background-repeat: no-repeat!important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
   border-radius: 10px;
 }
 
 .owl-carousel .owl-item img {
-  border-radius: 10px!important;
+  border-radius: 10px !important;
 }
 
 .categories__item.set-bg {
-  background-size: cover!important;
-  background-position: center!important;
-  background-repeat: no-repeat!important;
-  border-radius: 10px!important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  border-radius: 10px !important;
 }
 
+.fresh-meat {
+  display: block !important;
+}

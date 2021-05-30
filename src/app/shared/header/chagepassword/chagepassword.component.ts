@@ -1,25 +1,24 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import {UserToken} from '../../../model/user-token';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AuthenticationService} from '../../../service/auth/authentication.service';
-import {UserService} from '../../../service/user/user.service';
 import {User} from '../../../model/user';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {UserService} from '../../../service/user/user.service';
+import {AuthenticationService} from '../../../service/auth/authentication.service';
 import {House} from '../../../model/house';
 import * as firebase from 'firebase';
-import {environment} from '../../../../environments/environment';
 
 declare var $: any;
 declare var Swal: any;
-declare const myTest: any;
 
 @Component({
-  selector: 'app-user-item',
-  templateUrl: './user-item.component.html',
-  styleUrls: ['./user-item.component.scss']
+  selector: 'app-chagepassword',
+  templateUrl: './chagepassword.component.html',
+  styleUrls: ['./chagepassword.component.scss']
 })
-export class UserItemComponent implements OnInit {
+export class ChagepasswordComponent implements OnInit {
+
 
   @ViewChild('content', {static: false}) public childModal!: ModalDirective;
   @Input() listcategorys: Array<any>;
@@ -43,7 +42,10 @@ export class UserItemComponent implements OnInit {
   model: any;
   submitted = false;
   arrCheck = [];
-  form: FormGroup;
+  formGroup: FormGroup = new FormGroup({
+    confpassword: new FormControl(''),
+    password: new FormControl('')
+  });
   formName = 'cá nhân';
 
   constructor(private modalService: NgbModal,
@@ -94,30 +96,16 @@ export class UserItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.submitted = false;
-    if (this.currentUser != null) {
-      this.getUser();
-    }
   }
 
   view(model: any, type = null): void {
+    this.formGroup.reset();
     this.arrCheck = this.listcategorys;
     this.open(this.childModal);
     this.type = type;
     this.model = model;
     this.submitted = false;
     this.updateFormType(type);
-    if (model.id === null || model.id === undefined) {
-      this.form = this.fb.group({
-        password: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        confpassword: [{value: null, disabled: this.isInfo}, [Validators.required]],
-      });
-    } else {
-      this.form = this.fb.group({
-        email: [{value: this.user.email, disabled: this.isInfo}, [Validators.required]],
-        fullName: [{value: this.user.fullName, disabled: this.isInfo}, [Validators.required]],
-        telephoneNumber: [{value: this.user.telephoneNumber, disabled: this.isInfo}, [Validators.required]]
-      });
-    }
   }
 
   // tslint:disable-next-line:typedef
@@ -137,16 +125,10 @@ export class UserItemComponent implements OnInit {
     );
   }
 
-  getUser() {
-    this.userService.getUser(this.currentUser.id).subscribe(user => {
-      this.user = user;
-    });
-  }
-
   save() {
     let user: any;
     this.submitted = true;
-    if (this.form.invalid) {
+    if (this.formGroup.invalid) {
       $(function() {
         const Toast = Swal.mixin({
           toast: true,
@@ -162,22 +144,12 @@ export class UserItemComponent implements OnInit {
       });
       return;
     }
-    if (this.isEdit) {
-      if (this.picture == null) {
-        this.avt = this.user.avt;
-      } else {
-        this.avt = this.picture[0].avt;
-      }
-      user = {
-        email: this.form.get('email').value,
-        fullName: this.form.get('fullName').value,
-        telephoneNumber: this.form.get('telephoneNumber').value,
-        avt: this.avt,
-        id: this.model.id,
-      };
-    }
-    if (this.isEdit) {
-      this.userService.updateUser(user).subscribe(res => {
+    user = {
+      id: this.model.id,
+      password: this.formGroup.get('password').value,
+    };
+    if (this.formGroup.get('password').value === this.formGroup.get('confpassword').value) {
+      this.userService.updatePassword(user).subscribe(res => {
           this.closeModalReloadData();
           $(function() {
             const Toast = Swal.mixin({
@@ -189,10 +161,9 @@ export class UserItemComponent implements OnInit {
 
             Toast.fire({
               type: 'success',
-              title: 'Cập nhật thành công'
+              title: 'Thay đổi mật khẩu thành công'
             });
           });
-          this.getUser();
           this.modalReference.dismiss();
         },
         err => {
@@ -206,10 +177,24 @@ export class UserItemComponent implements OnInit {
 
             Toast.fire({
               type: 'error',
-              title: 'Cập nhật thất bại'
+              title: 'Thay đổi mật khẩu thất bại'
             });
           });
         });
+    } else {
+      $(function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        Toast.fire({
+          type: 'error',
+          title: 'Mật khẩu không giống nhau, vui lòng kiểm tra lại'
+        });
+      });
     }
   }
 
@@ -227,54 +212,4 @@ export class UserItemComponent implements OnInit {
     this.submitted = false;
     this.eventEmit.emit('success');
   }
-
-  // Upload avt
-  uploadFile(event) {
-    this.myItems = [];
-    const files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-      this.myItems.push(files[i]);
-    }
-    this.uploadAll();
-  }
-
-  uploadAll() {
-    this.isLoading = true;
-    Promise.all(
-      this.myItems.map(file => this.putStorageItem(file))
-    )
-      .then((url) => {
-        console.log(`All success`, url);
-        this.picture = url;
-        this.user.avt = this.picture[0].avt;
-        this.isLoading = false;
-      })
-      .catch((error) => {
-        console.log(`Some failed: `, error.message);
-        this.isLoading = false;
-      });
-  }
-
-  putStorageItem(file): Promise<House> {
-    // the return value will be a Promise
-    const metadata = {
-      contentType: 'image/jpeg',
-    };
-    return new Promise<House>((resolve, reject) => {
-      firebase.storage().ref('img/' + Date.now()).put(file, metadata)
-        .then(snapshot => {
-          snapshot.ref.getDownloadURL().then(downloadURL => {
-            const link = {avt: downloadURL};
-            // @ts-ignore
-            resolve(link);
-          });
-        })
-        .catch(error => reject(error));
-    });
-  }
-
-  onClick() {
-    myTest();
-  }
-
 }

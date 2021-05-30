@@ -41,6 +41,7 @@ import {ItemUserOrderComponent} from './user/user-order/item-user-order/item-use
 import {VoucherComponent} from './user/voucher/voucher.component';
 import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import { ResetpassComponent } from './auth/resetpass/resetpass.component';
+import { ChagepasswordComponent } from './shared/header/chagepassword/chagepassword.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { ResetpassComponent } from './auth/resetpass/resetpass.component';
     ItemUserOrderComponent,
     VoucherComponent,
     ResetpassComponent,
+    ChagepasswordComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{ title }}</h4>
+    <h4 class="modal-title" id="modal-basic-title" *ngIf="!isAdd">{{ title }}</h4>
+    <h4 class="modal-title" id="modal-basic-title1" *ngIf="isAdd">Thay đổi mật khẩu</h4>
     <button
       type="button"
       class="close"
@@ -11,10 +12,10 @@
     </button>
   </div>
   <div class="modal-body">
-    <img [src]="user.avt" alt=""
-         style="width: 250px; height: 250px; margin-left: 250px; margin-bottom: 40px; border-radius: 50%">
+    <img *ngIf="!isAdd" [src]="user.avt" alt=""
+         style="width: 250px; height: 250px; margin-left: 113px; margin-bottom: 40px; border-radius: 50%">
     <form [formGroup]="form" (ngSubmit)="save()">
-      <div class="form-group">
+      <div class="form-group" *ngIf="!isAdd">
         <label>Họ và tên chủ tài khoản</label>
         <input
           type="text"
@@ -32,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" *ngIf="!isAdd">
         <label>Email</label>
         <input
           type="text"
@@ -50,25 +51,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>Mật khẩu</label>
-        <input
-          type="password"
-          name=""
-          class="form-control"
-          formControlName="password"
-          id="password"
-        />
-        <div *ngIf="submitted && form.controls['password'].errors?.required">
-          <div
-            *ngIf="form.controls['password'].errors?.required"
-            style="color: red"
-          >
-            * Mật khẩu không được để trống
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
+      <div class="form-group" *ngIf="!isAdd">
         <label>Số điện thoại</label>
         <input
           type="text"
@@ -86,7 +69,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12" *ngIf="!isInfo">
         <div class="form-group">
           <label for="image">Chọn ảnh HomeStay</label>
           <div class="input-group">

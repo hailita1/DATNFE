@@ -14,6 +14,7 @@ import {User} from '../../model/user';
 import {NotificationUser} from '../../model/notificationUser';
 import {CategoryItemComponent} from '../../host/category/category-item/category-item.component';
 import {UserItemComponent} from './user-item/user-item.component';
+import {ChagepasswordComponent} from './chagepassword/chagepassword.component';
 
 declare var $: any;
 
@@ -25,6 +26,9 @@ declare var $: any;
 export class HeaderComponent implements OnInit {
   // @ts-ignore
   @ViewChild(UserItemComponent) view!: UserItemComponent;
+
+  // @ts-ignore
+  @ViewChild(ChagepasswordComponent) viewPassword!: ChagepasswordComponent;
   listCategory: Category[] = [];
   currentUser: UserToken;
   user: User = {id: 0};
@@ -75,6 +79,9 @@ export class HeaderComponent implements OnInit {
     this.view.view(model, type);
   }
 
+  initModalChagePass(model: any, type = null): void {
+    this.viewPassword.view(model, type);
+  }
 
   getAllCategories() {
     this.categoryService.getAllCategory().subscribe(listCategory => {

@@ -125,6 +125,9 @@
                     tin</a>
                 </div>
                 <div class="dropdown-item">
+                  <a (click)="initModalChagePass(currentUser, 'add')"><i class="fas fa-unlock-alt"></i> Thay đổi mật khẩu</a>
+                </div>
+                <div class="dropdown-item">
                   <a routerLink="#" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
                 </div>
               </div>
@@ -177,3 +180,4 @@
   </div>
 </header>
 <app-user-item></app-user-item>
+<app-chagepassword></app-chagepassword>
