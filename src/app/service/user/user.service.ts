@@ -21,6 +21,10 @@ export class UserService {
     return this.http.post<User>(API_URL + '/register', user);
   }
 
+  resetpassword(user: User): Observable<User> {
+    return this.http.put<User>(API_URL + '/resetpassword', user);
+  }
+
   registerGoogle(user: User): Observable<User> {
     return this.http.post<User>(API_URL + '/registerGoogle', user);
   }

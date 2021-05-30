@@ -111,12 +111,14 @@ export class UserItemComponent implements OnInit {
         email: [{value: null, disabled: this.isInfo}, [Validators.required]],
         fullName: [{value: null, disabled: this.isInfo}, [Validators.required]],
         telephoneNumber: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        password: [{value: null, disabled: this.isInfo}, [Validators.required]],
         avt: [{value: null, disabled: this.isInfo}, [Validators.required]],
       });
     } else {
       this.form = this.fb.group({
         email: [{value: this.user.email, disabled: this.isInfo}, [Validators.required]],
         fullName: [{value: this.user.fullName, disabled: this.isInfo}, [Validators.required]],
+        password: [{value: this.user.password, disabled: this.isInfo}, [Validators.required]],
         telephoneNumber: [{value: this.user.telephoneNumber, disabled: this.isInfo}, [Validators.required]],
       });
     }
@@ -173,6 +175,7 @@ export class UserItemComponent implements OnInit {
       user = {
         email: this.form.get('email').value,
         fullName: this.form.get('fullName').value,
+        password: this.form.get('password').value,
         telephoneNumber: this.form.get('telephoneNumber').value,
         avt: this.avt,
         id: this.model.id,

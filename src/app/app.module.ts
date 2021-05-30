@@ -40,6 +40,7 @@ import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular
 import {ItemUserOrderComponent} from './user/user-order/item-user-order/item-user-order.component';
 import {VoucherComponent} from './user/voucher/voucher.component';
 import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
+import { ResetpassComponent } from './auth/resetpass/resetpass.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, Soc
     UserItemComponent,
     ItemUserOrderComponent,
     VoucherComponent,
+    ResetpassComponent,
   ],
   imports: [
     BrowserModule,

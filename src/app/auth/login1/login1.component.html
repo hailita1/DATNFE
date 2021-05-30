@@ -28,9 +28,17 @@
       <a (click)="signInWithFB()" style="text-align: center"><i class="fab fa-facebook-f"></i>Đăng nhập bằng
         Facebook</a>
     </div>
-    <div class="facebook" style="width: 70%; margin-left: auto; margin-right: auto">
-      <a [routerLink]="['/register']" class="fab" style="text-align: center">
-        <label style="text-align: center">Đăng kí tài khoản</label></a>
+    <div class="row">
+      <div class="col-4" style="margin-left: 80px">
+        <a [routerLink]="['/resetpassword']" style="text-align: center;
+            text-decoration: none;color: #476bb8 ;">
+          <b style="text-align: center">Quên mật khẩu</b></a>
+      </div>
+      <div class="col-4" style="margin-left: 65px">
+        <a [routerLink]="['/register']" style="text-align: center;
+            text-decoration: none;color: #476bb8 ;">
+          <b style="text-align: center">Đăng kí tài khoản</b></a>
+      </div>
     </div>
   </div>
 </div>
