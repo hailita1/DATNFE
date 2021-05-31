@@ -19,3 +19,9 @@
 .fresh-meat {
   display: block !important;
 }
+
+.fresh-meat .header__top__right__language ul {
+  background: red;
+  width: 300px;
+  border-radius: 5px;
+}

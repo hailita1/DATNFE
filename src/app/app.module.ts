@@ -42,6 +42,7 @@ import {VoucherComponent} from './user/voucher/voucher.component';
 import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {ResetpassComponent} from './auth/resetpass/resetpass.component';
 import {ChagepasswordComponent} from './shared/header/chagepassword/chagepassword.component';
+import { QuickviewComponent } from './user/homepage/quickview/quickview.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import {ChagepasswordComponent} from './shared/header/chagepassword/chagepasswor
     VoucherComponent,
     ResetpassComponent,
     ChagepasswordComponent,
+    QuickviewComponent,
   ],
   imports: [
     BrowserModule,

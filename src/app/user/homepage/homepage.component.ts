@@ -1,6 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {ProductService} from '../../service/product/product.service';
-import {Product} from '../../model/product';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {CategoryService} from '../../service/category/category.service';
 import {Category} from '../../model/category';
 import {FormControl, FormGroup} from '@angular/forms';
@@ -8,10 +6,10 @@ import {Router} from '@angular/router';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {UserToken} from '../../model/user-token';
 import {ShoppingCartService} from '../../service/shopping-cart/shopping-cart.service';
-import {ShoppingCart} from '../../model/shopping-cart';
 import {ItemService} from '../../service/item/item.service';
 import {House} from '../../model/house';
 import {HouseService} from '../../service/house/house.service';
+import {QuickviewComponent} from './quickview/quickview.component';
 
 declare var $: any;
 
@@ -21,6 +19,8 @@ declare var $: any;
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
+  // @ts-ignore
+  @ViewChild(QuickviewComponent) view!: QuickviewComponent;
   listHouse: House[] = [];
   listCategory: Category[] = [];
   searchForm: FormGroup = new FormGroup({
@@ -115,6 +115,10 @@ export class HomepageComponent implements OnInit {
     this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
       this.listCategory = listCategory;
     });
+  }
+
+  initModal(model: any): void {
+    this.view.view(model);
   }
 
   getAllHouseLatest() {

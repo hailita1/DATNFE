@@ -1,0 +1,107 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Xem nhanh thông tin HomeStay</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="product__details__text">
+          <h3>{{currentHouse.name}}
+          </h3>
+          <div class="rating" style="margin-bottom: 10px">
+            <span><i class="fas fa-star mr-2 {{starAverage>=1?'rated':'unrated'}}"></i></span>
+            <span><i class="fas fa-star mr-2 {{starAverage>=2?'rated':'unrated'}}"></i></span>
+            <span><i class="fas fa-star mr-2 {{starAverage>=3?'rated':'unrated'}}"></i></span>
+            <span><i class="fas fa-star mr-2 {{starAverage>=4?'rated':'unrated'}}"></i></span>
+            <span><i class="fas fa-star mr-2 {{starAverage==5?'rated':'unrated'}}"></i></span>
+            <span>({{listReview.length}} reviews)</span>
+          </div>
+          <p style="margin-bottom: 10px"><b>Địa chỉ:</b> {{currentHouse.address}}</p>
+          <p style="margin-bottom: 0px"><b>Số lượt thuê:</b> {{currentHouse.numberHires}} lượt</p>
+          <p style="margin-bottom: 0px"><b>Trạng thái:</b> {{currentHouse.status == true ? "Còn trống" : "Đã đặt"}}
+          </p>
+          <p style="margin-bottom: 0px"><b>Diện tích:</b> {{currentHouse.acreage}} m²</p>
+          <p style="margin-bottom: 0px"><b>Thể loại:</b> {{currentHouse.category.name}}</p>
+          <p><b>Số lượng phòng: </b>{{currentHouse.numberRoom}} phòng</p>
+          <button
+            style="margin-left: auto; margin-right: auto; display: block; margin-top: 20px; font-size: 20px; margin-bottom: 20px"
+            class="btn btn-success"
+            [routerLink]="['/favorite', { id:currentHouse.id }]">Thêm vào danh sách yêu
+            thích <i
+              class="fas fa-heart" style="color: red;"></i></button>
+          <div
+            style="width: 100%; text-align:center;margin:0; padding:0;">
+            <ng-image-slider #nav
+                             [images]="imageObject"
+                             [infinite]="true"
+                             [autoSlide]="1"
+                             [imageSize]="{width: '30%', height: 300}"
+                             slideImage="1"></ng-image-slider>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div style="border-radius: 3px; position: -webkit-sticky; position: sticky;top: 10px; padding-top: 50px">
+          <div class="product__details__text">
+            <div class="checkout__order">
+              <div class="product__discount__item__text" style="padding-top: 0px;">
+                <div class="product__item__price">
+                  <div style="font-size: 30px; color: red">
+                    {{(currentHouse.price - currentHouse.price * (currentHouse.discount / 100)| currency: 'VND')}}
+                    / Ngày <br>
+                    <span style="font-size: 20px"
+                          *ngIf="currentHouse.discount>0">{{currentHouse.price | currency: 'VND'}} / Ngày</span>
+                  </div>
+                </div>
+              </div>
+              <b style="font-size: 20px">Thông tin chủ nhà</b>
+              <img [src]="currentHouse.user.avt" alt=""
+                   style="width: 100px; height: 100px; border-radius: 50%;  margin-left: auto; margin-right: auto; display: block; margin-bottom: 20px">
+              <div>
+                <span>Họ và tên : {{currentHouse.user.fullName}}</span>
+                <div>
+                  <span>Email : {{currentHouse.user.email}}</span>
+                </div>
+                <div>
+                  <span
+                    *ngIf="currentHouse.user.telephoneNumber">Số điện thoại : {{currentHouse.user.telephoneNumber}}</span>
+                </div>
+                <h5 *ngIf="currentHouse.discount!=0" style="margin-bottom: 10px; color: red">
+                  Giảm {{currentHouse.discount}}%
+                  tiền thuê từ chủ nhà
+                </h5>
+                <button *ngIf="currentUser && currentHouse.user.id!==currentUser.id" (click)="createMessage()"
+                        [routerLink]="['/checkout']"
+                        style="margin-top: 25px;width: 60%;background: #7fad39;margin-right: auto;margin-left: auto;display: block; font-size: 20px"
+                        class="site-btn">Đặt thuê
+                </button>
+                <button (click)="modal.dismiss('Cross click')" *ngIf="!currentUser" [routerLink]="['../../login']"
+                        style="margin-top: 25px;width: 100%;background: #7fad39;margin-right: auto;margin-left: auto;display: block"
+                        class="site-btn">Đặt thuê
+                </button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group" align="center">
+      <button
+        class="btn btn-danger"
+        style="width: 100px; margin-top: 20px"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Thoát
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -149,9 +149,10 @@
           <div class="product__discount__item__pic set-bg" *ngIf="house.images != null"
                [style.background]="'url('+house.images[0].link+')'" style="background-size: 270px 270px">
             <div *ngIf="house.discount!=0" class="product__discount__percent">-{{house.discount}}%</div>
+
             <ul class="product__item__pic__hover">
               <li><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a></li>
-              <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+              <li><a (click)="initModal(house)"><i class="fa fa-eye"></i></a></li>
               <li>
                 <a [routerLink]="['../house',house.id]"><i class="fa fa-info-circle"></i></a>
               </li>
@@ -287,4 +288,5 @@
     </div>
   </div>
 </section>
+<app-quickview></app-quickview>
 <app-footer></app-footer>
