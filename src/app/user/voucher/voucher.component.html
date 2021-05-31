@@ -60,7 +60,7 @@
   <div class="row" style="margin-bottom: 30px">
     <div class="col-md-6"
          *ngFor="let voucher of listVoucher | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;">
-      <article class="card fl-left">
+      <article class="card fl-left" style="background-color: lemonchiffon">
         <section class="date">
           <time datetime="23th feb">
             <span>{{voucher.discount}}</span>
@@ -73,14 +73,13 @@
           <div class="even-date">
             <i class="fa fa-calendar"> </i>
             <time>
-              <span>Từ {{voucher.startDate | date: 'dd/MM/yyyy'}}
+              <span> Từ {{voucher.startDate | date: 'dd/MM/yyyy'}}
                 Đến {{voucher.expiredDate | date: 'dd/MM/yyyy'}}</span>
             </time>
           </div>
           <div class="even-info">
             <i class="fa fa-map-marker"> </i>
-            <p style="color: red; font-weight: bold">
-              Mã voucher: {{voucher.voucher_code}}
+            <p style="color: red; font-weight: bold"> Mã voucher: {{voucher.voucher_code}}
             </p>
           </div>
           <a [routerLink]="['/houses']" *ngIf="currentUser">Sử dụng</a>

@@ -138,6 +138,11 @@ export class ProductDetailComponent implements OnInit {
 
   getAllHouseRelated(category: Category) {
     this.categoryService.getHouseByCategory(category.id).subscribe(listHouse => {
+      listHouse.map((item, index) => {
+        if (item.id === this.id) {
+          listHouse.splice(index, 1);
+        }
+      });
       if (listHouse.length > 4) {
         for (let i = 0; i < 4; i++) {
           this.relatedHouses.push(listHouse[i]);
