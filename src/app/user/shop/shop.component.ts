@@ -131,9 +131,9 @@ export class ShopComponent implements OnInit {
   }
 
   getAllHouseSaleOff() {
-    this.houseService.findByStatusTrueOrderByDiscountDesc().subscribe(listHouse => {
-      this.listHouseSaleOff = listHouse;
-      this.listHouseSaleOff.map(async house => {
+    this.houseService.findByStatusTrueOrderByDiscountDesc().subscribe(listHouseFilter => {
+      this.listHouseSaleOff = listHouseFilter;
+      this.listHouseSaleOff.map(house => {
         $(document).ready(function() {
           $('.product__discount__slider').owlCarousel({
             loop: true,
