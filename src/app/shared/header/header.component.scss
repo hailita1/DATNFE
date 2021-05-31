@@ -9,15 +9,28 @@
   align-items: center;
   justify-content: flex-end;
 }
+
 .header__logo {
   padding: 15px 0;
   margin: auto;
   width: 50%;
 }
+
 .header__menu {
   padding: 24px 0;
   display: flex;
   justify-content: left;
   align-items: center;
   height: 100%;
+}
+
+.header__cart .header__top__right__language ul {
+  background: wheat;
+  width: 300px;
+  border-radius: 5px;
+  left: -140px;
+}
+
+.header__cart .header__top__right__language:after {
+  width: 0px;
 }

@@ -73,6 +73,7 @@ export class HeaderComponent implements OnInit {
         this.getAllNotificationByUser();
       }, 2000);
     }
+    console.log(this.favoriteProduct);
   }
 
   initModal(model: any, type = null): void {
@@ -113,6 +114,20 @@ export class HeaderComponent implements OnInit {
         }
       }
     }
+  }
+
+  remove(id: number): void {
+    let heart: any = JSON.parse(localStorage.getItem('heart-' + this.currentUser.id));
+    let index: number = -1;
+    for (var i = 0; i < heart.length; i++) {
+      let item: Item = JSON.parse(heart[i]);
+      if (item.product.id == id) {
+        heart.splice(i, 1);
+        break;
+      }
+    }
+    localStorage.setItem('heart-' + this.currentUser.id, JSON.stringify(heart));
+    this.loadFavorite();
   }
 
   updateStatus(notification: any) {

@@ -125,7 +125,8 @@
                     tin</a>
                 </div>
                 <div class="dropdown-item">
-                  <a (click)="initModalChagePass(currentUser, 'add')"><i class="fas fa-unlock-alt"></i> Thay đổi mật khẩu</a>
+                  <a (click)="initModalChagePass(currentUser, 'add')"><i class="fas fa-unlock-alt"></i> Thay đổi mật
+                    khẩu</a>
                 </div>
                 <div class="dropdown-item">
                   <a routerLink="#" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
@@ -167,10 +168,30 @@
       </div>
       <div class="col-lg-1">
         <div class="header__cart">
-          <ul>
-            <li><a routerLink="/favorite"><i class="fa fa-heart"></i> <span>{{this.favoriteProduct.length}}</span></a>
-            </li>
-          </ul>
+          <!--          <div><a routerLink="/favorite"></div>-->
+          <div class="header__top__right__language">
+            <div [routerLink]="['/favorite']">
+              <i style="font-size: 20px; color: red;" class="fa fa-heart"></i>
+              <span>{{this.favoriteProduct.length}}</span>
+            </div>
+            <ul>
+              <li class="row" style="width: 100% !important;" *ngFor="let item of favoriteProduct">
+                <div class="col-md-3" style="padding-right: 0px; margin-right: 0px"><img
+                  style="width: 50px; height: 50px; margin-bottom: 10px; margin-right: 0px; margin-left: 5px"
+                  [src]="item.product.images[0].link"></div>
+                <div class="col-md-6" style="padding-right: 0px; margin-right: 0px;">
+                  <div><span [routerLink]="['/house',item.product.id]">{{item.product.name}}</span></div>
+                  <div><span>{{item.product.price| currency: 'VND'}}</span></div>
+                </div>
+                <div class="col-md-2">
+                  <i class="far fa-trash-alt" style="float: right" (click)="remove(item.product.id)"></i>
+                </div>
+              </li>
+            </ul>
+            <ul *ngIf="!currentUser">
+              <li><a [routerLink]="['/login']" style="font-size: 12px; text-align: center">Đăng nhập</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
