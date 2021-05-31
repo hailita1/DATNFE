@@ -70,10 +70,10 @@
     <div class="row">
       <div class="col-lg-8">
         <div class="product__details__text">
-          <h3 *ngIf="currentUser">{{currentHouse.name}}<a [routerLink]="['/favorite', { id:currentHouse.id }]"
-                                                          class="heart-icon"><span
-            class="icon_heart_alt"></span></a></h3>
           <div class="row">
+            <h3 *ngIf="currentUser">{{currentHouse.name}}<a [routerLink]="['/favorite', { id:currentHouse.id }]"
+                                                            class="heart-icon"><span
+              class="icon_heart_alt"></span></a></h3>
             <div class="col-md-8">
               <div class="rating" style="margin-bottom: 10px">
                 <span><i class="fas fa-star mr-2 {{starAverage>=1?'rated':'unrated'}}"></i></span>
@@ -83,24 +83,20 @@
                 <span><i class="fas fa-star mr-2 {{starAverage==5?'rated':'unrated'}}"></i></span>
                 <span>({{listReview.length}} reviews)</span>
               </div>
-              <h5 *ngIf="currentHouse.discount!=0" style="margin-bottom: 10px; color: red">
-                Giảm {{currentHouse.discount}}%
-                tiền thuê từ chủ nhà
-              </h5>
-              <div class="product__details__price">{{currentHouse.price| currency: 'VND'}} / Ngày</div>
               <p style="margin-bottom: 10px"><b>Địa chỉ:</b> {{currentHouse.address}}</p>
               <p style="margin-bottom: 0px"><b>Số lượt thuê:</b> {{currentHouse.numberHires}} lượt</p>
+              <p style="margin-bottom: 0px"><b>Trạng thái:</b> {{currentHouse.status == true ? "Còn trống" : "Đã đặt"}}
+              </p>
+              <p style="margin-bottom: 0px"><b>Diện tích:</b> {{currentHouse.acreage}} m²</p>
+              <p style="margin-bottom: 0px"><b>Thể loại:</b> {{currentHouse.category.name}}</p>
+              <p style="margin-bottom: 45px"><b>Số lượng phòng: </b>{{currentHouse.numberRoom}} phòng</p>
             </div>
-            <div class="col-md-4" style="margin-bottom: 15px">
+            <div class="col-md-4" style="margin-bottom: 15px;">
               <img [src]="currentHouse.user.avt" alt=""
-                   style="width: 180px; height: 180px; border-radius: 50%">
+                   style="width: 180px; height: 180px; border-radius: 50%;  margin-left: auto; margin-right: auto; display: block">
             </div>
           </div>
           <ul style="margin-top: 0px; padding-top: 0px">
-            <li><b>Trạng thái</b> <span>{{currentHouse.status == true ? "Còn trống" : "Đã đặt"}}</span></li>
-            <li><b>Diện tích</b><span>{{currentHouse.acreage}} m²</span></li>
-            <li><b>Thể loại</b><span>{{currentHouse.category.name}}</span></li>
-            <li style="margin-bottom: 45px"><b>Số lượng phòng</b> <span>{{currentHouse.numberRoom}}</span></li>
             <li>
               <div class="product__details__tab__desc">
                 <h5 style="font-weight: bold">Giới thiệu về {{currentHouse.name}} </h5>
@@ -152,9 +148,19 @@
         </div>
       </div>
       <div class="col-lg-4">
-        <div style="border-radius: 3px; position: -webkit-sticky; position: sticky;top: 100px; padding-top: 50px">
+        <div style="border-radius: 3px; position: -webkit-sticky; position: sticky;top: 10px; padding-top: 50px">
           <div class="product__details__text">
             <div class="checkout__order">
+              <div class="product__discount__item__text" style="padding-top: 0px;">
+                <div class="product__item__price">
+                  <div style="font-size: 30px; color: red">
+                    {{(currentHouse.price - currentHouse.price * (currentHouse.discount / 100)| currency: 'VND')}}
+                    / Ngày <br>
+                    <span style="font-size: 20px"
+                          *ngIf="currentHouse.discount>0">{{currentHouse.price | currency: 'VND'}} / Ngày</span>
+                  </div>
+                </div>
+              </div>
               <b style="font-size: 30px">Thông tin chủ nhà</b>
               <div>
                 <span>Họ và tên : {{currentHouse.user.fullName}}</span>
@@ -165,6 +171,10 @@
                   <span
                     *ngIf="currentHouse.user.telephoneNumber">Số điện thoại : {{currentHouse.user.telephoneNumber}}</span>
                 </div>
+                <h5 *ngIf="currentHouse.discount!=0" style="margin-bottom: 10px; color: red">
+                  Giảm {{currentHouse.discount}}%
+                  tiền thuê từ chủ nhà
+                </h5>
               </div>
               <button *ngIf="currentUser && currentHouse.user.id!==currentUser.id" (click)="createMessage()"
                       [routerLink]="['/checkout']"
@@ -201,61 +211,6 @@
         </div>
       </div>
     </div>
-    <!--    <div class="col-lg-12">-->
-    <!--      <div class="product__details__tab">-->
-    <!--        <ul class="nav nav-tabs" role="tablist">-->
-    <!--          <li class="nav-item">-->
-    <!--            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"-->
-    <!--               aria-selected="true">Mô tả</a>-->
-    <!--          </li>-->
-    <!--          <li class="nav-item">-->
-    <!--            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"-->
-    <!--               aria-selected="false">Đánh giá <span>({{listReview.length}})</span></a>-->
-    <!--          </li>-->
-    <!--        </ul>-->
-    <!--        <div class="tab-content">-->
-    <!--          <div class="tab-pane active" id="tabs-1" role="tabpanel">-->
-    <!--            <div class="product__details__tab__desc">-->
-    <!--              <h5 style="text-align: center; font-weight: bold">Giới thiệu về {{currentHouse.name}} </h5>-->
-    <!--              <p [innerHTML]="currentHouse.description"></p>-->
-    <!--            </div>-->
-    <!--          </div>-->
-    <!--          <div class="tab-pane" id="tabs-3" role="tabpanel">-->
-    <!--            <div class="product__details__tab__desc" *ngIf="listReview.length != 0">-->
-    <!--              <h5 style="text-align: center; font-weight: bold">Đánh giá HomeStay</h5>-->
-    <!--              <div class="post" *ngFor="let review of listReview | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;-->
-    <!--                      let i = index">-->
-    <!--                <div class="user-block">-->
-    <!--                  <img class="img-circle img-bordered-sm" [src]="review.user.avt" alt="user">-->
-    <!--                  <span class="username" *ngIf="review.user != null">-->
-    <!--                          {{review.user.email}}-->
-    <!--                        </span>-->
-    <!--                  <span class="description">{{review.startDate | date: 'dd/MM/yyyy'}}</span>-->
-    <!--                  <span><i class="fas fa-star mr-2 {{review.evaluate>=1?'rated':'unrated'}}"></i></span>-->
-    <!--                  <span><i class="fas fa-star mr-2 {{review.evaluate>=2?'rated':'unrated'}}"></i></span>-->
-    <!--                  <span><i class="fas fa-star mr-2 {{review.evaluate>=3?'rated':'unrated'}}"></i></span>-->
-    <!--                  <span><i class="fas fa-star mr-2 {{review.evaluate>=4?'rated':'unrated'}}"></i></span>-->
-    <!--                  <span><i class="fas fa-star mr-2 {{review.evaluate==5?'rated':'unrated'}}"></i></span>-->
-    <!--                </div>-->
-    <!--                <br>-->
-    <!--                &lt;!&ndash; /.user-block &ndash;&gt;-->
-    <!--                <p [innerHTML]="review.comment"></p>-->
-    <!--              </div>-->
-    <!--            </div>-->
-    <!--            <div class="col-12" style="display: flex; justify-content: center;align-items: center">-->
-    <!--              <ngb-pagination *ngIf="listReview.length>10"-->
-    <!--                              [ellipses]="true" [rotate]="true"-->
-    <!--                              [boundaryLinks]="true" [(page)]="page"-->
-    <!--                              [pageSize]="pageSize"-->
-    <!--                              [collectionSize]="this.listReview.length"></ngb-pagination>-->
-    <!--            </div>-->
-    <!--            <div class="product__details__tab__desc" *ngIf="listReview.length==0">-->
-    <!--              <p>Chưa có đánh giá nào</p>-->
-    <!--            </div>-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </div>-->
   </div>
 </section>
 <section class="related-product">
