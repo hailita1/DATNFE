@@ -78,9 +78,10 @@
                   Giảm {{currentHouse.discount}}%
                   tiền thuê từ chủ nhà
                 </h5>
-                <button *ngIf="currentUser && currentHouse.user.id!==currentUser.id" (click)="createMessage()"
+                <button (click)="modal.dismiss('Cross click')"
+                        *ngIf="currentUser && currentHouse.user.id!==currentUser.id" (click)="createMessage()"
                         [routerLink]="['/checkout']"
-                        style="margin-top: 25px;width: 60%;background: #7fad39;margin-right: auto;margin-left: auto;display: block; font-size: 20px"
+                        style="margin-top: 25px;width: 100%;background: #7fad39;margin-right: auto;margin-left: auto;display: block; font-size: 20px"
                         class="site-btn">Đặt thuê
                 </button>
                 <button (click)="modal.dismiss('Cross click')" *ngIf="!currentUser" [routerLink]="['../../login']"
