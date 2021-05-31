@@ -1707,9 +1707,9 @@ ol {
   margin-bottom: 15px;
 }
 
-.product__details__text p {
-  margin-bottom: 45px;
-}
+/*.product__details__text p {*/
+/*  margin-bottom: 45px;*/
+/*}*/
 
 .product__details__text .primary-btn {
   padding: 16px 28px 14px;
@@ -1725,11 +1725,11 @@ ol {
   background: #f5f5f5;
 }
 
-.product__details__text ul {
-  border-top: 1px solid #ebebeb;
-  padding-top: 40px;
-  margin-top: 50px;
-}
+/*.product__details__text ul {*/
+/*  border-top: 1px solid #ebebeb;*/
+/*  padding-top: 40px;*/
+/*  margin-top: 50px;*/
+/*}*/
 
 .product__details__text ul li {
   font-size: 16px;

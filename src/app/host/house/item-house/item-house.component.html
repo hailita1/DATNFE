@@ -195,8 +195,12 @@
         <div class="col-12">
           <div class="form-group pad">
             <label for="description">Mô tả chi tiết</label>
-            <textarea class="textarea" name="description" formControlName="description" id="description"
-                      style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+            <ckeditor
+              [config]=""
+              debounce="500"
+              formControlName="description"
+              id="description">
+            </ckeditor>
           </div>
           <div *ngIf="submitted && formGroup.controls['description'].errors?.required">
             <div

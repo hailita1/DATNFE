@@ -7,7 +7,6 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HouseService} from '../../../service/house/house.service';
 import {CategoryService} from '../../../service/category/category.service';
 import {UtilitieService} from '../../../service/utilitie/utilitie.service';
-import {environment} from '../../../../environments/environment';
 import * as firebase from 'firebase';
 import {House} from '../../../model/house';
 import {AuthenticationService} from '../../../service/auth/authentication.service';
@@ -57,6 +56,7 @@ export class ItemHouseComponent implements OnInit {
   currentUser: UserToken;
   hasRoleUser = false;
   hasRoleAdmin = false;
+
 
   constructor(private modalService: NgbModal,
               private fb: FormBuilder,
