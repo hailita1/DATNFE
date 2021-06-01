@@ -22,14 +22,19 @@ export class HomepageComponent implements OnInit {
   // @ts-ignore
   @ViewChild(QuickviewComponent) view!: QuickviewComponent;
   listHouse: House[] = [];
+  listHouseFilter: House[] = [];
   listCategory: Category[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
   });
   listHouseLatest: House[] = [];
+  listFilterResult: House[] = [];
   listHouseDiscount: House[] = [];
   listHouseNumberHire: House[] = [];
   currentUser: UserToken;
+  searchKeyWord: any;
+  conditsion: boolean;
+  isCheck = true;
 
   constructor(private houseService: HouseService,
               private categoryService: CategoryService,
@@ -101,6 +106,7 @@ export class HomepageComponent implements OnInit {
 
   getAllHouse() {
     this.houseService.getAllHouseStatusTrue().subscribe(listHouse => {
+      this.listHouseFilter = listHouse;
       if (listHouse.length > 8) {
         for (let i = 0; i < 8; i++) {
           this.listHouse.push(listHouse[i]);
@@ -200,5 +206,30 @@ export class HomepageComponent implements OnInit {
   searchNT() {
     const address = 'Nha Trang';
     this.router.navigate(['../houses'], {queryParams: {address}});
+  }
+
+  filterKeyWord() {
+    var filterResult = [];
+    this.conditsion = true;
+    this.isCheck = false;
+    if (this.searchKeyWord.length === 0) {
+      this.isCheck = true;
+    } else {
+      this.listFilterResult = this.listHouseFilter;
+      var keyWord = this.searchKeyWord.toLowerCase();
+      this.listFilterResult.map(item => {
+        var address = item.address.toLowerCase();
+        if (address.includes(keyWord)) {
+          filterResult.push(item);
+        }
+      });
+    }
+    this.listFilterResult = filterResult;
+    if (this.listFilterResult.length !== 0) {
+      this.conditsion = true;
+    } else {
+      this.conditsion = false;
+    }
+    console.log(this.listFilterResult);
   }
 }

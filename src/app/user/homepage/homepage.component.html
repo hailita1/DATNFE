@@ -17,12 +17,44 @@
         <div class="hero__search">
           <div class="hero__search__form">
             <form [formGroup]="searchForm" (ngSubmit)="search()">
-              <div class="hero__search__categories">
-                Tất cả
-                <span class="arrow_carrot-down"></span>
+              <div>
+                <div class="hero__search__categories">
+                  Tất cả
+                  <span class="arrow_carrot-down"></span>
+                </div>
+                <input (keyup)="filterKeyWord()" [(ngModel)]="searchKeyWord" type="text"
+                       placeholder="Bạn muốn thuê HomeStay ở đâu?" formControlName="name">
+                <button type="submit" class="site-btn">TÌM KIẾM
+                </button>
               </div>
-              <input type="text" placeholder="Bạn muốn thuê HomeStay ở đâu?" formControlName="name">
-              <button type="submit" class="site-btn">TÌM KIẾM</button>
+              <div style="display: block" class="autocomplete-suggestions" [hidden]="isCheck">
+                <p [hidden]="conditsion">Không tìm thấy HomeStay phù hợp !</p>
+                <div class="row" style="width: 100%" *ngFor="let house of listFilterResult">
+                  <div class="col-3">
+                    <img [src]="house.images[0].link" *ngIf="house.images != null" alt="">
+                  </div>
+                  <div class="col-8">
+                    <div style="display: inline-grid; position: relative">
+                      <div class="product__discount__item__text" style="text-align: left; padding-top: 0px">
+                        <h5>{{house.name}}</h5>
+                        <h5>{{house.address}}</h5>
+                        <span>{{house.category.name}}</span>
+                        <div class="product__item__price">
+                          <h5
+                            style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)) | currency: 'VND'}}
+                            / Ngày </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-1">
+                    <i [routerLink]="['../house',house.id]" class="fa fa-eye"
+                       style="text-align: center; margin-top: 40px; color: #0000ff"></i>
+                  </div>
+                  <hr width="80%" size="5px" align="center" color="#cccccc"
+                      style="padding-top: 0px; margin-bottom: 16px"/>
+                </div>
+              </div>
             </form>
           </div>
           <div class="hero__search__phone">
@@ -35,9 +67,7 @@
             </div>
           </div>
         </div>
-        <!--        <div class="hero__item set-bg" [style.background]="'url(../../../assets/static/img/hero/banner.png)'">-->
-        <!--          /div>-->
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="margin-top: 70px">
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img class="d-block w-100" src="../../../assets/static/img/hero/banner.png" alt="First slide">

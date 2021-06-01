@@ -10,7 +10,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './helper/jwt-interceptor';
 import {ErrorInterceptor} from './helper/error-interceptor';
 import {LoginComponent} from './auth/login/login.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RegisterComponent} from './auth/register/register.component';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
@@ -90,7 +90,8 @@ import { QuickviewComponent } from './user/homepage/quickview/quickview.componen
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    SocialLoginModule
+    SocialLoginModule,
+    FormsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
