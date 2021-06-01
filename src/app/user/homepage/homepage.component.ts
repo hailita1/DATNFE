@@ -230,6 +230,5 @@ export class HomepageComponent implements OnInit {
     } else {
       this.conditsion = false;
     }
-    console.log(this.listFilterResult);
   }
 }

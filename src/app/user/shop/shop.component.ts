@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Category} from '../../model/category';
 import {CategoryService} from '../../service/category/category.service';
 import {Product} from '../../model/product';
@@ -13,6 +13,7 @@ import {ShoppingCartService} from '../../service/shopping-cart/shopping-cart.ser
 import {ItemService} from '../../service/item/item.service';
 import {House} from '../../model/house';
 import {HouseService} from '../../service/house/house.service';
+import {QuickviewComponent} from '../homepage/quickview/quickview.component';
 
 declare var $: any;
 declare var Swal: any;
@@ -23,6 +24,8 @@ declare var Swal: any;
   styleUrls: ['./shop.component.css']
 })
 export class ShopComponent implements OnInit {
+  // @ts-ignore
+  @ViewChild(QuickviewComponent) view!: QuickviewComponent;
   listCategory: Category[] = [];
   listHouse: House[] = [];
   searchForm: FormGroup = new FormGroup({
@@ -103,6 +106,10 @@ export class ShopComponent implements OnInit {
     this.getAllHouseSaleOff();
   }
 
+  initModal(model: any): void {
+    this.view.view(model);
+  }
+
   search() {
     const address = this.searchForm.value.name;
     console.log(address);
@@ -163,8 +170,8 @@ export class ShopComponent implements OnInit {
 
   getAllHouseLatest() {
     this.houseService.getAllHouseStatusTrue().subscribe(listProduct => {
-      if (listProduct.length > 2) {
-        for (let i = 0; i < 2; i++) {
+      if (listProduct.length > 3) {
+        for (let i = 0; i < 3; i++) {
           this.listHouseLatest.push(listProduct[i]);
         }
       } else {

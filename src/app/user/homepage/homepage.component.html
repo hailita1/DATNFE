@@ -29,11 +29,12 @@
               </div>
               <div style="display: block" class="autocomplete-suggestions" [hidden]="isCheck">
                 <p [hidden]="conditsion">Không tìm thấy HomeStay phù hợp !</p>
-                <div class="row" style="width: 100%" *ngFor="let house of listFilterResult">
-                  <div class="col-3">
+                <div [routerLink]="['../house',house.id]" class="row" style="width: 100%"
+                     *ngFor="let house of listFilterResult">
+                  <div class="col-4">
                     <img [src]="house.images[0].link" *ngIf="house.images != null" alt="">
                   </div>
-                  <div class="col-8">
+                  <div class="col-8" style="margin-top: 15px">
                     <div style="display: inline-grid; position: relative">
                       <div class="product__discount__item__text" style="text-align: left; padding-top: 0px">
                         <h5>{{house.name}}</h5>
@@ -43,13 +44,10 @@
                           <h5
                             style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)) | currency: 'VND'}}
                             / Ngày </h5>
+                          <span *ngIf="house.discount!=0">{{house.price | currency: 'VND'}} / Ngày</span>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-1">
-                    <i [routerLink]="['../house',house.id]" class="fa fa-eye"
-                       style="text-align: center; margin-top: 40px; color: #0000ff"></i>
                   </div>
                   <hr width="80%" size="5px" align="center" color="#cccccc"
                       style="padding-top: 0px; margin-bottom: 16px"/>
@@ -181,7 +179,9 @@
             <div *ngIf="house.discount!=0" class="product__discount__percent">-{{house.discount}}%</div>
 
             <ul class="product__item__pic__hover">
-              <li><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a></li>
+              <li *ngIf="currentUser"><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a>
+              </li>
+              <li *ngIf="!currentUser"><a [routerLink]="['/login']"><i class="fa fa-heart"></i></a></li>
               <li><a (click)="initModal(house)"><i class="fa fa-eye"></i></a></li>
               <li>
                 <a [routerLink]="['../house',house.id]"><i class="fa fa-info-circle"></i></a>
@@ -218,9 +218,13 @@
                   <img [src]="house.images[0].link" *ngIf="house.images != null"
                        style="width: 110px; height: 110px" alt="">
                 </div>
-                <div class="latest-product__item__text">
-                  <h6>{{house.name}}</h6>
-                  <span>{{house.price | currency: 'VND'}} / Ngày</span>
+                <div class="product__discount__item__text">
+                  <h5>{{house.name}}</h5>
+                  <div
+                    class="product__item__price"><h5
+                    style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)| currency: 'VND')}}
+                    / Ngày</h5>
+                    <span *ngIf="house.discount>0">{{house.price| currency: 'VND'}} / Ngày</span></div>
                 </div>
               </a>
             </div>
@@ -231,9 +235,13 @@
                   <img [src]="house.images[0].link" *ngIf="house.images != null"
                        style="width: 110px; height: 110px" alt="">
                 </div>
-                <div class="latest-product__item__text">
-                  <h6>{{house.name}}</h6>
-                  <span>{{house.price | currency: 'VND'}} / Ngày</span>
+                <div class="product__discount__item__text">
+                  <h5>{{house.name}}</h5>
+                  <div
+                    class="product__item__price"><h5
+                    style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)| currency: 'VND')}}
+                    / Ngày</h5>
+                    <span *ngIf="house.discount>0">{{house.price| currency: 'VND'}} / Ngày</span></div>
                 </div>
               </a>
             </div>
@@ -251,10 +259,14 @@
                   <img [src]="house.images[0].link" *ngIf="house.images != null"
                        style="width: 110px; height: 110px" alt="">
                 </div>
-                <div class="latest-product__item__text">
-                  <h6>{{house.name}}</h6>
-                  <span>{{house.price | currency: 'VND'}} / Ngày</span>
-                  <span>{{house.numberHires}} lượt thuê</span>
+                <div class="product__discount__item__text">
+                  <h5>{{house.name}}</h5>
+                  <div
+                    class="product__item__price"><h5
+                    style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)| currency: 'VND')}}
+                    / Ngày</h5>
+                    <span *ngIf="house.discount>0">{{house.price| currency: 'VND'}} / Ngày</span>
+                    <h5 style="font-weight: bold">{{house.numberHires}} lượt thuê</h5></div>
                 </div>
               </a>
             </div>
@@ -265,10 +277,15 @@
                   <img [src]="house.images[0].link" *ngIf="house.images != null"
                        style="width: 110px; height: 110px" alt="">
                 </div>
-                <div class="latest-product__item__text">
-                  <h6>{{house.name}}</h6>
-                  <span>{{house.price | currency: 'VND'}} / Ngày</span>
-                  <span>{{house.numberHires}} lượt thuê</span>
+                <div class="product__discount__item__text">
+                  <h5>{{house.name}}</h5>
+                  <div
+                    class="product__item__price"><h5
+                    style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)| currency: 'VND')}}
+                    / Ngày</h5>
+                    <span *ngIf="house.discount>0">{{house.price| currency: 'VND'}} / Ngày</span>
+                    <h5 style="font-weight: bold">{{house.numberHires}} lượt thuê</h5>
+                  </div>
                 </div>
               </a>
             </div>
@@ -289,8 +306,9 @@
                 <div class="product__discount__item__text">
                   <h5>{{house.name}}</h5>
                   <div
-                    class="product__item__price">{{(house.price - house.price * (house.discount / 100) | currency: 'VND')}}
-                    / Ngày
+                    class="product__item__price"><h5
+                    style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)| currency: 'VND')}}
+                    / Ngày</h5>
                     <span *ngIf="house.discount>0">{{house.price| currency: 'VND'}} / Ngày</span></div>
                 </div>
               </a>
@@ -304,9 +322,10 @@
                 </div>
                 <div class="product__discount__item__text">
                   <h5>{{house.name}}</h5>
-                  <div
-                    class="product__item__price">{{(house.price - house.price * (house.discount / 100)| currency: 'VND')}}
-                    / Ngày
+                  <div class="product__item__price">
+                    <h5
+                      style="font-weight: bold; color: red">{{(house.price - house.price * (house.discount / 100)| currency: 'VND')}}
+                      / Ngày</h5>
                     <span>{{house.price | currency: 'VND'}} / Ngày</span>
                   </div>
                 </div>

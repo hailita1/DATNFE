@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Category} from '../../model/category';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CategoryService} from '../../service/category/category.service';
@@ -13,6 +13,7 @@ import {UserToken} from '../../model/user-token';
 import {ShoppingCart} from '../../model/shopping-cart';
 import {HouseService} from '../../service/house/house.service';
 import {House} from '../../model/house';
+import {QuickviewComponent} from '../homepage/quickview/quickview.component';
 
 declare var $: any;
 
@@ -22,6 +23,8 @@ declare var $: any;
   styleUrls: ['./category-detail.component.scss']
 })
 export class CategoryDetailComponent implements OnInit {
+  // @ts-ignore
+  @ViewChild(QuickviewComponent) view!: QuickviewComponent;
   listCategory: Category[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
@@ -92,6 +95,9 @@ export class CategoryDetailComponent implements OnInit {
     this.getAllHouseLatest();
   }
 
+  initModal(model: any): void {
+    this.view.view(model);
+  }
 
   getAllCategories() {
     this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {

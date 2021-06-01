@@ -81,7 +81,7 @@
                     </div>
                     <div class="latest-product__item__text">
                       <h6>{{house.name}}</h6>
-                      <span>{{house.price | currency: 'VND'}}</span>
+                      <span style="font-weight: bold; color: red">{{house.price | currency: 'VND'}}</span>
                       <span *ngIf="house.discount!=0">Giảm: {{house.discount}}%</span>
                     </div>
                   </a>
@@ -95,7 +95,7 @@
                     </div>
                     <div class="latest-product__item__text">
                       <h6>{{house.name}}</h6>
-                      <span>{{house.price | currency: 'VND'}}</span>
+                      <span style="font-weight: bold; color: red">{{house.price | currency: 'VND'}}</span>
                       <span *ngIf="house.discount!=0">Giảm: {{house.discount}}%</span>
                     </div>
                   </a>
@@ -143,8 +143,11 @@
                        [style.background]="'url('+house.images[0].link+')'" style="background-size: 270px 270px">
                     <div class="product__discount__percent" *ngIf="house.discount>0">-{{house.discount}} %</div>
                     <ul class="product__item__pic__hover">
-                      <li><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a></li>
-                      <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                      <li *ngIf="currentUser"><a [routerLink]="['/favorite', { id:house.id }]"><i
+                        class="fa fa-heart"></i></a>
+                      </li>
+                      <li *ngIf="!currentUser"><a [routerLink]="['/login']"><i class="fa fa-heart"></i></a></li>
+                      <li><a (click)="initModal(house)"><i class="fa fa-eye"></i></a></li>
                       <li>
                         <a [routerLink]="['../house',house.id]"><i class="fa fa-info-circle"></i></a>
                       </li>
@@ -204,8 +207,11 @@
                    [style.background]="'url('+house.images[0].link+')'" style="background-size: 270px 270px">
                 <div class="product__discount__percent" *ngIf="house.discount>0">-{{house.discount}} %</div>
                 <ul class="product__item__pic__hover">
-                  <li><a [routerLink]="['/favorite', { id:house.id }]"><i class="fa fa-heart"></i></a></li>
-                  <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                  <li *ngIf="currentUser"><a [routerLink]="['/favorite', { id:house.id }]"><i
+                    class="fa fa-heart"></i></a>
+                  </li>
+                  <li *ngIf="!currentUser"><a [routerLink]="['/login']"><i class="fa fa-heart"></i></a></li>
+                  <li><a (click)="initModal(house)"><i class="fa fa-eye"></i></a></li>
                   <li>
                     <a [routerLink]="['../house',house.id]"><i class="fa fa-info-circle"></i></a>
                   </li>
@@ -236,3 +242,4 @@
   </div>
 </section>
 <app-footer></app-footer>
+<app-quickview></app-quickview>
