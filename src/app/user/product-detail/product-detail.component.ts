@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Category} from '../../model/category';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CategoryService} from '../../service/category/category.service';
@@ -12,6 +12,7 @@ import {House} from '../../model/house';
 import {HouseService} from '../../service/house/house.service';
 import {BillService} from '../../service/bill/bill.service';
 import {Bill} from '../../model/bill';
+import {QuickviewComponent} from '../homepage/quickview/quickview.component';
 
 declare var $: any;
 
@@ -21,6 +22,8 @@ declare var $: any;
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
+  // @ts-ignore
+  @ViewChild(QuickviewComponent) view!: QuickviewComponent;
   listCategory: Category[] = [];
   searchForm: FormGroup = new FormGroup({
     name: new FormControl('')
@@ -103,6 +106,10 @@ export class ProductDetailComponent implements OnInit {
       });
     });
     this.getAllCategories();
+  }
+
+  initModal(model: any): void {
+    this.view.view(model);
   }
 
   getAllReview(id) {

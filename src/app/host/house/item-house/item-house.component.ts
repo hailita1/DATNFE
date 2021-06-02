@@ -138,7 +138,6 @@ export class ItemHouseComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
-    console.log(model);
     this.open(this.childModal);
     this.type = type;
     this.model = model;
@@ -220,7 +219,6 @@ export class ItemHouseComponent implements OnInit {
       });
       return;
     }
-    console.log(this.grid.rowData);
     if (this.isEdit) {
       house = {
         name: this.formGroup.get('name').value,
