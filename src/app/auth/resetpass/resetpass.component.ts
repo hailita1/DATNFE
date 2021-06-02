@@ -22,6 +22,7 @@ export class ResetpassComponent implements OnInit {
     terms: new FormControl('')
   });
   isSubmitted = false;
+  isLoading = false;
 
   constructor(private userService: UserService,
               private router: Router) {
@@ -58,6 +59,7 @@ export class ResetpassComponent implements OnInit {
   }
 
   register() {
+    this.isLoading = true;
     this.isSubmitted = true;
     const user: User = {
       email: this.registerForm.value.email
@@ -80,6 +82,7 @@ export class ResetpassComponent implements OnInit {
             title: 'Mật khẩu đã được gửi qua Email của bạn'
           });
         });
+        this.isLoading = false;
       }, () => {
         $(function() {
           const Toast = Swal.mixin({
@@ -94,6 +97,7 @@ export class ResetpassComponent implements OnInit {
             title: 'Lấy lại mật khẩu thất bại'
           });
         });
+        this.isLoading = false;
       });
     } else {
       $(function() {
@@ -109,6 +113,7 @@ export class ResetpassComponent implements OnInit {
           title: 'Bạn hãy địa chỉ Email'
         });
       });
+      this.isLoading = false;
     }
   }
 }
