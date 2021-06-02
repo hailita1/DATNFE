@@ -79,13 +79,13 @@ export class CheckoutComponent implements OnInit {
       });
     });
     this.getAllCategories();
-    this.getAllService();
     this.getBill();
     this.houseService.currentMessage.subscribe(id => this.idHouse = id);
     this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
     if (this.idHouse != null && this.idHouse !== undefined) {
       this.currentHouse = await this.getHouse(this.idHouse);
       this.getAllHouseDayByHouse(this.idHouse);
+      this.getAllService(this.idHouse);
     }
     this.getAllVoucher();
   }
@@ -100,8 +100,11 @@ export class CheckoutComponent implements OnInit {
     return this.houseService.getHouse(id).toPromise();
   }
 
-  getAllService() {
-    this.serviceService.getAllServiceStatusTrue().subscribe(listService => {
+  getAllService(idHouse: number) {
+    const house = {
+      id: idHouse
+    };
+    this.serviceService.getAllServiceStatusTrue(house).subscribe(listService => {
       this.listService = listService;
     });
   }

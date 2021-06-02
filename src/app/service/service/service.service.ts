@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Service} from '../../model/service';
+import {House} from '../../model/house';
 
 const API_URL = `${environment.apiUrl}`;
 
@@ -18,8 +19,8 @@ export class ServiceService {
     return this.http.get<Service[]>(API_URL + '/services');
   }
 
-  getAllServiceStatusTrue(): Observable<Service[]> {
-    return this.http.get<Service[]>(API_URL + '/services/statusTrue');
+  getAllServiceStatusTrue(house: House): Observable<Service[]> {
+    return this.http.post<Service[]>(API_URL + '/services/statusTrue', house);
   }
 
   createService(service: Service): Observable<Service> {

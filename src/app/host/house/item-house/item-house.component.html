@@ -28,7 +28,7 @@
                 *ngIf="formGroup.controls['name'].errors?.required"
                 style="color: red"
               >
-                * Tên nhà không được để trống
+                * Không để trống
               </div>
             </div>
           </div>
@@ -46,149 +46,223 @@
                 *ngIf="formGroup.controls['address'].errors?.required"
                 style="color: red"
               >
-                * Địa chỉ không được để trống
+                * Không để trống
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <label>Diện tích (m²)</label>
-            <input
-              type="number"
-              name=""
-              class="form-control"
-              formControlName="acreage"
-              id="acreage"
-            />
-            <div *ngIf="submitted && formGroup.controls['acreage'].errors?.required">
-              <div
-                *ngIf="formGroup.controls['acreage'].errors?.required"
-                style="color: red"
-              >
-                * Diện tích không được để trống
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="discount">Giảm giá (%)</label>
-            <select class="form-control select2 select2-primary" id="discount" name="discount"
-                    formControlName="discount" data-dropdown-css-class="select2-primary"
-                    style="width: 100%; margin-left: 0px">
-              <option value="0">0</option>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-              <option value="25">25</option>
-              <option value="30">30</option>
-              <option value="35">35</option>
-              <option value="40">40</option>
-            </select>
-            <div *ngIf="submitted && formGroup.controls['discount'].errors?.required">
-              <div
-                *ngIf="formGroup.controls['discount'].errors?.required"
-                style="color: red"
-              >
-                * Giảm giá không được để trống
-              </div>
-            </div>
-          </div>
+          <div class="row">
+            <div class="form-group col-9">
+              <label for="category">Thêm tiện ích cho HomeStay</label>
+              <select class="form-control select2 select2-primary" id="utilitie" name="utilitie"
+                      formControlName="utilitie" data-dropdown-css-class="select2-primary"
+                      style="width: 100%; margin-left: 0px" (ngModelChange)="addUtilitieToHouse($event)">
+                <option *ngFor="let utilitie of listUtilitie"
+                        [value]="utilitie.id">{{utilitie.name}}</option>
+              </select>
 
-          <div class="form-group">
-            <label for="category">Thể loại</label>
-            <select class="form-control select2 select2-primary" id="category" name="category"
-                    formControlName="category" data-dropdown-css-class="select2-primary"
-                    style="width: 100%; margin-left: 0px">
-              <option *ngFor="let category of listCategory" [value]="category.id">{{category.name}}</option>
-            </select>
-            <div *ngIf="submitted && formGroup.controls['category'].errors?.required">
-              <div
-                *ngIf="formGroup.controls['category'].errors?.required"
-                style="color: red"
-              >
-                * Thể loại không được để trống
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="col-6">
-          <div class="form-group">
-            <label>Số lượng phòng</label>
-            <input
-              type="number"
-              name=""
-              class="form-control"
-              formControlName="numberRoom"
-              id="numberRoom"
-            />
-            <div *ngIf="submitted && formGroup.controls['numberRoom'].errors?.required">
-              <div
-                *ngIf="formGroup.controls['numberRoom'].errors?.required"
-                style="color: red"
-              >
-                * Số lượng phòng không được để trống
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Giá thuê (VNĐ / ngày)</label>
-            <input
-              type="number"
-              name=""
-              class="form-control"
-              formControlName="price"
-              id="price"
-            />
-            <div *ngIf="submitted && formGroup.controls['price'].errors?.required">
-              <div
-                *ngIf="formGroup.controls['price'].errors?.required"
-                style="color: red"
-              >
-                * Giá thuê không được để trống
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="category">Thêm tiện ích cho HomeStay</label>
-            <select class="form-control select2 select2-primary" id="utilitie" name="utilitie"
-                    formControlName="utilitie" data-dropdown-css-class="select2-primary"
-                    style="width: 100%; margin-left: 0px" (ngModelChange)="addUtilitieToHouse($event)">
-              <option *ngFor="let utilitie of listUtilitie"
-                      [value]="utilitie.id">{{utilitie.name}}</option>
-            </select>
-
-            <table style="width: 100%; margin-top: 15px" id="list-Utilitie">
-              <tr *ngIf="listUtilitieAddToHouse.length !== 0">
-                <td><label>Danh sách tiện ích</label></td>
-              </tr>
-              <tr
-                *ngFor="
+              <table style="width: 100%; margin-top: 15px" id="list-Utilitie">
+                <tr *ngIf="listUtilitieAddToHouse.length !== 0">
+                  <td><label>Danh sách tiện ích</label></td>
+                </tr>
+                <tr
+                  *ngFor="
                       let utilitieAddToHouse of listUtilitieAddToHouse  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
                       let i = index
                     ">
-                <td><label>- {{utilitieAddToHouse.name}}</label></td>
-                <td style="width: 30px">
-                  <button [hidden]="isInfo" type="button" class="btn btn-block btn-danger" style="color: white"
-                          (click)="delete(utilitieAddToHouse)">
-                    <i class="fas fa-trash"></i>
+                  <td><label>- {{utilitieAddToHouse.name}}</label></td>
+                  <td style="width: 30px">
+                    <button [hidden]="isInfo" type="button" class="btn btn-block btn-danger" style="color: white"
+                            (click)="delete(utilitieAddToHouse)">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              </table>
+              <div class="col-12" style="display: flex; justify-content: center;align-items: center; margin-top: 15px">
+                <ngb-pagination *ngIf="listUtilitieAddToHouse.length"
+                                [ellipses]="true" [rotate]="true"
+                                [boundaryLinks]="true" [(page)]="page"
+                                [pageSize]="pageSize"
+                                [collectionSize]="this.listUtilitieAddToHouse.length"></ngb-pagination>
+              </div>
+              <div *ngIf="submitted && formGroup.controls['utilitie'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['utilitie'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-3">
+              <label for="discount">Giảm giá (%)</label>
+              <select class="form-control select2 select2-primary" id="discount" name="discount"
+                      formControlName="discount" data-dropdown-css-class="select2-primary"
+                      style="width: 100%; margin-left: 0px">
+                <option value="0">0</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+              </select>
+              <div *ngIf="submitted && formGroup.controls['discount'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['discount'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row">
+            <div class="form-group col-6">
+              <label>Giá thuê (VNĐ / ngày)</label>
+              <input
+                type="number"
+                name=""
+                class="form-control"
+                formControlName="price"
+                id="price"
+              />
+              <div *ngIf="submitted && formGroup.controls['price'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['price'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-6">
+              <label>Số lượng phòng</label>
+              <input
+                type="number"
+                name=""
+                class="form-control"
+                formControlName="numberRoom"
+                id="numberRoom"
+              />
+              <div *ngIf="submitted && formGroup.controls['numberRoom'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['numberRoom'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <label>Diện tích (m²)</label>
+              <input
+                type="number"
+                name=""
+                class="form-control"
+                formControlName="acreage"
+                id="acreage"
+              />
+              <div *ngIf="submitted && formGroup.controls['acreage'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['acreage'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-6">
+              <label for="category">Thể loại</label>
+              <select class="form-control select2 select2-primary" id="category" name="category"
+                      formControlName="category" data-dropdown-css-class="select2-primary"
+                      style="width: 100%; margin-left: 0px">
+                <option *ngFor="let category of listCategory" [value]="category.id">{{category.name}}</option>
+              </select>
+              <div *ngIf="submitted && formGroup.controls['category'].errors?.required">
+                <div
+                  *ngIf="formGroup.controls['category'].errors?.required"
+                  style="color: red"
+                >
+                  * Không để trống
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="category">Thêm dịch vụ cho HomeStay</label>
+            <button
+              type="button"
+              (click)="addMeta($event)"
+              style="float: right; margin-bottom: 10px; border-radius: 5px"
+              class="btn-success"
+              [hidden]="isInfo"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+            <table id="basicTable">
+              <tbody>
+              <tr
+                *ngFor="let data of grid.rowData | slice: (page - 1) * pageSizeImage:(page - 1) * pageSizeImage + pageSizeImage; let i = index">
+                <td><input
+                  [disabled]="isInfo"
+                  [ngModelOptions]="{ standalone: true }"
+                  type="text"
+                  [(ngModel)]="data.name"
+                  placeholder="Tên dịch vụ"
+                />
+                  <div *ngIf="submitted">
+                    <div
+                      *ngIf="data.validName"
+                      style="color: red"
+                    >
+                      * Không để trống
+                    </div>
+                  </div>
+                </td>
+                <td><input
+                  [disabled]="isInfo"
+                  [ngModelOptions]="{ standalone: true }"
+                  type="number"
+                  [(ngModel)]="data.price"
+                  placeholder="Giá dịch vụ"
+                />
+                  <div *ngIf="submitted">
+                    <div
+                      *ngIf="data.validPrice"
+                      style="color: red"
+                    >
+                      * Không để trống
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <button
+                    [disabled]="isInfo"
+                    type="button"
+                    class="btn btn-danger"
+                    (click)="btnDeleteClickedHandler(data)"
+                    title="Xóa"
+                    [hidden]="isInfo"
+                  >
+                    <i class="fas fa-trash-alt"></i>
                   </button>
                 </td>
               </tr>
+              </tbody>
             </table>
-            <div class="col-12" style="display: flex; justify-content: center;align-items: center">
-              <ngb-pagination *ngIf="listUtilitieAddToHouse.length"
+            <div class="col-12" style="display: flex; justify-content: center;align-items: center; margin-top: 15px">
+              <ngb-pagination *ngIf="grid.rowData.length "
                               [ellipses]="true" [rotate]="true"
                               [boundaryLinks]="true" [(page)]="page"
-                              [pageSize]="pageSize"
-                              [collectionSize]="this.listUtilitieAddToHouse.length"></ngb-pagination>
-            </div>
-            <div *ngIf="submitted && formGroup.controls['utilitie'].errors?.required">
-              <div
-                *ngIf="formGroup.controls['utilitie'].errors?.required"
-                style="color: red"
-              >
-                * Tiện ích không được để trống
-              </div>
+                              [pageSize]="pageSizeImage"
+                              [collectionSize]="grid.rowData.length"></ngb-pagination>
             </div>
           </div>
         </div>
@@ -207,7 +281,7 @@
               *ngIf="formGroup.controls['description'].errors?.required"
               style="color: red"
             >
-              * Mô tả chi tiết không được để trống
+              * Không để trống
             </div>
           </div>
         </div>

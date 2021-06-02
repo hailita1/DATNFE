@@ -19,4 +19,5 @@ export interface House {
   category?: any;
   user?: any;
   utilitie?: any[];
+  services?: any[];
 }

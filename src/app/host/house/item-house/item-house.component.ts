@@ -56,7 +56,9 @@ export class ItemHouseComponent implements OnInit {
   currentUser: UserToken;
   hasRoleUser = false;
   hasRoleAdmin = false;
-
+  grid: any = {
+    rowData: []
+  };
 
   constructor(private modalService: NgbModal,
               private fb: FormBuilder,
@@ -114,7 +116,7 @@ export class ItemHouseComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
-    this.arrCheck = this.listHouse;
+    console.log(model);
     this.open(this.childModal);
     this.type = type;
     this.model = model;
@@ -135,7 +137,9 @@ export class ItemHouseComponent implements OnInit {
       });
     } else {
       this.listUtilitieAddToHouse = this.model.utilitie;
+      this.grid.rowData = this.model.services;
       this.urlPicture = this.model.images;
+      this.listUtilitieAddToHouse = this.model.utilitie;
       for (var i = 0; i < this.urlPicture.length; i++) {
         this.imageObject[i] = {
           image: this.urlPicture[i].link,
@@ -177,7 +181,7 @@ export class ItemHouseComponent implements OnInit {
   save() {
     let house: any;
     this.submitted = true;
-    if (this.formGroup.invalid) {
+    if (this.formGroup.invalid && this.validCategoryMeta() === false) {
       $(function() {
         const Toast = Swal.mixin({
           toast: true,
@@ -193,7 +197,7 @@ export class ItemHouseComponent implements OnInit {
       });
       return;
     }
-
+    console.log(this.grid.rowData);
     if (this.isEdit) {
       house = {
         name: this.formGroup.get('name').value,
@@ -212,7 +216,8 @@ export class ItemHouseComponent implements OnInit {
           id: this.idUser
         },
         id: this.model.id,
-        images: this.urlPicture
+        images: this.urlPicture,
+        services: this.grid.rowData
       };
     } else {
       house = {
@@ -232,7 +237,8 @@ export class ItemHouseComponent implements OnInit {
         user: {
           id: this.idUser
         },
-        images: this.urlPicture
+        images: this.urlPicture,
+        services: this.grid.rowData
       };
     }
     if (this.isAdd) {
@@ -251,6 +257,7 @@ export class ItemHouseComponent implements OnInit {
               title: 'Thêm mới thành công'
             });
           });
+          // this.grid.rowData = [];
           this.modalReference.dismiss();
         },
         err => {
@@ -410,5 +417,46 @@ export class ItemHouseComponent implements OnInit {
 
   onClick() {
     myTest();
+  }
+
+  addMeta(event: any) {
+    const model = {
+      name: '',
+      price: '',
+      status: true,
+      validName: false,
+      validPrice: false,
+    };
+    this.grid.rowData.push(model);
+  }
+
+  btnDeleteClickedHandler(event: any) {
+    const indexOfItem = this.grid.rowData.indexOf(event);
+    this.grid.rowData.splice(indexOfItem, 1);
+  }
+
+  validCategoryMeta() {
+    let flag = false;
+    this.grid.rowData.forEach((item) => {
+      if (item.name === '' || item.name === null || item.name === undefined) {
+        item.validName = true;
+        flag = true;
+      } else {
+        item.validName = false;
+        flag = false;
+      }
+
+      if (item.price === '' || item.price === null || item.price === undefined) {
+        item.validPrice = true;
+        flag = true;
+      } else {
+        item.validPrice = false;
+        flag = false;
+      }
+    });
+    if (flag === false) {
+      return true;
+    }
+    return false;
   }
 }

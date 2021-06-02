@@ -73,7 +73,6 @@ export class HeaderComponent implements OnInit {
         this.getAllNotificationByUser();
       }, 2000);
     }
-    console.log(this.favoriteProduct);
   }
 
   initModal(model: any, type = null): void {
