@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ItemProductComponent} from './list-product/item-product/item-product.component';
 import {NgbModalModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgImageSliderModule} from 'ng-image-slider';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
 
 @NgModule({
@@ -13,15 +14,16 @@ import {NgImageSliderModule} from 'ng-image-slider';
     ListProductComponent,
     ItemProductComponent,
   ],
-    imports: [
-        CommonModule,
-        ProductRoutingModule,
-        ReactiveFormsModule,
-        NgbModalModule,
-        FormsModule,
-        NgbPaginationModule,
-        NgImageSliderModule
-    ]
+  imports: [
+    CommonModule,
+    ProductRoutingModule,
+    ReactiveFormsModule,
+    NgbModalModule,
+    FormsModule,
+    NgbPaginationModule,
+    NgImageSliderModule,
+    CKEditorModule
+  ]
 })
 export class ProductModule {
 }

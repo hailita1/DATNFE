@@ -108,46 +108,54 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="form-group">
-              <label>Thêm dịch vụ trả phí</label>
-              <select class="form-control select2 select2-primary" id="service" name="service"
-                      formControlName="service" data-dropdown-css-class="select2-primary"
-                      style="width: 100%; margin-left: 0px" (ngModelChange)="addServiceToHouse($event)">
-                <option *ngFor="let service of listService"
-                        [value]="service.id">{{service.name}}, giá {{service.price |currency: 'VND'}}, thời gian sử
-                  dụng: {{service.times}}</option>
-              </select>
+            <div class="row">
+              <div class="form-group col-6">
+                <div class="checkout__input">
+                  <p>Thêm dịch vụ trả phí<span>*</span></p>
 
-              <table style="width: 100%; margin-top: 15px" id="list-Utilitie">
-                <tr *ngIf="listServiceOfHouse.length !== 0">
-                  <td><label>Danh sách các dịch vụ bạn muốn sử dụng</label></td>
-                </tr>
-                <tr
-                  *ngFor="
+                  <select class="form-control select2 select2-primary" id="service" name="service"
+                          formControlName="service" data-dropdown-css-class="select2-primary"
+                          style="width: 100%; margin-left: 0px;
+    height: 46px;
+    border: 1px solid #ebebeb;
+    padding-left: 20px;
+    font-size: 16px;
+    color: #b2b2b2;
+    border-radius: 4px" (ngModelChange)="addServiceToHouse($event)">
+                    <option *ngFor="let service of listService"
+                            [value]="service.id">{{service.name}}, giá {{service.price |currency: 'VND'}}</option>
+                  </select>
+                </div>
+                <table style="width: 100%; margin-top: 15px" id="list-Utilitie">
+                  <tr *ngIf="listServiceOfHouse.length !== 0">
+                    <td><label>Danh sách các dịch vụ bạn muốn sử dụng</label></td>
+                  </tr>
+                  <tr
+                    *ngFor="
                       let service of listServiceOfHouse  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
                       let i = index
                     ">
-                  <td><label>- {{service.name}}, giá {{service.price |currency: 'VND'}}, thời gian sử
-                    dụng {{service.times}}</label></td>
-                  <td style="width: 30px">
-                    <button type="button" class="btn btn-block btn-danger" style="color: white"
-                            (click)="delete(i)">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              </table>
-              <div class="col-12" style="display: flex; justify-content: center;align-items: center">
-                <ngb-pagination *ngIf="listServiceOfHouse.length"
-                                [ellipses]="true" [rotate]="true"
-                                [boundaryLinks]="true" [(page)]="page"
-                                [pageSize]="pageSize"
-                                [collectionSize]="this.listServiceOfHouse.length"></ngb-pagination>
+                    <td><label>- {{service.name}}, giá {{service.price |currency: 'VND'}}</label></td>
+                    <td style="width: 30px">
+                      <button type="button" class="btn btn-block btn-danger" style="color: white"
+                              (click)="delete(i)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </table>
+                <div class="col-12" style="display: flex; justify-content: center;align-items: center">
+                  <ngb-pagination *ngIf="listServiceOfHouse.length"
+                                  [ellipses]="true" [rotate]="true"
+                                  [boundaryLinks]="true" [(page)]="page"
+                                  [pageSize]="pageSize"
+                                  [collectionSize]="this.listServiceOfHouse.length"></ngb-pagination>
+                </div>
               </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="checkout__input">
-                    <p>Nhập mã giảm giá<span>*</span></p>
+              <div class="col-4">
+                <div class="checkout__input">
+                  <p>Nhập mã giảm giá<span>*</span></p>
+                  <div class="row">
                     <input class="col-md-8" type="text" formControlName="voucher" placeholder="Nhập mã giảm giá">
                     <button style="border-radius: 10px; width: 70px; margin-left: 20px; padding-left: 28px"
                             (click)="checkVoucher()"
@@ -161,19 +169,18 @@
           <div class="col-lg-4 col-md-6">
             <div class="checkout__order">
               <h4>Đơn đặt của bạn</h4>
-              <div class="checkout__order__products">Dịch vụ <span>Giá</span></div>
-              <div class="checkout__order__subtotal">Giá thuê theo ngày
+              <div class="checkout__order__products">Giá thuê theo ngày
                 <span>{{currentHouse.price |currency: 'VND'}}</span></div>
               <div class="checkout__order__subtotal">Giảm giá <span>{{currentHouse.discount}} %</span></div>
               <div *ngIf="voucher">
-                <div class="checkout__order__subtotal" *ngIf="voucher.typeVoucher == '0'">Voucher
+                <div class="checkout__order__products" *ngIf="voucher.typeVoucher == '0'">Voucher
                   <span>{{voucher.discount |currency: 'VND'}} </span>
                 </div>
                 <div class="checkout__order__subtotal" *ngIf="voucher.typeVoucher == '1'">Voucher
                   <span>{{voucher.discount}} %</span>
                 </div>
               </div>
-              <div class="checkout__order__subtotal">Tổng tiền dịch vụ <span>{{priceService |currency: 'VND'}}</span>
+              <div class="checkout__order__products">Tổng tiền dịch vụ <span>{{priceService |currency: 'VND'}}</span>
               </div>
               <div class="checkout__order__subtotal">Tiền thuê HomeStay
                 <span>{{this.priceHomStay |currency: 'VND'}}</span></div>

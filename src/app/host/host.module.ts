@@ -15,21 +15,21 @@ import {UtilitiesItemComponent} from './utilities/utilities-item/utilities-item.
 import {ItemHouseComponent} from './house/item-house/item-house.component';
 import {NgImageSliderModule} from 'ng-image-slider';
 import {ItemBillComponent} from './bill/item-bill/item-bill.component';
-import {CKEditorModule} from 'ng2-ckeditor';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 
 
 @NgModule({
   declarations: [HouseComponent, CategoryComponent, ServiceComponent, BillComponent, UtilitiesComponent, CategoryItemComponent, ServiceItemComponent, UtilitiesItemComponent, ItemHouseComponent, ItemBillComponent],
-    imports: [
-        CommonModule,
-        HostRoutingModule,
-        ReactiveFormsModule,
-        FormsModule,
-        NgbModalModule,
-        NgbPaginationModule,
-        NgImageSliderModule,
-        CKEditorModule
-    ]
+  imports: [
+    CommonModule,
+    HostRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgbModalModule,
+    NgbPaginationModule,
+    NgImageSliderModule,
+    CKEditorModule
+  ]
 })
 export class HostModule {
 }

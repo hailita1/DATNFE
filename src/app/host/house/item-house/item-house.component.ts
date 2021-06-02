@@ -11,6 +11,7 @@ import * as firebase from 'firebase';
 import {House} from '../../../model/house';
 import {AuthenticationService} from '../../../service/auth/authentication.service';
 import {UserToken} from '../../../model/user-token';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 declare const myTest: any;
 declare var $: any;
@@ -42,22 +43,43 @@ export class ItemHouseComponent implements OnInit {
   urlPicture: any[] = [];
   isLoading = false;
   idUser: any;
-  page = 1;
-  pageSize = 2;
-  pageImage = 1;
-  pageSizeImage = 4;
   model: any;
   submitted = false;
   arrCheck = [];
   formGroup: FormGroup;
   formName = 'HomeStay';
   imageObject: Array<object> = [];
-
   currentUser: UserToken;
   hasRoleUser = false;
   hasRoleAdmin = false;
   grid: any = {
     rowData: []
+  };
+  pageUtilitie = 1;
+  pageSizeUtilitie = 2;
+  pageImage = 1;
+  pageSizeImage = 4;
+  pageService = 1;
+  pageSizeService = 4;
+  public Editor = ClassicEditor;
+  config = {
+    toolbar: [
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      'Alignment',
+      'Autoformat',
+      'BlockQuote',
+      'CKFinder',
+      'CKFinderUploadAdapter',
+      'Image',
+      'Link',
+      'Table',
+      'TableToolbar',
+      'TextTransformation',
+      'MediaEmbed',
+    ],
   };
 
   constructor(private modalService: NgbModal,
@@ -123,6 +145,7 @@ export class ItemHouseComponent implements OnInit {
     this.submitted = false;
     this.updateFormType(type);
     if (model.id === null || model.id === undefined) {
+      this.grid.rowData = [];
       this.formGroup = this.fb.group({
         name: [{value: null, disabled: this.isInfo}, [Validators.required]],
         address: [{value: null, disabled: this.isInfo}, [Validators.required]],

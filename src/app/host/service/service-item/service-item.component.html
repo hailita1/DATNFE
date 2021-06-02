@@ -29,22 +29,6 @@
             * Tên dịch vụ không được để trống
           </div>
         </div>
-        <label>Thời gian sử dụng</label>
-        <input
-          type="text"
-          name=""
-          class="form-control"
-          formControlName="times"
-          id="times"
-        />
-        <div *ngIf="submitted && formGroup.controls['times'].errors?.required">
-          <div
-            *ngIf="formGroup.controls['times'].errors?.required"
-            style="color: red"
-          >
-            * Thời gian sử dụng dịch vụ không được để trống
-          </div>
-        </div>
         <label>Giá tiền dịch vụ ( VNĐ )</label>
         <input
           type="number"

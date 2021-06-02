@@ -11,6 +11,7 @@ import {AuthenticationService} from '../../../service/auth/authentication.servic
 import {UserToken} from '../../../model/user-token';
 import {House} from '../../../model/house';
 import * as firebase from 'firebase';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 declare const myTest: any;
 declare var $: any;
@@ -42,10 +43,6 @@ export class ItemProductComponent implements OnInit {
   urlPicture: any[] = [];
   isLoading = false;
   idUser: any;
-  page = 1;
-  pageSize = 2;
-  pageImage = 1;
-  pageSizeImage = 4;
   model: any;
   submitted = false;
   arrCheck = [];
@@ -56,6 +53,36 @@ export class ItemProductComponent implements OnInit {
   currentUser: UserToken;
   hasRoleUser = false;
   hasRoleAdmin = false;
+  grid: any = {
+    rowData: []
+  };
+  pageUtilitie = 1;
+  pageSizeUtilitie = 2;
+  pageImage = 1;
+  pageSizeImage = 4;
+  pageService = 1;
+  pageSizeService = 4;
+  public Editor = ClassicEditor;
+  config = {
+    toolbar: [
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      'Alignment',
+      'Autoformat',
+      'BlockQuote',
+      'CKFinder',
+      'CKFinderUploadAdapter',
+      'Image',
+      'Link',
+      'Table',
+      'TableToolbar',
+      'TextTransformation',
+      'MediaEmbed',
+    ],
+  };
+
 
   constructor(private modalService: NgbModal,
               private fb: FormBuilder,
@@ -95,7 +122,7 @@ export class ItemProductComponent implements OnInit {
         this.isInfo = false;
         this.isEdit = true;
         this.isAdd = false;
-        this.title = `Xác nhận thông tin ${this.formName}`;
+        this.title = `Chỉnh sửa thông tin ${this.formName}`;
         break;
       default:
         this.isInfo = false;
@@ -113,13 +140,14 @@ export class ItemProductComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
-    this.arrCheck = this.listHouse;
+    console.log(model);
     this.open(this.childModal);
     this.type = type;
     this.model = model;
     this.submitted = false;
     this.updateFormType(type);
     if (model.id === null || model.id === undefined) {
+      this.grid.rowData = [];
       this.formGroup = this.fb.group({
         name: [{value: null, disabled: this.isInfo}, [Validators.required]],
         address: [{value: null, disabled: this.isInfo}, [Validators.required]],
@@ -133,8 +161,11 @@ export class ItemProductComponent implements OnInit {
         status: [{value: false, disabled: true}],
       });
     } else {
+      this.imageObject = [];
       this.listUtilitieAddToHouse = this.model.utilitie;
+      this.grid.rowData = this.model.services;
       this.urlPicture = this.model.images;
+      this.listUtilitieAddToHouse = this.model.utilitie;
       for (var i = 0; i < this.urlPicture.length; i++) {
         this.imageObject[i] = {
           image: this.urlPicture[i].link,
@@ -147,11 +178,11 @@ export class ItemProductComponent implements OnInit {
         description: [{value: this.model.description, disabled: true}, [Validators.required]],
         numberRoom: [{value: this.model.numberRoom, disabled: true}, [Validators.required]],
         price: [{value: this.model.price, disabled: true}, [Validators.required]],
+        discount: [{value: this.model.discount, disabled: true}, [Validators.required]],
         category: [{value: this.model.category.id, disabled: true}, [Validators.required]],
         utilitie: [{value: this.model.utilitie, disabled: true}, [Validators.required]],
-        discount: [{value: this.model.discount, disabled: true}, [Validators.required]],
         acreage: [{value: this.model.acreage, disabled: true}, [Validators.required]],
-        status: [{value: this.model.status, disabled: this.isInfo}]
+        status: [{value: this.model.status, disabled: false}]
       });
     }
   }
@@ -176,7 +207,7 @@ export class ItemProductComponent implements OnInit {
   save() {
     let house: any;
     this.submitted = true;
-    if (this.formGroup.invalid) {
+    if (this.formGroup.invalid && this.validCategoryMeta() === false) {
       $(function() {
         const Toast = Swal.mixin({
           toast: true,
@@ -192,7 +223,7 @@ export class ItemProductComponent implements OnInit {
       });
       return;
     }
-
+    console.log(this.grid.rowData);
     if (this.isEdit) {
       house = {
         name: this.formGroup.get('name').value,
@@ -200,9 +231,9 @@ export class ItemProductComponent implements OnInit {
         description: this.formGroup.get('description').value,
         acreage: this.formGroup.get('acreage').value,
         numberRoom: this.formGroup.get('numberRoom').value,
+        discount: this.formGroup.get('discount').value,
         status: this.formGroup.get('status').value,
         price: this.formGroup.get('price').value,
-        discount: this.formGroup.get('discount').value,
         category: {
           id: this.formGroup.get('category').value
         },
@@ -211,7 +242,8 @@ export class ItemProductComponent implements OnInit {
           id: this.idUser
         },
         id: this.model.id,
-        images: this.urlPicture
+        images: this.urlPicture,
+        services: this.grid.rowData
       };
     } else {
       house = {
@@ -220,9 +252,10 @@ export class ItemProductComponent implements OnInit {
         description: this.formGroup.get('description').value,
         acreage: this.formGroup.get('acreage').value,
         numberRoom: this.formGroup.get('numberRoom').value,
+        discount: this.formGroup.get('discount').value,
         status: this.formGroup.get('status').value,
         price: this.formGroup.get('price').value,
-        discount: this.formGroup.get('discount').value,
+        numberHires: 0,
         category: {
           id: this.formGroup.get('category').value
         },
@@ -230,11 +263,11 @@ export class ItemProductComponent implements OnInit {
         user: {
           id: this.idUser
         },
-        images: this.urlPicture
+        images: this.urlPicture,
+        services: this.grid.rowData
       };
     }
     if (this.isAdd) {
-      console.log(house);
       this.houseService.createHouse(house).subscribe(res => {
           this.closeModalReloadData();
           $(function() {
@@ -250,6 +283,7 @@ export class ItemProductComponent implements OnInit {
               title: 'Thêm mới thành công'
             });
           });
+          // this.grid.rowData = [];
           this.modalReference.dismiss();
         },
         err => {
@@ -349,7 +383,8 @@ export class ItemProductComponent implements OnInit {
   }
 
   delete(id) {
-    this.listUtilitieAddToHouse.splice(id, 1);
+    const indexOf = this.listUtilitieAddToHouse.indexOf(id);
+    this.listUtilitieAddToHouse.splice(indexOf, 1);
   }
 
   // Upload avt
@@ -359,16 +394,15 @@ export class ItemProductComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.myItems.push(files[i]);
     }
-    this.uploadAll();
+    this.uploadAll(this.myItems);
   }
 
-  uploadAll() {
+  uploadAll(imge) {
     this.isLoading = true;
     Promise.all(
-      this.myItems.map(file => this.putStorageItem(file))
+      imge.map(file => this.putStorageItem(file))
     )
       .then((url) => {
-        console.log(`All success`, url);
         this.arrayPicture = url;
         for (var i = 0; i < this.arrayPicture.length; i++) {
           this.urlPicture.push(this.arrayPicture[i]);
@@ -380,7 +414,6 @@ export class ItemProductComponent implements OnInit {
         this.isLoading = false;
       })
       .catch((error) => {
-        console.log(`Some failed: `, error.message);
         this.isLoading = false;
       });
   }
@@ -404,10 +437,52 @@ export class ItemProductComponent implements OnInit {
   }
 
   pushDeleteImage(i) {
-    this.urlPicture.splice(i, 1);
+    const indexOf = this.urlPicture.indexOf(i);
+    this.urlPicture.splice(indexOf, 1);
   }
 
   onClick() {
     myTest();
+  }
+
+  addMeta(event: any) {
+    const model = {
+      name: '',
+      price: '',
+      status: true,
+      validName: false,
+      validPrice: false,
+    };
+    this.grid.rowData.push(model);
+  }
+
+  btnDeleteClickedHandler(event: any) {
+    const indexOfItem = this.grid.rowData.indexOf(event);
+    this.grid.rowData.splice(indexOfItem, 1);
+  }
+
+  validCategoryMeta() {
+    let flag = false;
+    this.grid.rowData.forEach((item) => {
+      if (item.name === '' || item.name === null || item.name === undefined) {
+        item.validName = true;
+        flag = true;
+      } else {
+        item.validName = false;
+        flag = false;
+      }
+
+      if (item.price === '' || item.price === null || item.price === undefined) {
+        item.validPrice = true;
+        flag = true;
+      } else {
+        item.validPrice = false;
+        flag = false;
+      }
+    });
+    if (flag === false) {
+      return true;
+    }
+    return false;
   }
 }

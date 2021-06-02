@@ -66,7 +66,7 @@
                 </tr>
                 <tr
                   *ngFor="
-                      let utilitieAddToHouse of listUtilitieAddToHouse  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
+                      let utilitieAddToHouse of listUtilitieAddToHouse  | slice: (pageUtilitie-1) * pageSizeUtilitie : (pageUtilitie-1) * pageSizeUtilitie + pageSizeUtilitie;
                       let i = index
                     ">
                   <td><label>- {{utilitieAddToHouse.name}}</label></td>
@@ -81,8 +81,8 @@
               <div class="col-12" style="display: flex; justify-content: center;align-items: center; margin-top: 15px">
                 <ngb-pagination *ngIf="listUtilitieAddToHouse.length"
                                 [ellipses]="true" [rotate]="true"
-                                [boundaryLinks]="true" [(page)]="page"
-                                [pageSize]="pageSize"
+                                [boundaryLinks]="true" [(page)]="pageUtilitie"
+                                [pageSize]="pageSizeUtilitie"
                                 [collectionSize]="this.listUtilitieAddToHouse.length"></ngb-pagination>
               </div>
               <div *ngIf="submitted && formGroup.controls['utilitie'].errors?.required">
@@ -209,7 +209,7 @@
             <table id="basicTable">
               <tbody>
               <tr
-                *ngFor="let data of grid.rowData | slice: (page - 1) * pageSizeImage:(page - 1) * pageSizeImage + pageSizeImage; let i = index">
+                *ngFor="let data of grid.rowData | slice: (pageService - 1) * pageSizeService:(pageService - 1) * pageSizeService + pageSizeService; let i = index">
                 <td><input
                   [disabled]="isInfo"
                   [ngModelOptions]="{ standalone: true }"
@@ -260,7 +260,7 @@
             <div class="col-12" style="display: flex; justify-content: center;align-items: center; margin-top: 15px">
               <ngb-pagination *ngIf="grid.rowData.length "
                               [ellipses]="true" [rotate]="true"
-                              [boundaryLinks]="true" [(page)]="page"
+                              [boundaryLinks]="true" [(page)]="pageService"
                               [pageSize]="pageSizeImage"
                               [collectionSize]="grid.rowData.length"></ngb-pagination>
             </div>
@@ -269,11 +269,8 @@
         <div class="col-12">
           <div class="form-group pad">
             <label for="description">Mô tả chi tiết</label>
-            <ckeditor
-              [config]=""
-              debounce="500"
-              formControlName="description"
-              id="description">
+            <ckeditor [editor]="Editor" formControlName="description"
+                      id="description">>
             </ckeditor>
           </div>
           <div *ngIf="submitted && formGroup.controls['description'].errors?.required">
