@@ -46,7 +46,7 @@
             />
           </div>
           <div class="form-group">
-            <label>Tổng tiền ( VNĐ )</label>
+            <label>Tổng tiền ( VND )</label>
             <input
               type="text"
               name=""
@@ -99,7 +99,7 @@
                       let service of listService  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
                       let i = index
                     ">
-              <td><label>- {{service.name}}, giá {{service.price}}</label></td>
+              <td><label>- {{service.name}}, giá {{service.price | currency: 'VND'}}</label></td>
             </tr>
           </table>
           <div class="col-12" style="display: flex; justify-content: center;align-items: center">
@@ -159,7 +159,7 @@
       <div class="in-bao-gia-title">HÓA ĐƠN ĐẶT THUÊ HOMESTAY VÀ DỊCH VỤ</div>
       <div class="date-currency">
         <p>Ngày xuất hóa đơn: <span id="price_time">{{currentDate | date: 'dd/MM/yyyy HH:mm:ss'}}</span></p>
-        <p>Đơn vị tính: <span class="currency">VNĐ</span></p>
+        <p>Đơn vị tính: <span class="currency">VND</span></p>
       </div>
       <div class="in-bao-gia-title"><h3>HomeStay</h3></div>
       <table class="list_table">
@@ -179,7 +179,7 @@
           <td style="text-align: center">{{model.startDate | date:'dd/MM/yyyy' }}</td>
           <td style="text-align: center">{{model.endDate | date:'dd/MM/yyyy' }}</td>
           <td style="text-align: center"> {{model.houseBill.discount}}%</td>
-          <td style="text-align: center">{{model.houseBill.price}} VNĐ / Ngày</td>
+          <td style="text-align: center">{{model.houseBill.price | currency: 'VND'}} / đêm</td>
           <td style="text-align: center">
             {{(model.houseBill.price)}}
           </td>
@@ -215,7 +215,7 @@
           <td style="text-align: center" colspan="1"></td>
           <td style="text-align: center" colspan="-1"><strong>Tổng tiền</strong></td>
           <td style="text-align: center"><strong
-            style="color: red;">{{priceService}}đ</strong></td>
+            style="color: red;">{{priceService | currency:'VND'}}</strong></td>
         </tr>
         </tbody>
       </table>

@@ -43,6 +43,7 @@ import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, Soc
 import {ResetpassComponent} from './auth/resetpass/resetpass.component';
 import {ChagepasswordComponent} from './shared/header/chagepassword/chagepassword.component';
 import { QuickviewComponent } from './user/homepage/quickview/quickview.component';
+import {NgxPayPalModule} from 'ngx-paypal';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { QuickviewComponent } from './user/homepage/quickview/quickview.componen
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    NgxPayPalModule,
     NgImageSliderModule,
     NgbPaginationModule,
     NgbModalModule,

@@ -62,9 +62,9 @@
                 <div class="product__item__price">
                   <div style="font-size: 30px; color: red">
                     {{(currentHouse.price - currentHouse.price * (currentHouse.discount / 100)| currency: 'VND')}}
-                    / Ngày <br>
+                    / đêm <br>
                     <span style="font-size: 20px"
-                          *ngIf="currentHouse.discount>0">{{currentHouse.price | currency: 'VND'}} / Ngày</span>
+                          *ngIf="currentHouse.discount>0">{{currentHouse.price | currency: 'VND'}} / đêm</span>
                   </div>
                 </div>
               </div>

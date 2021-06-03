@@ -15,6 +15,7 @@ import {Bill} from '../../model/bill';
 import {HouseDay} from '../../model/houseDay';
 import {Voucher} from '../../model/voucher';
 import {VoucherService} from '../../service/voucher/voucher.service';
+import {ICreateOrderRequest, IPayPalConfig, ITransactionItem} from 'ngx-paypal';
 
 declare var $: any;
 declare var Swal: any;
@@ -25,6 +26,7 @@ declare var Swal: any;
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
+  public payPalConfig?: IPayPalConfig;
   listCategory: Category[] = [];
   listService: Service[] = [];
   bill: Bill;
@@ -41,8 +43,6 @@ export class CheckoutComponent implements OnInit {
     service: new FormControl(''),
   });
   items: Item[] = [];
-  priceService = 0;
-  total = 0;
   currentUser: UserToken;
   isSubmitted = false;
   idHouse: any;
@@ -55,9 +55,12 @@ export class CheckoutComponent implements OnInit {
   isLoading = false;
   currentHouse: House = {price: 0};
   minDate = new Date();
-  priceHomStay: number;
   voucher: Voucher;
-  totalPrice: number;
+  totalPrice = 0;
+  priceService = 0;
+  priceHomStay = 0;
+  checkPay: boolean;
+  rate = 23000;
 
   constructor(private categoryService: CategoryService,
               private billService: BillService,
@@ -69,10 +72,10 @@ export class CheckoutComponent implements OnInit {
     this.authenticationService.currentUser.subscribe(value => {
       this.currentUser = value;
     });
-
   }
 
   async ngOnInit() {
+    this.initConfig();
     $(document).ready(function() {
       $('.hero__categories__all').on('click', function() {
         $('.hero__categories ul').slideToggle(400);
@@ -82,13 +85,82 @@ export class CheckoutComponent implements OnInit {
     this.getBill();
     this.houseService.currentMessage.subscribe(id => this.idHouse = id);
     this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
-    if (this.idHouse != null && this.idHouse !== undefined) {
+    if (this.idHouse !== null && this.idHouse !== undefined) {
       this.currentHouse = await this.getHouse(this.idHouse);
       this.getAllHouseDayByHouse(this.idHouse);
       this.getAllService(this.idHouse);
     }
     this.getAllVoucher();
   }
+
+  private initConfig(): void {
+    this.checkPay = false;
+    this.payPalConfig = {
+      clientId: 'AcQjAylT-DgZJT3CmfhB38y70DGNF3eCRz3fBF945BNJgs45oJqpEOY-5Oxm5Uqfb4hkGpSYLfuQQAKF',
+      createOrderOnClient: (data) => <ICreateOrderRequest> {
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            payee: {
+              email_address: 'hailit2306@gmail.com',
+              merchant_id: 'V9DD9A2JNSLMU',
+            },
+
+            amount: {
+              currency_code: 'USD',
+              value: String((this.totalPrice * 0.5 / this.rate).toFixed(0)),
+              breakdown: {
+                item_total: {
+                  currency_code: 'USD',
+                  value: String((this.totalPrice * 0.5 / this.rate).toFixed(0)),
+                }
+              },
+            },
+          },
+        ],
+      },
+      advanced: {
+        commit: 'true',
+      },
+      style: {
+        label: 'paypal',
+        layout: 'horizontal',
+      },
+      onApprove: (data, actions) => {
+        console.log('onApprove - transaction was approved, but not authorized', data, actions);
+        actions.order.get().then((details) => {
+          console.log('onApprove - you can get full order details inside onApprove: ', details);
+        });
+      },
+      onClientAuthorization: (data) => {
+        console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+        if (data.status === 'COMPLETED') {
+          console.log('Thành Công');
+        }
+      },
+      onCancel: (data, actions) => {
+        console.log('OnCancel', data, actions);
+      },
+      onError: (err) => {
+        console.log('OnError', err);
+      },
+      onClick: (data, actions) => {
+        this.checkPay = true;
+        if (this.voucher != null || this.voucher !== undefined) {
+          if (this.voucher.typeVoucher === '0') {
+            // tslint:disable-next-line:max-line-length
+            this.totalPrice = (this.priceService + this.priceHomStay * (100 - this.currentHouse.discount) / 100) - this.voucher.discount;
+          } else {
+            // tslint:disable-next-line:max-line-length
+            this.totalPrice = (this.priceService + this.priceHomStay * (100 - this.currentHouse.discount) / 100) * ((100 - this.voucher.discount) / 100);
+          }
+        } else {
+          this.totalPrice = (this.priceService + this.priceHomStay * (100 - this.currentHouse.discount) / 100);
+        }
+      },
+    };
+  }
+
 
   getAllCategories() {
     this.categoryService.getAllCategoryStatusTrue().subscribe(listCategory => {
@@ -134,7 +206,7 @@ export class CheckoutComponent implements OnInit {
       && this.billForm.get('endDate').value != '' && this.billForm.get('email').value != '') {
       this.isSubmitted = true;
       if (this.voucher != null || this.voucher !== undefined) {
-        if (this.voucher.typeVoucher == '0') {
+        if (this.voucher.typeVoucher === '0') {
           // tslint:disable-next-line:max-line-length
           this.totalPrice = (this.priceService + this.priceHomStay * (100 - this.currentHouse.discount) / 100) - this.voucher.discount;
         } else {
@@ -194,45 +266,61 @@ export class CheckoutComponent implements OnInit {
         });
         this.isLoading = false;
       } else {
-        this.billService.createBill(bill).subscribe(res => {
-            $(function() {
-              const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
+        if (this.checkPay === true) {
+          this.billService.createBill(bill).subscribe(res => {
+              $(function() {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+                Toast.fire({
+                  type: 'success',
+                  title: 'Đơn đặt đã tạo, vui lòng chờ xác nhận'
+                });
               });
-              Toast.fire({
-                type: 'success',
-                title: 'Đơn đặt đã tạo, vui lòng chờ xác nhận'
-              });
-            });
-            this.billForm.reset();
-            this.isLoading = false;
-            this.listServiceOfHouse = [];
-            this.priceService = 0;
-            this.priceHomStay = 0;
-            this.currentHouse.price = 0;
-            this.currentHouse.discount = 0;
-            this.voucher.discount = 0;
-            this.voucher.title = '';
-          },
-          err => {
-            $(function() {
-              const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-              });
+              this.billForm.reset();
+              this.isLoading = false;
+              this.listServiceOfHouse = [];
+              this.priceService = 0;
+              this.priceHomStay = 0;
+              this.currentHouse.price = 0;
+              this.currentHouse.discount = 0;
+              this.voucher.discount = 0;
+              this.voucher.title = '';
+            },
+            err => {
+              $(function() {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000
+                });
 
-              Toast.fire({
-                type: 'error',
-                title: 'Đơn đặt của bạn thất bại'
+                Toast.fire({
+                  type: 'error',
+                  title: 'Đơn đặt của bạn thất bại'
+                });
               });
+              this.isLoading = false;
             });
-            this.isLoading = false;
+        } else {
+          $(function() {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
+            });
+
+            Toast.fire({
+              type: 'error',
+              title: 'Bạn cần đặt cọc 50% tổng đơn đặt'
+            });
           });
+        }
       }
     } else {
       $(function() {

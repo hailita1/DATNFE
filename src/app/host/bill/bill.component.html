@@ -71,7 +71,7 @@
             <p>{{bill.endDate | date:'dd/MM/yyyy'}}</p>
           </td>
           <td style="text-align: center">
-            <p>{{bill.totalPrice}}</p>
+            <p>{{bill.totalPrice | currency:'VND'}} <br> Đã thanh toán {{bill.totalPrice / 2 | currency:'VND'}}</p>
           </td>
           <td style="text-align: center">
             <label class="status"
