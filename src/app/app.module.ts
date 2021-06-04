@@ -33,7 +33,6 @@ import {Login1Component} from './auth/login1/login1.component';
 import {Register1Component} from './auth/register1/register1.component';
 import {NgImageSliderModule} from 'ng-image-slider';
 import {NgbModalModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
-import {ConfirmComponent} from './user/confirm/confirm.component';
 import {UserItemComponent} from './shared/header/user-item/user-item.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
@@ -68,7 +67,6 @@ import {NgxPayPalModule} from 'ngx-paypal';
     LayoutHostComponent,
     Login1Component,
     Register1Component,
-    ConfirmComponent,
     UserItemComponent,
     ItemUserOrderComponent,
     VoucherComponent,

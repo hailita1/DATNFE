@@ -167,7 +167,7 @@ export class UserOrderComponent implements OnInit {
 
   deleteBill() {
     const sd = new Date(this.bill.startDate).getTime();
-    if (sd - this.now > 86400000) {
+    if (sd - this.now > (86400000 * 5)) {
       this.billService.deleteBill(this.bill).subscribe(() => {
         this.billService.getAllBillByUserTrue(this.currentUser.id).subscribe(listBill => {
           this.listBill = listBill;
@@ -213,7 +213,7 @@ export class UserOrderComponent implements OnInit {
 
         Toast.fire({
           type: 'error',
-          title: 'Đơn đặt chỉ được hủy trước 24h'
+          title: 'Đơn đặt chỉ được hủy trước 5 ngày'
         });
       });
     }

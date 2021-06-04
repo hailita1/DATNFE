@@ -104,12 +104,14 @@
             </li>
           </ul>
           <div class="row">
-            <div class="col-5" style="margin-bottom: 30px"><b>Tiện ích có sẵn</b>
+            <div class="product__details__tab__desc col-5">
+              <h5 style="font-weight: bold">Tiện ích có sẵn </h5>
               <ol>
                 <li *ngFor="let utilitie of currentHouse.utilitie" style="margin-left: 16px">{{utilitie.name}} </li>
               </ol>
             </div>
-            <div class="col-7" style="margin-bottom: 30px"><b>Dịch vụ tính phí</b>
+            <div class="product__details__tab__desc col-7">
+              <h5 style="font-weight: bold">Dịch vụ tính phí </h5>
               <ol>
                 <li *ngFor="let service of listService" style="margin-left: 16px">{{service.name}}
                   , giá {{service.price | currency:'VND'}} </li>
@@ -117,7 +119,7 @@
             </div>
           </div>
           <div class="tab-pane" id="tabs-3" role="tabpanel">
-            <h5 style="font-weight: bold">Đánh giá HomeStay {{currentHouse.name}}</h5>
+            <h5 style="font-weight: bold; margin-top: 15px">Đánh giá HomeStay {{currentHouse.name}}</h5>
             <div class="product__details__tab__desc" *ngIf="listReview.length != 0">
               <div style="margin-top: 15px" class="post" *ngFor="let review of listReview | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
                       let i = index">
@@ -147,6 +149,31 @@
             </div>
             <div class="product__details__tab__desc" *ngIf="listReview.length==0">
               <p>Chưa có đánh giá nào</p>
+            </div>
+            <div class="product__details__tab__desc">
+              <h5 style="font-weight: bold">Chính sách hủy đơn đặt</h5>
+              <p>Miễn phí hủy phòng trong vòng 48h sau khi đặt phòng thành công và trước 5 ngày so với thời gian
+                check-in. Sau đó, hủy phòng trước 5 ngày so với thời gian check-in, được hoàn lại 100% tổng số tiền đã
+                trả (trừ phí dịch vụ).</p>
+            </div>
+            <div class="product__details__tab__desc">
+              <h5 style="font-weight: bold">Thời gian nhận phòng</h5>
+              <div class="row" style="background-color: #f6f6f6">
+                <p style="padding-top: 15px" class="col-10">
+                  Nhận phòng
+                </p>
+                <p style="padding-top: 15px; font-weight: bold" class="col-2">
+                  09.00 am
+                </p>
+              </div>
+              <div style="padding-top: 10px" class="row">
+                <p class="col-10">
+                  Trả phòng
+                </p>
+                <p style="padding-top: 10px; font-weight: bold" class="col-2">
+                  12.00 am
+                </p>
+              </div>
             </div>
             <button style="margin-left: auto; margin-right: auto; display: block; margin-top: 50px; font-size: 20px"
                     class="btn btn-success"
