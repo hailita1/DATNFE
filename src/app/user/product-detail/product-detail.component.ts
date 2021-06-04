@@ -13,6 +13,8 @@ import {HouseService} from '../../service/house/house.service';
 import {BillService} from '../../service/bill/bill.service';
 import {Bill} from '../../model/bill';
 import {QuickviewComponent} from '../homepage/quickview/quickview.component';
+import {Service} from '../../model/service';
+import {ServiceService} from '../../service/service/service.service';
 
 declare var $: any;
 
@@ -39,10 +41,12 @@ export class ProductDetailComponent implements OnInit {
   id: any;
   page = 1;
   pageSize = 10;
+  listService: Service[] = [];
 
   constructor(private categoryService: CategoryService,
               private houseService: HouseService,
               private reviewService: ReviewService,
+              private serviceService: ServiceService,
               private activatedRoute: ActivatedRoute,
               private  billService: BillService,
               private authenticationService: AuthenticationService,
@@ -58,7 +62,7 @@ export class ProductDetailComponent implements OnInit {
           thumbImage: this.currentHouse.images[i].link
         };
       }
-      // this.getAllReview(id);
+      this.getAllService(this.id)
       this.getAllHouseRelated(this.currentHouse.category);
     });
     this.authenticationService.currentUser.subscribe(value => {
@@ -110,6 +114,15 @@ export class ProductDetailComponent implements OnInit {
 
   initModal(model: any): void {
     this.view.view(model);
+  }
+
+  getAllService(idHouse: number) {
+    const house = {
+      id: idHouse
+    };
+    this.serviceService.getAllServiceStatusTrue(house).subscribe(listService => {
+      this.listService = listService;
+    });
   }
 
   getAllReview(id) {

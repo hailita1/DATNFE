@@ -23,14 +23,6 @@
         <option [selected]="isSelected" disabled>--- Chọn HomeStay ---</option>
         <option *ngFor="let house of listHouseOfHost" [value]="house.id">{{house.name}}</option>
       </select>
-      <!--      <label>Lọc theo trạng thái: </label>-->
-      <!--      <select (change)="changeStatus($event.target.value)" class="custom-select"-->
-      <!--              style="margin-right: 10px; width: 200px">-->
-      <!--        <option [selected]="isSelected" disabled>-&#45;&#45; Chọn trạng thái -&#45;&#45;</option>-->
-      <!--        <option value="-1">Tất cả</option>-->
-      <!--        <option value="1">Hoạt động</option>-->
-      <!--        <option value="0">Chờ xác nhận</option>-->
-      <!--      </select>-->
       <button [hidden]="isDelete" *ngIf="hasRoleUser"
               class="btn btn-danger" style="margin-left: 15px; width: 100px" data-toggle="modal"
               data-target="#modal-delete-list">

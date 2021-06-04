@@ -109,7 +109,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="form-group col-6">
+              <div class="form-group col-6" *ngIf="listService.length !== 0">
                 <div class="checkout__input">
                   <p>Thêm dịch vụ trả phí<span>*</span></p>
                   <select class="form-control select2 select2-primary" id="service" name="service"
@@ -169,7 +169,7 @@
             <div class="checkout__order">
               <h4>Đơn đặt của bạn</h4>
               <div class="checkout__order__products">Giá thuê theo đêm
-                <span>{{currentHouse ? currentHouse.price : '0' |currency: 'VND'}}</span></div>
+                <span>{{currentHouse.price |currency: 'VND'}}</span></div>
               <div class="checkout__order__subtotal">Giảm giá <span>{{currentHouse.discount}} %</span></div>
               <div *ngIf="voucher">
                 <div class="checkout__order__products" *ngIf="voucher.typeVoucher == '0'">Voucher
@@ -180,10 +180,10 @@
                 </div>
               </div>
               <div class="checkout__order__products">Tổng tiền dịch vụ
-                <span>{{priceService ? priceService : '0' |currency: 'VND'}}</span>
+                <span>{{priceService |currency: 'VND'}}</span>
               </div>
               <div class="checkout__order__subtotal">Tiền thuê HomeStay
-                <span>{{priceHomStay ? priceHomStay : '0' |currency: 'VND'}}</span></div>
+                <span>{{priceHomStay |currency: 'VND'}}</span></div>
               <div class="checkout__order__total" *ngIf="!voucher">Tổng tiền
                 <span>{{((priceService + priceHomStay * (100 - currentHouse.discount) / 100)|currency: 'VND')}}</span>
               </div>

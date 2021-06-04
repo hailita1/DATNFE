@@ -102,15 +102,20 @@
                 <p style="padding-right: 40px" [innerHTML]="currentHouse.description"></p>
               </div>
             </li>
-            <li style="margin-bottom: 45px"><b>Tiện ích có sẵn</b>
-              <div *ngFor="let utilitie of currentHouse.utilitie">
-                <div class="row">
-                  <span class="col-2"></span>
-                  <span class="col-8" style="margin-left: 40px">{{utilitie.name}} </span>
-                </div>
-              </div>
-            </li>
           </ul>
+          <div class="row">
+            <div class="col-5" style="margin-bottom: 30px"><b>Tiện ích có sẵn</b>
+              <ol>
+                <li *ngFor="let utilitie of currentHouse.utilitie" style="margin-left: 16px">{{utilitie.name}} </li>
+              </ol>
+            </div>
+            <div class="col-7" style="margin-bottom: 30px"><b>Dịch vụ tính phí</b>
+              <ol>
+                <li *ngFor="let service of listService" style="margin-left: 16px">{{service.name}}
+                  , giá {{service.price | currency:'VND'}} </li>
+              </ol>
+            </div>
+          </div>
           <div class="tab-pane" id="tabs-3" role="tabpanel">
             <h5 style="font-weight: bold">Đánh giá HomeStay {{currentHouse.name}}</h5>
             <div class="product__details__tab__desc" *ngIf="listReview.length != 0">

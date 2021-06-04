@@ -223,7 +223,8 @@
       <div class="in-bao-gia-footer">
         <p *ngIf="model.voucher">Bạn sử dụng voucher: {{model.voucher}}</p>
         <p *ngIf="!model.voucher">Bạn không sử dụng vocher </p>
-        <h3 style="color: red; text-align: center">Tổng tiền cần phải thanh toán là: {{model.totalPrice}}đ</h3>
+        <h3 style="color: red; text-align: center">Tổng tiền cần phải thanh toán
+          là: {{model.totalPrice / 2 | currency:'VND' }}</h3>
         <p><i class="fas fa-exclamation-circle"></i> Quý khách lưu ý: Khách hàng kiểm tra kỹ hóa đơn trước khi thanh
           toán, xin cảm ơn !</p>
       </div>

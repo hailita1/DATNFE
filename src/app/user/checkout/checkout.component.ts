@@ -90,6 +90,7 @@ export class CheckoutComponent implements OnInit {
       this.getAllHouseDayByHouse(this.idHouse);
       this.getAllService(this.idHouse);
     }
+    console.log(this.currentHouse);
     this.getAllVoucher();
   }
 
