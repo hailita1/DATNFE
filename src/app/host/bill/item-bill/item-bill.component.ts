@@ -9,6 +9,8 @@ import {BillService} from '../../../service/bill/bill.service';
 import {NotificationService} from '../../../service/notification/notification.service';
 import {HouseService} from '../../../service/house/house.service';
 import {Bill} from '../../../model/bill';
+import {ServiceService} from '../../../service/service/service.service';
+import {Service} from '../../../model/service';
 
 declare var $: any;
 declare var Swal: any;
@@ -24,7 +26,7 @@ export class ItemBillComponent implements OnInit {
               private fb: FormBuilder,
               private billService: BillService,
               private categoryService: CategoryService,
-              private houseService: HouseService,
+              private houseService: HouseService, private serviceService: ServiceService,
               private notificationService: NotificationService,
               private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
@@ -56,6 +58,8 @@ export class ItemBillComponent implements OnInit {
   hasRoleUser = false;
   hasRoleAdmin = false;
   listService: any[] = [];
+  listServiceHouse: any[] = [];
+  listServiceOfHouse: any[] = [];
   page = 1;
   pageSize = 2;
   model: any;
@@ -67,7 +71,9 @@ export class ItemBillComponent implements OnInit {
   currentDate = new Date();
   priceHomeStay: number;
   priceService: 0;
-  itemPrint: Bill;
+  grid: any = {
+    rowData: []
+  };
 
   updateFormType(type: any) {
     switch (type) {
@@ -102,17 +108,22 @@ export class ItemBillComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
+    console.log(model);
+    const house = {
+      id: model.houseBill.id
+    };
+    this.serviceService.getAllServiceStatusTrue(house).subscribe(listService => {
+      this.listServiceHouse = listService;
+    });
     this.priceService = 0;
-    this.listService = model.service;
+    this.listServiceOfHouse = model.service;
     this.idHouse = model.houseBill.id;
-    this.arrCheck = this.listcategorys;
     this.open(this.childModal);
     this.type = type;
     this.model = model;
     const sd = new Date(this.model.startDate).getTime();
     const ed = new Date(this.model.endDate).getTime();
     this.priceHomeStay = ((((ed - sd) / 86400000) + 1) * model.houseBill.price) * ((100 - model.houseBill.discount) / 100);
-    console.log(model.service);
     if (model.service != null) {
       for (let i = 0; i < model.service.length; i++) {
         this.priceService = this.priceService + model.service[i].price;
@@ -132,7 +143,8 @@ export class ItemBillComponent implements OnInit {
         endDate: [{value: null, disabled: this.isInfo}, [Validators.required]],
         email: [{value: null, disabled: this.isInfo}, [Validators.required]],
         totalPrice: [{value: null, disabled: this.isInfo}, [Validators.required]],
-        status: [{value: false, disabled: true}],
+        service: [{value: null, disabled: this.isInfo}, [Validators.required]],
+        // status: [{value: false, disabled: true}],
       });
     } else {
       this.formGroup = this.fb.group({
@@ -142,8 +154,9 @@ export class ItemBillComponent implements OnInit {
         startDate: [{value: this.model.startDate, disabled: true}, [Validators.required]],
         endDate: [{value: this.model.endDate, disabled: true}, [Validators.required]],
         email: [{value: this.model.email, disabled: true}, [Validators.required]],
-        totalPrice: [{value: this.model.totalPrice, disabled: true}, [Validators.required]],
-        status: [{value: this.model.status, disabled: this.isInfo}],
+        totalPrice: [{value: this.model.totalPrice / 2, disabled: true}, [Validators.required]],
+        // status: [{value: this.model.status, disabled: this.isInfo}],
+        service: [{value: null, disabled: this.isInfo}],
       });
     }
   }
@@ -163,6 +176,70 @@ export class ItemBillComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       }
     );
+  }
+
+  addServiceToHouse(id) {
+    const utilitie1 = this.listServiceHouse
+      .filter((utilitie) => utilitie.id == id);
+
+    const utilitie2 = this.listServiceOfHouse
+      .filter((utilitie) => utilitie1[0].id == utilitie.id);
+    if (utilitie2.length == 0) {
+      this.listServiceOfHouse.push(utilitie1[0]);
+    }
+    this.countPrice();
+  }
+
+  countPrice() {
+    // tslint:disable-next-line:prefer-const
+    this.priceService = 0;
+    for (let i = 0; i < this.listServiceOfHouse.length; i++) {
+      this.priceService += this.listServiceOfHouse[i].price;
+    }
+  }
+
+  delete(event: any) {
+    const indexOfItem = this.listServiceOfHouse.indexOf(event);
+    this.listServiceOfHouse.splice(indexOfItem, 1);
+    this.countPrice();
+  }
+
+  addMeta(event: any) {
+    const model = {
+      name: '',
+      price: '',
+      status: true,
+    };
+    this.grid.rowData.push(model);
+  }
+
+  btnDeleteClickedHandler(event: any) {
+    const indexOfItem = this.grid.rowData.indexOf(event);
+    this.grid.rowData.splice(indexOfItem, 1);
+  }
+
+  addService() {
+    this.grid.rowData.map((item) => {
+      if (item.price > 0) {
+        this.listServiceOfHouse.push(item);
+      } else {
+        $(function() {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'error',
+            title: 'Kiểm tra lại giá dịch vụ'
+          });
+        });
+      }
+
+    });
+    this.countPrice();
   }
 
   save() {
@@ -241,7 +318,7 @@ export class ItemBillComponent implements OnInit {
     }
     if (this.isEdit) {
       // tslint:disable-next-line:triple-equals
-      if (this.model.status == 'Chờ chủ nhà xác nhận') {
+      if (this.model.status == 'Đã thuê thành công') {
         this.billService.confirmBillByHost(bill).subscribe(res => {
             this.closeModalReloadData();
             // tslint:disable-next-line:only-arrow-functions
@@ -362,4 +439,5 @@ export class ItemBillComponent implements OnInit {
       this.closeModalReloadData();
     });
   }
+
 }

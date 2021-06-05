@@ -90,7 +90,6 @@ export class CheckoutComponent implements OnInit {
       this.getAllHouseDayByHouse(this.idHouse);
       this.getAllService(this.idHouse);
     }
-    console.log(this.currentHouse);
     this.getAllVoucher();
   }
 
@@ -198,7 +197,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   async submitCheckoutForm() {
-    this.isLoading = true;
     let bill: any;
     const sd = new Date(this.billForm.get('startDate').value).getTime();
     const ed = new Date(this.billForm.get('endDate').value).getTime();
@@ -233,7 +231,7 @@ export class CheckoutComponent implements OnInit {
         },
         service: this.listServiceOfHouse,
         totalPrice: this.totalPrice,
-        voucher: this.voucher ? this.voucher.title : null
+        voucher: this.voucher ? this.voucher.discount : null
       };
     }
     if (this.isSubmitted) {
@@ -268,6 +266,7 @@ export class CheckoutComponent implements OnInit {
         this.isLoading = false;
       } else {
         if (this.checkPay === true) {
+          this.isLoading = true;
           this.billService.createBill(bill).subscribe(res => {
               $(function() {
                 const Toast = Swal.mixin({
@@ -349,6 +348,7 @@ export class CheckoutComponent implements OnInit {
     if (utilitie2.length == 0) {
       this.listServiceOfHouse.push(utilitie1[0]);
     }
+    console.log(this.listServiceOfHouse);
     this.countPrice();
   }
 
@@ -360,8 +360,9 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  delete(id) {
-    this.listServiceOfHouse.splice(id, 1);
+  delete(event: any) {
+    const indexOfItem = this.listServiceOfHouse.indexOf(event);
+    this.listServiceOfHouse.splice(indexOfItem, 1);
     this.countPrice();
   }
 
@@ -373,7 +374,7 @@ export class CheckoutComponent implements OnInit {
   myDateFilter = (d: Date | null): boolean => {
     const sd = new Date(this.billForm.get('startDate').value).getTime();
     const ed = new Date(this.billForm.get('endDate').value).getTime();
-    this.priceHomStay = (((ed - sd) / 86400000) + 1) * this.currentHouse.price;
+    this.priceHomStay = (((ed - sd) / 86400000)) * this.currentHouse.price;
     const day = (d || new Date());
     let isHide = false;
     for (let i = 0; i < this.listHouseDay.length; i++) {

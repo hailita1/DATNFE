@@ -46,7 +46,7 @@
             />
           </div>
           <div class="form-group">
-            <label>Tổng tiền ( VND )</label>
+            <label>Số tiền đã thanh toán ( VND )</label>
             <input
               type="text"
               name=""
@@ -55,6 +55,15 @@
               id="totalPrice"
             />
           </div>
+          <p *ngIf="model.voucher>100"><span
+            style="color: red; font-weight: bold; margin-bottom: 0px">* Voucher: </span> Bạn đã sử dụng
+            voucher:
+            Giảm {{model.voucher| currency:'VND'}}</p>
+          <p *ngIf="model.voucher<100"><span style="color: red; font-weight: bold">* Voucher: </span> Bạn đã sử dụng
+            voucher:
+            Giảm {{model.voucher}}%</p>
+          <p style="font-weight: bold">Số tiền bạn cần thanh toán là: {{model.totalPrice / 2 | currency: 'VND'}}</p>
+          <p>{{priceService | currency:'VND'}}</p>
         </div>
         <div class="col-6">
           <div class="form-group">
@@ -90,37 +99,101 @@
               id="endDate"
             />
           </div>
-          <table style="width: 100%; margin-top: 15px">
-            <tr *ngIf="listService.length !== 0">
-              <td><label>Danh sách dịch vụ muốn sử dụng </label></td>
+          <div class="form-group">
+            <label>Dịch vụ sử dụng</label>
+            <button
+              type="button"
+              (click)="addMeta($event)"
+              style="float: right; margin-bottom: 10px; border-radius: 5px"
+              class="btn-success"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+            <select class="form-control select2 select2-primary" id="service" name="service"
+                    formControlName="service" data-dropdown-css-class="select2-primary"
+                    style="width: 100%; margin-left: 0px;
+    height: 46px;
+    border: 1px solid #ebebeb;
+    padding-left: 20px;
+    font-size: 16px;
+    color: #b2b2b2;
+    border-radius: 4px" (ngModelChange)="addServiceToHouse($event)">
+              <option *ngFor="let service of listServiceHouse"
+                      [value]="service.id">{{service.name}}, giá {{service.price |currency: 'VND'}}</option>
+            </select>
+          </div>
+          <table id="basicTable">
+            <tbody>
+            <tr
+              *ngFor="let data of grid.rowData">
+              <td><input
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                [(ngModel)]="data.name"
+                placeholder="Tên dịch vụ"
+              />
+              </td>
+              <td><input
+                [ngModelOptions]="{ standalone: true }"
+                type="number"
+                [(ngModel)]="data.price"
+                placeholder="Giá dịch vụ"
+              />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="btnDeleteClickedHandler(data)"
+                  title="Xóa"
+                  [hidden]="isInfo"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
             </tr>
+            </tbody>
+          </table>
+          <p class="btn btn-success" style="font-weight: bold; float: right; margin-top: 10px" (click)="addService()"
+             *ngIf="grid.rowData.length">Thêm</p>
+          <table style="width: 100%; margin-top: 15px" id="list-Utilitie">
             <tr
               *ngFor="
-                      let service of listService  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
+                      let service of listServiceOfHouse  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
                       let i = index
                     ">
-              <td><label>- {{service.name}}, giá {{service.price | currency: 'VND'}}</label></td>
+              <td><label>- {{service.name}}, giá {{service.price |currency: 'VND'}}</label></td>
+              <td style="width: 30px">
+                <button type="button" class="btn btn-block btn-danger" style="color: white"
+                        (click)="delete(service)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
             </tr>
           </table>
-          <div class="col-12" style="display: flex; justify-content: center;align-items: center">
-            <ngb-pagination *ngIf="listService.length > 2"
+          <div class="col-12" style="display: flex; justify-content: center;align-items: center; margin-top: 15px">
+            <ngb-pagination *ngIf="listServiceOfHouse.length"
                             [ellipses]="true" [rotate]="true"
                             [boundaryLinks]="true" [(page)]="page"
                             [pageSize]="pageSize"
-                            [collectionSize]="this.listService.length"></ngb-pagination>
+                            [collectionSize]="this.listServiceOfHouse.length"></ngb-pagination>
           </div>
         </div>
       </div>
-      <div class="form-group" style="display:inline" *ngIf="!isInfo">
-        <label for="status">Trạng thái: </label>
-        <input type="checkbox" name="status" formControlName="status" id="status"/>
-        <label class="status"
-               style="background-color: green; color: #fff;text-align: center; border-radius: 2px;vertical-align: middle;"
-               for="status" *ngIf="formGroup.controls.status.value">Xác nhận</label>
-        <label class="status"
-               style="background-color: red;color:#fff; ;text-align: center; border-radius: 2px;vertical-align: middle;"
-               for="status" *ngIf="!formGroup.controls.status.value">Hủy</label>
-      </div>
+      <!--      <div class="form-group" style="display:inline" *ngIf="!isInfo">-->
+      <!--        <label for="status">Trạng thái: </label>-->
+      <!--        <input type="checkbox" name="status" formControlName="status" id="status"/>-->
+      <!--        <label class="status"-->
+      <!--               style="background-color: green; color: #fff;text-align: center; padding-left: 10px;-->
+      <!--  padding-right: 10px;-->
+      <!--  border-radius: 5px;vertical-align: middle;"-->
+      <!--               for="status" *ngIf="formGroup.controls.status.value">Xác nhận</label>-->
+      <!--        <label class="status"-->
+      <!--               style="background-color: red; color: #fff;text-align: center; padding-left: 10px;-->
+      <!--  padding-right: 10px;-->
+      <!--  border-radius: 5px;vertical-align: middle;"-->
+      <!--               for="status" *ngIf="!formGroup.controls.status.value">Hủy</label>-->
+      <!--      </div>-->
       <div class="form-group" align="center">
         <button
           [hidden]="checkButton"
@@ -150,7 +223,7 @@
       <div class="in-bao-gia-header">
         <div class="in-bao-gia-header-left"><img src="../../../../assets/static/img/logo.png"/></div>
         <div class="in-bao-gia-header-right">
-          <p class="ten-cong-ty">CÔNG TY CHUYÊN CUNG CẤP DỊCH VỤ HOMESTAY OGANI</p>
+          <p class="ten-cong-ty">CÔNG TY CHUYÊN CUNG CẤP DỊCH VỤ HOMESTAY</p>
           <p>Trụ sở chính: Đồng Mạc - Tiên Hội - Đại Từ - Thái Nguyên</p>
           <p>Số nhà 4 ngách 34 ngõ 27 Lạc Long Quân - Nghĩa Đô - Cầu giấy - Hà Nội</p>
           <p>Hotline: 0396355470 * Website: www.ogani.vn</p>
@@ -192,15 +265,17 @@
         </tr>
         </tbody>
       </table>
-      <div *ngIf="model.service" class="in-bao-gia-title"><h3>Dịch vụ</h3></div>
-      <table class="list_table" *ngIf="model.service">
+      <div *ngIf="model.service" class="in-bao-gia-title"><h3>Dịch vụ</h3>
+      </div>
+
+      <table class="list_table" *ngIf="listServiceOfHouse">
         <tbody>
         <tr style="white-space: nowrap;background-color: #f5f5f5;">
           <td style="text-align: center"><strong>STT</strong></td>
           <td style="text-align: center"><strong>Tên dịch vụ</strong></td>
           <td style="text-align: center"><strong>Giá</strong></td>
         </tr>
-        <tr *ngFor="let service of model.service;let i = index">
+        <tr *ngFor="let service of listServiceOfHouse;let i = index">
           <td style="text-align: center">
             {{i + 1}}
           </td>
@@ -221,7 +296,8 @@
       </table>
 
       <div class="in-bao-gia-footer">
-        <p *ngIf="model.voucher">Bạn sử dụng voucher: {{model.voucher}}</p>
+        <p *ngIf="model.voucher > 100">Bạn sử dụng voucher: Giảm {{model.voucher | currency: 'VND'}} tổng đơn đặt</p>
+        <p *ngIf="model.voucher < 100">Bạn sử dụng voucher: Giảm {{model.voucher}}% tổng đơn đặt</p>
         <p *ngIf="!model.voucher">Bạn không sử dụng vocher </p>
         <h3 style="color: red; text-align: center">Tổng tiền cần phải thanh toán
           là: {{model.totalPrice / 2 | currency:'VND' }}</h3>
@@ -232,7 +308,7 @@
         <p>Để biết thêm chi tiết, vui lòng liên hệ:</p>
         <p>Hotline: 0396355470 (8h00-21h30 hàng ngày)</p>
         <p>Email: <a href="mailto:haidevutc@gmail.com">haidevutc@gmail.com</a></p>
-        <p>OGANI CHÂN THÀNH CẢM ƠN QUÝ KHÁCH HÀNG!</p>
+        <p>CHÂN THÀNH CẢM ƠN QUÝ KHÁCH HÀNG!</p>
       </div>
     </div>
   </div>

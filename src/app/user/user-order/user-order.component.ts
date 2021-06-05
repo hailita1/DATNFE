@@ -168,7 +168,7 @@ export class UserOrderComponent implements OnInit {
   deleteBill() {
     const sd = new Date(this.bill.startDate).getTime();
     if (sd - this.now > (86400000 * 5)) {
-      this.billService.deleteBill(this.bill).subscribe(() => {
+      this.billService.deleteBill(this.bill).subscribe(res => {
         this.billService.getAllBillByUserTrue(this.currentUser.id).subscribe(listBill => {
           this.listBill = listBill;
         });

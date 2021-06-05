@@ -137,13 +137,14 @@
                     <td><label>- {{service.name}}, giá {{service.price |currency: 'VND'}}</label></td>
                     <td style="width: 30px">
                       <button type="button" class="btn btn-block btn-danger" style="color: white"
-                              (click)="delete(i)">
+                              (click)="delete(service)">
                         <i class="fas fa-trash"></i>
                       </button>
                     </td>
                   </tr>
                 </table>
-                <div class="col-12" style="display: flex; justify-content: center;align-items: center">
+                <div class="col-12"
+                     style="display: flex; justify-content: center;align-items: center; margin-top: 10px">
                   <ngb-pagination *ngIf="listServiceOfHouse.length"
                                   [ellipses]="true" [rotate]="true"
                                   [boundaryLinks]="true" [(page)]="page"

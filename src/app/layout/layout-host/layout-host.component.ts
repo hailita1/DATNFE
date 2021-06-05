@@ -19,9 +19,6 @@ export class LayoutHostComponent implements OnInit {
   currentUser: UserToken;
   user: User;
   hasRoleAdmin = false;
-  listBill: Bill[] = [];
-  listHouseOfHost: House[];
-  dem = 0;
 
   constructor(private router: Router,
               private houseService: HouseService,
@@ -39,33 +36,10 @@ export class LayoutHostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getllHouseByHost();
   }
 
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
-  }
-
-  getllHouseByHost() {
-    const user = {
-      id: this.currentUser.id
-    };
-    this.houseService.getAllHouseByUser(user).subscribe(listHouseOfHost => {
-      this.listHouseOfHost = listHouseOfHost;
-      this.billService.getAllBill().subscribe(listbill => {
-        this.listBill = listbill;
-        for (let i = 0; i < this.listHouseOfHost.length; i++) {
-          // tslint:disable-next-line:prefer-for-of
-          for (let j = 0; j < this.listBill.length; j++) {
-            if (listbill[j].houseBill !== null) {
-              if (listHouseOfHost[i].id === listbill[j].houseBill.id && listbill[j].status === 'Chờ chủ nhà xác nhận') {
-                this.dem++;
-              }
-            }
-          }
-        }
-      });
-    });
   }
 }

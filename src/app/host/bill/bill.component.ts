@@ -60,6 +60,7 @@ export class BillComponent implements OnInit {
 
   getBill(item: Bill) {
     this.bill = item;
+    console.log(this.bill);
   }
 
   initModal(model: any, type = null): void {
@@ -83,7 +84,7 @@ export class BillComponent implements OnInit {
   }
 
   deleteBill() {
-    this.billService.deleteBill(this.bill).subscribe(() => {
+    this.billService.deleteBill(this.bill).subscribe(res => {
       $(function() {
         $('#modal-delete').modal('hide');
       });
