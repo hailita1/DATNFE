@@ -35,18 +35,18 @@
           <div style="text-align: center">
             <button (click)="modal.dismiss('Cross click')"
                     style="margin-top: 20px; font-size: 20px; margin-bottom: 20px"
-                    class="btn btn-success"
+                    class="btn btn-danger"
                     [routerLink]="['../house',currentHouse.id]">Xem thông tin chi tiết
             </button>
             <button *ngIf="currentUser" (click)="modal.dismiss('Cross click')"
                     style="margin-top: 20px; font-size: 20px;  margin-left: 15px; margin-bottom: 20px"
-                    class="btn btn-danger"
+                    class="btn btn-success"
                     [routerLink]="['/favorite', { id:currentHouse.id }]">Thêm vào danh sách yêu
               thích <i
                 class="fas fa-heart" style="color: red;"></i></button>
             <button *ngIf="!currentUser" (click)="modal.dismiss('Cross click')"
                     style="margin-top: 20px; font-size: 20px;  margin-left: 15px; margin-bottom: 20px"
-                    class="btn btn-danger"
+                    class="btn btn-success"
                     [routerLink]="['/login']">Thêm vào danh sách yêu
               thích <i
                 class="fas fa-heart" style="color: red;"></i></button>
