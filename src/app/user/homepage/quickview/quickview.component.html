@@ -31,18 +31,26 @@
           <p style="margin-bottom: 0px"><b>Diện tích:</b> {{currentHouse.acreage}} m²</p>
           <p style="margin-bottom: 0px"><b>Thể loại:</b> {{currentHouse.category.name}}</p>
           <p><b>Số lượng phòng: </b>{{currentHouse.numberRoom}} phòng</p>
-          <button *ngIf="currentUser" (click)="modal.dismiss('Cross click')"
-                  style="margin-left: auto; margin-right: auto; display: block; margin-top: 20px; font-size: 20px; margin-bottom: 20px"
-                  class="btn btn-success"
-                  [routerLink]="['/favorite', { id:currentHouse.id }]">Thêm vào danh sách yêu
-            thích <i
-              class="fas fa-heart" style="color: red;"></i></button>
-          <button *ngIf="!currentUser" (click)="modal.dismiss('Cross click')"
-                  style="margin-left: auto; margin-right: auto; display: block; margin-top: 20px; font-size: 20px; margin-bottom: 20px"
-                  class="btn btn-success"
-                  [routerLink]="['/login']">Thêm vào danh sách yêu
-            thích <i
-              class="fas fa-heart" style="color: red;"></i></button>
+
+          <div style="text-align: center">
+            <button (click)="modal.dismiss('Cross click')"
+                    style="margin-top: 20px; font-size: 20px; margin-bottom: 20px"
+                    class="btn btn-success"
+                    [routerLink]="['../house',currentHouse.id]">Xem thông tin chi tiết
+            </button>
+            <button *ngIf="currentUser" (click)="modal.dismiss('Cross click')"
+                    style="margin-top: 20px; font-size: 20px;  margin-left: 15px; margin-bottom: 20px"
+                    class="btn btn-danger"
+                    [routerLink]="['/favorite', { id:currentHouse.id }]">Thêm vào danh sách yêu
+              thích <i
+                class="fas fa-heart" style="color: red;"></i></button>
+            <button *ngIf="!currentUser" (click)="modal.dismiss('Cross click')"
+                    style="margin-top: 20px; font-size: 20px;  margin-left: 15px; margin-bottom: 20px"
+                    class="btn btn-danger"
+                    [routerLink]="['/login']">Thêm vào danh sách yêu
+              thích <i
+                class="fas fa-heart" style="color: red;"></i></button>
+          </div>
           <div
             style="width: 100%; text-align:center;margin:0; padding:0;">
             <ng-image-slider #nav
