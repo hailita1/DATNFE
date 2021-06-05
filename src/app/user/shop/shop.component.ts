@@ -45,6 +45,7 @@ export class ShopComponent implements OnInit {
   page = 1;
   pageSize = 9;
   isSelected = true;
+  checkSerch = false;
 
   constructor(private categoryService: CategoryService,
               private activatedRoute: ActivatedRoute,
@@ -57,6 +58,7 @@ export class ShopComponent implements OnInit {
       this.query = params.address;
       if (this.query != null) {
         this.searchForm.value.name = this.query;
+        this.searchFormAdvanced.value.address = this.query;
         this.search();
       } else {
         this.getAllHouse();
@@ -111,6 +113,7 @@ export class ShopComponent implements OnInit {
   }
 
   search() {
+    this.checkSerch = true;
     const address = this.searchForm.value.name;
     console.log(address);
     if (address != null) {

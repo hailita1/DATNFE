@@ -108,7 +108,7 @@
             <form [formGroup]="searchFormAdvanced" (ngSubmit)="searchAdvanced()">
               <div class="hero__search__categories user-box">
                 <label>Địa chỉ: </label>
-                <input type="text" formControlName="address" style="width: 90%">
+                <input [value]="query==null?'':query" type="text" formControlName="address" style="width: 90%">
               </div>
               <div class="hero__search__categories user-box">
                 <label>Số lượng phòng: </label>
@@ -186,12 +186,14 @@
                 </select>
               </div>
             </div>
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-6 col-md-4">
               <div class="filter__found">
-                <h6><span>{{listHouse.length}}</span> HomeStay</h6>
+                <h6><span *ngIf="checkSerch">Tìm thấy</span><span>{{listHouse.length}}</span><span>HomeStay</span>
+                  <span
+                    *ngIf="checkSerch">ở {{this.query}}</span></h6>
               </div>
             </div>
-            <div class="col-lg-4 col-md-3">
+            <div class="col-lg-2 col-md-3">
               <div class="filter__option">
                 <span class="icon_grid-2x2"></span>
                 <span class="icon_ul"></span>

@@ -101,11 +101,11 @@
           </div>
           <div class="form-group">
             <label>Dịch vụ sử dụng</label>
-            <button
-              type="button"
-              (click)="addMeta($event)"
-              style="float: right; margin-bottom: 10px; border-radius: 5px"
-              class="btn-success"
+            <button *ngIf="model.status !== 'Đã thanh toán'"
+                    type="button"
+                    (click)="addMeta($event)"
+                    style="float: right; margin-bottom: 10px; border-radius: 5px"
+                    class="btn-success"
             >
               <i class="fas fa-plus"></i>
             </button>
@@ -189,7 +189,7 @@
       <!--  border-radius: 5px;vertical-align: middle;"-->
       <!--               for="status" *ngIf="!formGroup.controls.status.value">Hủy</label>-->
       <!--      </div>-->
-      <div class="form-group" align="center">
+      <div class="form-group" align="center" style="margin-top: 20px">
         <button
           [hidden]="checkButton"
           type="submit"

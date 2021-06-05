@@ -4,5 +4,4 @@ export interface Service {
   price?: number;
   status?: boolean;
   checked?: boolean;
-  id_nha?: any;
 }

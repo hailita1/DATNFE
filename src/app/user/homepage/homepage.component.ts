@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CategoryService} from '../../service/category/category.service';
 import {Category} from '../../model/category';
 import {FormControl, FormGroup} from '@angular/forms';
@@ -231,4 +231,18 @@ export class HomepageComponent implements OnInit {
       this.conditsion = false;
     }
   }
+
+  onActivate(event) {
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      console.log(pos);
+      if (pos > 0) {
+        window.scrollTo(0, pos - 1000);
+      } else {
+        console.log('oke');
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
+  }
+
 }
