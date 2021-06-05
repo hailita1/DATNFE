@@ -91,6 +91,9 @@ export class CheckoutComponent implements OnInit {
       this.getAllService(this.idHouse);
     }
     this.getAllVoucher();
+    this.billForm.value.email = this.currentUser.email;
+    this.billForm.value.nameUser = this.currentUser.name;
+    this.billForm.value.telephoneNumber = this.currentUser.telephoneNumber;
   }
 
   private initConfig(): void {
@@ -201,8 +204,7 @@ export class CheckoutComponent implements OnInit {
     const sd = new Date(this.billForm.get('startDate').value).getTime();
     const ed = new Date(this.billForm.get('endDate').value).getTime();
     // tslint:disable-next-line:max-line-length
-    if (this.billForm.get('nameUser').value != '' && this.billForm.get('telephoneNumber').value != '' && this.billForm.get('startDate').value != ''
-      && this.billForm.get('endDate').value != '' && this.billForm.get('email').value != '') {
+    if (this.billForm.get('startDate').value != '' && this.billForm.get('endDate').value != '') {
       this.isSubmitted = true;
       if (this.voucher != null || this.voucher !== undefined) {
         if (this.voucher.typeVoucher === '0') {
@@ -217,11 +219,11 @@ export class CheckoutComponent implements OnInit {
       }
       bill = {
         id: this.bill.id + 1,
-        nameUser: this.billForm.get('nameUser').value,
-        telephoneNumber: this.billForm.get('telephoneNumber').value,
+        nameUser: this.currentUser.name,
+        telephoneNumber: this.currentUser.telephoneNumber,
         startDate: this.billForm.get('startDate').value,
         endDate: this.billForm.get('endDate').value,
-        email: this.billForm.get('email').value,
+        email: this.currentUser.email,
         status: false,
         user: {
           id: this.idUser

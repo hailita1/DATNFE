@@ -4,7 +4,7 @@ export interface UserToken {
   id?: number;
   email?: string;
   password?: string;
-  fullName?: string;
+  name?: string;
   telephoneNumber?: string;
   avt?: string;
   roles?: [Role];

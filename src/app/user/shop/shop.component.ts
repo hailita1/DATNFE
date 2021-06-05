@@ -115,7 +115,6 @@ export class ShopComponent implements OnInit {
   search() {
     this.checkSerch = true;
     const address = this.searchForm.value.name;
-    console.log(address);
     if (address != null) {
       if (address == '') {
         this.router.navigate(['/houses']);
