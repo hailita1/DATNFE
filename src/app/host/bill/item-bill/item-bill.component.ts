@@ -198,12 +198,6 @@ export class ItemBillComponent implements OnInit {
     }
   }
 
-  delete(event: any) {
-    const indexOfItem = this.listServiceOfHouse.indexOf(event);
-    this.listServiceOfHouse.splice(indexOfItem, 1);
-    this.countPrice();
-  }
-
   addMeta(event: any) {
     const model = {
       name: '',

@@ -109,7 +109,8 @@
             >
               <i class="fas fa-plus"></i>
             </button>
-            <select class="form-control select2 select2-primary" id="service" name="service"
+            <select *ngIf="model.status !== 'Đã thanh toán'" class="form-control select2 select2-primary" id="service"
+                    name="service"
                     formControlName="service" data-dropdown-css-class="select2-primary"
                     style="width: 100%; margin-left: 0px;
     height: 46px;
@@ -163,12 +164,6 @@
                       let i = index
                     ">
               <td><label>- {{service.name}}, giá {{service.price |currency: 'VND'}}</label></td>
-              <td style="width: 30px">
-                <button type="button" class="btn btn-block btn-danger" style="color: white"
-                        (click)="delete(service)">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
             </tr>
           </table>
           <div class="col-12" style="display: flex; justify-content: center;align-items: center; margin-top: 15px">

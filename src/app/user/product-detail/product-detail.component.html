@@ -119,7 +119,7 @@
             </div>
           </div>
           <div class="tab-pane" id="tabs-3" role="tabpanel">
-            <h5 style="font-weight: bold; margin-top: 15px">Đánh giá HomeStay {{currentHouse.name}}</h5>
+            <h5 style="font-weight: bold; margin-top: 15px">Đánh giá của khách hàng về {{currentHouse.name}}</h5>
             <div class="product__details__tab__desc" *ngIf="listReview.length != 0">
               <div style="margin-top: 15px" class="post" *ngFor="let review of listReview | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
                       let i = index">
