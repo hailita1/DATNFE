@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewChild} from '@angular/core';
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import {UserToken} from '../../../model/user-token';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -11,6 +11,9 @@ import {HouseService} from '../../../service/house/house.service';
 import {Bill} from '../../../model/bill';
 import {ServiceService} from '../../../service/service/service.service';
 import {Service} from '../../../model/service';
+import {HouseDay} from '../../../model/houseDay';
+import {DatePipe} from '@angular/common';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 declare var $: any;
 declare var Swal: any;
@@ -21,28 +24,6 @@ declare var Swal: any;
   styleUrls: ['./item-bill.component.scss']
 })
 export class ItemBillComponent implements OnInit {
-
-  constructor(private modalService: NgbModal,
-              private fb: FormBuilder,
-              private billService: BillService,
-              private categoryService: CategoryService,
-              private houseService: HouseService, private serviceService: ServiceService,
-              private notificationService: NotificationService,
-              private authenticationService: AuthenticationService) {
-    this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
-    if (this.currentUser) {
-      const roleList = this.currentUser.roles;
-      for (const role of roleList) {
-        if (role.authority === 'ROLE_USER') {
-          this.hasRoleUser = true;
-        }
-        if (role.authority === 'ROLE_ADMIN') {
-          this.hasRoleAdmin = true;
-        }
-      }
-    }
-  }
-
   @ViewChild('content', {static: false}) public childModal!: ModalDirective;
   @Input() listcategorys: Array<any>;
   @Output() eventEmit: EventEmitter<any> = new EventEmitter<any>();
@@ -62,7 +43,7 @@ export class ItemBillComponent implements OnInit {
   listServiceOfHouse: any[] = [];
   page = 1;
   pageSize = 2;
-  model: any;
+  model: Bill;
   submitted = false;
   idHouse: number;
   arrCheck = [];
@@ -74,6 +55,28 @@ export class ItemBillComponent implements OnInit {
   grid: any = {
     rowData: []
   };
+  listHouseDay: HouseDay[] = [];
+
+  constructor(private fb: FormBuilder,
+              private modalService: NgbModal,
+              private billService: BillService,
+              private categoryService: CategoryService,
+              private houseService: HouseService, private serviceService: ServiceService,
+              private notificationService: NotificationService,
+              private authenticationService: AuthenticationService) {
+    this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
+    if (this.currentUser) {
+      const roleList = this.currentUser.roles;
+      for (const role of roleList) {
+        if (role.authority === 'ROLE_USER') {
+          this.hasRoleUser = true;
+        }
+        if (role.authority === 'ROLE_ADMIN') {
+          this.hasRoleAdmin = true;
+        }
+      }
+    }
+  }
 
   updateFormType(type: any) {
     switch (type) {
@@ -93,7 +96,7 @@ export class ItemBillComponent implements OnInit {
         this.isInfo = false;
         this.isEdit = true;
         this.isAdd = false;
-        this.title = `Xác nhận đơn đặt ${this.formName}`;
+        this.title = `Thông tin đơn đặt ${this.formName}`;
         break;
       default:
         this.isInfo = false;
@@ -108,12 +111,14 @@ export class ItemBillComponent implements OnInit {
   }
 
   view(model: any, type = null): void {
-    console.log(model);
     const house = {
       id: model.houseBill.id
     };
     this.serviceService.getAllServiceStatusTrue(house).subscribe(listService => {
       this.listServiceHouse = listService;
+    });
+    this.billService.getAllHouseDayByHouse(house).subscribe(listDateByHouse => {
+      this.listHouseDay = listDateByHouse;
     });
     this.priceService = 0;
     this.listServiceOfHouse = model.service;
@@ -134,6 +139,9 @@ export class ItemBillComponent implements OnInit {
 
     this.submitted = false;
     this.updateFormType(type);
+    model.startDate = this.transform(model.startDate);
+    model.bookingDate = this.transform1(model.bookingDate);
+    model.endDate = this.transform(model.endDate);
     if (model.id === null || model.id === undefined) {
       this.formGroup = this.fb.group({
         nameUser: [{value: null, disabled: this.isInfo}, [Validators.required]],
@@ -151,8 +159,8 @@ export class ItemBillComponent implements OnInit {
         nameUser: [{value: this.model.nameUser, disabled: true}, [Validators.required]],
         telephoneNumber: [{value: this.model.telephoneNumber, disabled: true}, [Validators.required]],
         bookingDate: [{value: this.model.bookingDate, disabled: true}, [Validators.required]],
-        startDate: [{value: this.model.startDate, disabled: true}, [Validators.required]],
-        endDate: [{value: this.model.endDate, disabled: true}, [Validators.required]],
+        startDate: [{value: model.startDate, disabled: false}, [Validators.required]],
+        endDate: [{value: model.endDate, disabled: false}, [Validators.required]],
         email: [{value: this.model.email, disabled: true}, [Validators.required]],
         totalPrice: [{value: this.model.totalPrice / 2, disabled: true}, [Validators.required]],
         // status: [{value: this.model.status, disabled: this.isInfo}],
@@ -205,6 +213,18 @@ export class ItemBillComponent implements OnInit {
       status: true,
     };
     this.grid.rowData.push(model);
+  }
+
+  transform(value: string) {
+    var datePipe = new DatePipe('en-US');
+    value = datePipe.transform(value, 'yyyy-MM-dd');
+    return value;
+  }
+
+  transform1(value: string) {
+    var datePipe = new DatePipe('en-US');
+    value = datePipe.transform(value, 'dd/MM/yyyy');
+    return value;
   }
 
   btnDeleteClickedHandler(event: any) {
@@ -291,7 +311,7 @@ export class ItemBillComponent implements OnInit {
               title: 'Thêm mới thành công'
             });
           });
-          this.modalReference.dismiss();
+          // this.modalReference.dismiss();
         },
         err => {
           // tslint:disable-next-line:only-arrow-functions
@@ -331,7 +351,7 @@ export class ItemBillComponent implements OnInit {
             });
             this.createNotification();
             this.updateNumberHires();
-            this.modalReference.dismiss();
+            // this.modalReference.dismiss();
           },
           err => {
             // tslint:disable-next-line:only-arrow-functions
@@ -364,7 +384,7 @@ export class ItemBillComponent implements OnInit {
             title: 'Chủ nhà không có quyển xác nhận đơn đặt này'
           });
         });
-        this.modalReference.dismiss();
+        // this.modalReference.dismiss();
       }
     }
   }
@@ -433,5 +453,4 @@ export class ItemBillComponent implements OnInit {
       this.closeModalReloadData();
     });
   }
-
 }

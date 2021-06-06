@@ -16,7 +16,7 @@ import {ItemHouseComponent} from './house/item-house/item-house.component';
 import {NgImageSliderModule} from 'ng-image-slider';
 import {ItemBillComponent} from './bill/item-bill/item-bill.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
-
+import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 
 @NgModule({
   declarations: [HouseComponent, CategoryComponent, ServiceComponent, BillComponent, UtilitiesComponent, CategoryItemComponent, ServiceItemComponent, UtilitiesItemComponent, ItemHouseComponent, ItemBillComponent],
@@ -26,6 +26,9 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
     ReactiveFormsModule,
     FormsModule,
     NgbModalModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     NgbPaginationModule,
     NgImageSliderModule,
     CKEditorModule

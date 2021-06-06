@@ -41,7 +41,7 @@ import {VoucherComponent} from './user/voucher/voucher.component';
 import {FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {ResetpassComponent} from './auth/resetpass/resetpass.component';
 import {ChagepasswordComponent} from './shared/header/chagepassword/chagepassword.component';
-import { QuickviewComponent } from './user/homepage/quickview/quickview.component';
+import {QuickviewComponent} from './user/homepage/quickview/quickview.component';
 import {NgxPayPalModule} from 'ngx-paypal';
 
 @NgModule({
@@ -72,7 +72,7 @@ import {NgxPayPalModule} from 'ngx-paypal';
     VoucherComponent,
     ResetpassComponent,
     ChagepasswordComponent,
-    QuickviewComponent,
+    QuickviewComponent
   ],
   imports: [
     BrowserModule,

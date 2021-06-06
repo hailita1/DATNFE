@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Category} from '../../model/category';
 import {UserToken} from '../../model/user-token';
 import {CategoryService} from '../../service/category/category.service';
 import {AuthenticationService} from '../../service/auth/authentication.service';
@@ -9,7 +8,8 @@ import {HouseService} from '../../service/house/house.service';
 import {House} from '../../model/house';
 import {BillService} from '../../service/bill/bill.service';
 import {Bill} from '../../model/bill';
-import {NotificationService} from '../../service/notification/notification.service';
+import {HouseDay} from '../../model/houseDay';
+import {MatDialog} from '@angular/material';
 
 declare var $: any;
 declare var Swal: any;
@@ -23,6 +23,7 @@ export class BillComponent implements OnInit {
   // @ts-ignore
   @ViewChild(ItemBillComponent) view!: ItemBillComponent;
   listHouseOfHost: House[];
+  currentHouse: House;
   listBill: Bill[];
   currentUser: UserToken;
   hasRoleUser = false;
@@ -31,12 +32,15 @@ export class BillComponent implements OnInit {
   bill: Bill;
   listDelete: number[] = [];
   listFilterResult: Bill[] = [];
+  listHouseDay: HouseDay[] = [];
   isSelected = true;
   idHouse: number;
+  minDate = new Date();
 
   constructor(private categoryService: CategoryService,
               private modalService: NgbModal,
               private billService: BillService,
+              public dialog: MatDialog,
               private houseService: HouseService,
               private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(value => this.currentUser = value);
@@ -60,7 +64,6 @@ export class BillComponent implements OnInit {
 
   getBill(item: Bill) {
     this.bill = item;
-    console.log(this.bill);
   }
 
   initModal(model: any, type = null): void {
@@ -192,11 +195,19 @@ export class BillComponent implements OnInit {
     }
   }
 
-  changeHouse(event: number) {
+  getHouse(id: number) {
+    return this.houseService.getHouse(id).toPromise();
+  }
+
+  async changeHouse(event: number) {
     this.idHouse = event;
     const bill = {
       id: event
     };
+    this.currentHouse = await this.getHouse(this.idHouse);
+    this.billService.getAllHouseDayByHouse(bill).subscribe(listDateByHouse => {
+      this.listHouseDay = listDateByHouse;
+    });
     this.billService.getAllBillByHouse(bill).subscribe(listBill => {
       this.listBill = listBill;
       this.listFilterResult = this.listBill;
@@ -213,4 +224,17 @@ export class BillComponent implements OnInit {
       });
     });
   }
+
+  myDateFilter = (d: Date | null): boolean => {
+    const day = (d || new Date());
+    let isHide = false;
+    for (let i = 0; i < this.listHouseDay.length; i++) {
+      const date = new Date(this.listHouseDay[i].date);
+      if ((day.getDate() === date.getDate()) && (day.getMonth() === date.getMonth()) && (day.getFullYear() === date.getFullYear())) {
+        isHide = true;
+        break;
+      }
+    }
+    return !isHide;
+  };
 }

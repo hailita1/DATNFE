@@ -28,6 +28,12 @@
               data-target="#modal-delete-list">
         Xóa
       </button>
+      <mat-form-field appearance="fill" style="width: 30%; float: right">
+        <mat-label>Lịch đặt thuê của HomeStay {{currentHouse ? currentHouse.name : ''}}</mat-label>
+        <input matInput [matDatepicker]="endDate" [min]="minDate" [matDatepickerFilter]="myDateFilter">
+        <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+        <mat-datepicker #endDate></mat-datepicker>
+      </mat-form-field>
     </div>
     <div class="card-body" *ngIf="listBill != null">
       <table class="table table-bordered" id="table-category">

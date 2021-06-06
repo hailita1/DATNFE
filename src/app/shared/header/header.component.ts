@@ -67,12 +67,12 @@ export class HeaderComponent implements OnInit {
       });
     });
     this.getAllCategories();
-    if (this.currentUser != null) {
-      this.user.id = this.currentUser.id;
-      setInterval(() => {
-        this.getAllNotificationByUser();
-      }, 2000);
-    }
+    // if (this.currentUser != null) {
+    //   this.user.id = this.currentUser.id;
+    //   setInterval(() => {
+    //     this.getAllNotificationByUser();
+    //   }, 2000);
+    // }
   }
 
   initModal(model: any, type = null): void {
