@@ -3,7 +3,6 @@ import {UserToken} from '../../model/user-token';
 import {CategoryService} from '../../service/category/category.service';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ItemBillComponent} from './item-bill/item-bill.component';
 import {HouseService} from '../../service/house/house.service';
 import {House} from '../../model/house';
 import {BillService} from '../../service/bill/bill.service';
@@ -21,8 +20,6 @@ declare var Swal: any;
   styleUrls: ['./bill.component.scss']
 })
 export class BillComponent implements OnInit {
-  // @ts-ignore
-  @ViewChild(ItemBillComponent) view!: ItemBillComponent;
   listHouseOfHost: House[];
   currentHouse: House;
   listBill: Bill[];
@@ -59,7 +56,7 @@ export class BillComponent implements OnInit {
   }
 
   openDialog(bill: Bill): void {
-    let dialogRef = this.dialog.open(ExampleDialogComponent, {
+    const dialogRef = this.dialog.open(ExampleDialogComponent, {
       width: '1000px',
       data: bill
     });
@@ -71,10 +68,6 @@ export class BillComponent implements OnInit {
 
   getBill(item: Bill) {
     this.bill = item;
-  }
-
-  initModal(model: any, type = null): void {
-    this.view.view(model, type);
   }
 
   checkAllCheckBox(ev) {
