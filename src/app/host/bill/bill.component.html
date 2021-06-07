@@ -80,7 +80,7 @@
           <td>
             <div class="row">
               <div class="col-4" *ngIf="hasRoleUser" style="margin-left: auto; margin-right: auto">
-                <button (click)="initModal(bill, 'edit')" class="btn btn-block btn-warning"
+                <button mat-raised-button (click)="openDialog(bill)" class="btn btn-block btn-warning"
                         style="color: white">
                   <i class="fas fa-check"></i>
                 </button>
@@ -137,4 +137,4 @@
     </div>
   </div>
 </section>
-<app-item-bill (eventEmit)="changeHouse($event)"></app-item-bill>
+<!--<app-example-dialog (eventEmit)="changeHouse($event)"></app-example-dialog>-->

@@ -10,6 +10,7 @@ import {BillService} from '../../service/bill/bill.service';
 import {Bill} from '../../model/bill';
 import {HouseDay} from '../../model/houseDay';
 import {MatDialog} from '@angular/material';
+import {ExampleDialogComponent} from './example-dialog/example-dialog.component';
 
 declare var $: any;
 declare var Swal: any;
@@ -57,6 +58,12 @@ export class BillComponent implements OnInit {
     }
   }
 
+  openDialog(bill: Bill): void {
+    let dialogRef = this.dialog.open(ExampleDialogComponent, {
+      width: '1000px',
+      data: bill
+    });
+  }
 
   ngOnInit() {
     this.getllHouseByHost();

@@ -16,6 +16,7 @@ import {HouseDay} from '../../model/houseDay';
 import {Voucher} from '../../model/voucher';
 import {VoucherService} from '../../service/voucher/voucher.service';
 import {ICreateOrderRequest, IPayPalConfig, ITransactionItem} from 'ngx-paypal';
+import {NotificationService} from '../../service/notification/notification.service';
 
 declare var $: any;
 declare var Swal: any;
@@ -67,6 +68,7 @@ export class CheckoutComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private houseService: HouseService, private activatedRoute: ActivatedRoute,
               private voucherService: VoucherService,
+              private notificationService: NotificationService,
               private serviceService: ServiceService,
               private router: Router) {
     this.authenticationService.currentUser.subscribe(value => {
@@ -291,6 +293,8 @@ export class CheckoutComponent implements OnInit {
               this.currentHouse.discount = 0;
               this.voucher.discount = 0;
               this.voucher.title = '';
+              this.createNotification();
+              this.updateNumberHires();
             },
             err => {
               $(function() {
@@ -433,5 +437,27 @@ export class CheckoutComponent implements OnInit {
         });
       });
     }
+  }
+
+  createNotification() {
+    const notification = {
+      content: 'Thuê nhà thành công',
+      status: true,
+      user: [
+        {
+          email: this.currentUser.email,
+          id: this.currentUser.id,
+        }
+      ]
+    };
+    this.notificationService.createNotification(notification).subscribe();
+  }
+
+  updateNumberHires() {
+    const house = {
+      id: this.currentHouse.id,
+      numberHires: this.currentHouse.numberHires + 1
+    };
+    this.houseService.updateNumberHires(house).subscribe();
   }
 }

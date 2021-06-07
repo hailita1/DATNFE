@@ -10,10 +10,8 @@ import {NotificationService} from '../../../service/notification/notification.se
 import {HouseService} from '../../../service/house/house.service';
 import {Bill} from '../../../model/bill';
 import {ServiceService} from '../../../service/service/service.service';
-import {Service} from '../../../model/service';
 import {HouseDay} from '../../../model/houseDay';
 import {DatePipe} from '@angular/common';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 declare var $: any;
 declare var Swal: any;

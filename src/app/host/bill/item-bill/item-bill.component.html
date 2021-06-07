@@ -112,12 +112,12 @@
                     name="service"
                     formControlName="service" data-dropdown-css-class="select2-primary"
                     style="width: 100%; margin-left: 0px;
-    height: 46px;
-    border: 1px solid #ebebeb;
-    padding-left: 20px;
-    font-size: 16px;
-    color: #b2b2b2;
-    border-radius: 4px" (ngModelChange)="addServiceToHouse($event)">
+              height: 46px;
+              border: 1px solid #ebebeb;
+              padding-left: 20px;
+              font-size: 16px;
+              color: #b2b2b2;
+              border-radius: 4px" (ngModelChange)="addServiceToHouse($event)">
               <option *ngFor="let service of listServiceHouse"
                       [value]="service.id">{{service.name}}, giá {{service.price |currency: 'VND'}}</option>
             </select>
@@ -159,9 +159,9 @@
           <table style="width: 100%; margin-top: 15px" id="list-Utilitie">
             <tr
               *ngFor="
-                      let service of listServiceOfHouse  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
-                      let i = index
-                    ">
+                                let service of listServiceOfHouse  | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize;
+                                let i = index
+                              ">
               <td><label>- {{service.name}}, giá {{service.price |currency: 'VND'}}</label></td>
             </tr>
           </table>
