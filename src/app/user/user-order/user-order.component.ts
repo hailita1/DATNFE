@@ -13,7 +13,6 @@ import {Review} from '../../model/review';
 import {ReviewService} from '../../service/review/review.service';
 import {BillService} from '../../service/bill/bill.service';
 import {Bill} from '../../model/bill';
-import {ItemBillComponent} from '../../host/bill/item-bill/item-bill.component';
 import {ItemUserOrderComponent} from './item-user-order/item-user-order.component';
 
 declare var $: any;

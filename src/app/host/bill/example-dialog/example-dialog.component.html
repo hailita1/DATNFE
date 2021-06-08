@@ -52,8 +52,14 @@
         <p *ngIf="data.voucher<100"><span style="color: red; font-weight: bold">* Voucher: </span> Bạn đã sử dụng
           voucher:
           Giảm {{data.voucher}}%</p>
-        <p style="font-weight: bold">Số tiền bạn cần thanh toán là: {{data.totalPrice / 2 | currency: 'VND'}}</p>
-        <p>{{priceService | currency:'VND'}}</p>
+        <div class="checkout__order__total" *ngIf="data.status != 'Đã thanh toán'">
+          <p style="font-weight: bold"
+             *ngIf="this.data.voucher > 100">Số tiền bạn cần thanh toán
+            là: {{((priceService + priceHomeStay - data.voucher) - data.totalPrice / 2)|currency: 'VND'}}</p>
+          <p style="font-weight: bold"
+             *ngIf="this.data.voucher < 100">Số tiền bạn cần thanh toán
+            là: {{(((priceService + priceHomeStay) * ((100 - data.voucher) / 100))) - data.totalPrice / 2|currency: 'VND'}}</p>
+        </div>
       </div>
       <div class="col-6">
         <div class="form-group">
@@ -191,7 +197,7 @@
       </div>
       <div class="in-bao-gia-title">HÓA ĐƠN ĐẶT THUÊ HOMESTAY VÀ DỊCH VỤ</div>
       <div class="date-currency">
-        <p>Ngày xuất hóa đơn: <span id="price_time">{{currentDate | date: 'dd/MM/yyyy HH:mm:ss'}}</span></p>
+        <p>Ngày xuất hóa đơn: <span id="price_time">{{minDate | date: 'dd/MM/yyyy HH:mm:ss'}}</span></p>
         <p>Đơn vị tính: <span class="currency">VND</span></p>
       </div>
       <div class="in-bao-gia-title"><h3>HomeStay</h3></div>
@@ -210,11 +216,12 @@
             loại: {{data.houseBill.category.name}}
             <br> - Số lượng phòng: {{data.houseBill.numberRoom}}</td>
           <td style="text-align: center">{{data.startDate | date:'dd/MM/yyyy' }}</td>
-          <td style="text-align: center">{{data.endDate | date:'dd/MM/yyyy' }}</td>
-          <td style="text-align: center"> {{data.houseBill.discount}}%</td>
+          <td style="text-align: center">{{endDateFinal | date:'dd/MM/yyyy' }}</td>
+          <td style="text-align: center" *ngIf="data.voucher < 100"> {{data.houseBill.discount}}%</td>
+          <td style="text-align: center" *ngIf="data.voucher > 100"> {{data.houseBill.discount | currency: 'VND'}}</td>
           <td style="text-align: center">{{data.houseBill.price | currency: 'VND'}} / đêm</td>
           <td style="text-align: center">
-            {{(data.houseBill.price)}}
+            {{(priceHomeStay)}}
           </td>
         </tr>
         <tr>
@@ -259,8 +266,11 @@
         <p *ngIf="data.voucher > 100">Bạn sử dụng voucher: Giảm {{data.voucher | currency: 'VND'}} tổng đơn đặt</p>
         <p *ngIf="data.voucher < 100">Bạn sử dụng voucher: Giảm {{data.voucher}}% tổng đơn đặt</p>
         <p *ngIf="!data.voucher">Bạn không sử dụng vocher </p>
-        <h3 style="color: red; text-align: center">Tổng tiền cần phải thanh toán
-          là: {{data.totalPrice / 2 | currency:'VND' }}</h3>
+        <h3 *ngIf="data.voucher > 100" style="color: red; text-align: center">Tổng tiền cần phải thanh toán
+          là: {{((priceService + priceHomeStay - data.voucher) - data.totalPrice / 2)|currency: 'VND'}}</h3>
+        <h3 *ngIf="data.voucher < 100" style="color: red; text-align: center">Tổng tiền cần phải thanh toán
+          là: {{(((priceService + priceHomeStay) * ((100 - data.voucher) / 100))) - data.totalPrice / 2|currency: 'VND'}}</h3>
+
         <p><i class="fas fa-exclamation-circle"></i> Quý khách lưu ý: Khách hàng kiểm tra kỹ hóa đơn trước khi thanh
           toán, xin cảm ơn !</p>
       </div>
@@ -277,9 +287,9 @@
 <mat-dialog-actions align="center" class="button-dialog">
   <button mat-button *ngIf="data.status == 'Đã thuê thành công'" class="btn btn-success"
           style="margin-left: 20px; margin-top: 20px; margin-bottom: 20px"
-          (click)="PrintElem('pdf')">Xuất hóa đơn
+          (click)="PrintElem('pdf')">Xuất hóa đơn <i class="fas fa-file-pdf"></i>
   </button>
   <button mat-button (click)="onNoClick()" class="btn btn-danger"
-          style="margin-left: 20px; margin-top: 20px; margin-bottom: 20px">Đóng
+          style="margin-left: 20px; margin-top: 20px; margin-bottom: 20px">Đóng <i class="fas fa-times-circle"></i>
   </button>
 </mat-dialog-actions>

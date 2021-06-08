@@ -6,7 +6,7 @@ export interface Bill {
   comment?: string;
   evaluate?: number;
   totalPrice?: number;
-  bookingDate?: string;
+  bookingDate?: Date;
   startDate?: Date;
   endDate?: Date;
   status?: string;

@@ -8,9 +8,7 @@ import {BillService} from '../../../service/bill/bill.service';
 import {CategoryService} from '../../../service/category/category.service';
 import {HouseService} from '../../../service/house/house.service';
 import {ServiceService} from '../../../service/service/service.service';
-import {NotificationService} from '../../../service/notification/notification.service';
 import {AuthenticationService} from '../../../service/auth/authentication.service';
-import {DatePipe} from '@angular/common';
 import {UsageBillService} from '../../../service/usageBill/usage-bill.service';
 import {Service} from '../../../model/service';
 
@@ -38,15 +36,15 @@ export class ExampleDialogComponent implements OnInit {
   page = 1;
   pageSize = 2;
   submitted = false;
-  idHouse: number;
-  priceHomStay: any;
   priceHomeStay: number;
   priceService: 0;
+  totalPrice: number;
   grid: any = {
     rowData: []
   };
   listHouseDay: HouseDay[] = [];
   minDate = new Date();
+  endDateFinal: Date;
 
   constructor(
     public dialogRef: MatDialogRef<ExampleDialogComponent>,
@@ -70,12 +68,11 @@ export class ExampleDialogComponent implements OnInit {
         }
       }
     }
-    this.listServiceOfHouse = this.data.service;
     if (this.data.status == 'Đã thanh toán') {
       this.formGroup = fb.group({
         nameUser: [{value: this.data.nameUser, disabled: true}, Validators.required],
         telephoneNumber: [{value: this.data.telephoneNumber, disabled: true}, Validators.required],
-        totalPrice: [{value: this.data.totalPrice, disabled: true}, Validators.required],
+        totalPrice: [{value: this.data.totalPrice / 2, disabled: true}, Validators.required],
         email: [{value: this.data.email, disabled: true}, Validators.required],
         bookingDate: [{value: this.data.bookingDate, disabled: true}, Validators.required],
         startDate: [{value: this.data.startDate, disabled: true}, Validators.required],
@@ -86,10 +83,10 @@ export class ExampleDialogComponent implements OnInit {
       this.formGroup = fb.group({
         nameUser: [{value: this.data.nameUser, disabled: true}, Validators.required],
         telephoneNumber: [{value: this.data.telephoneNumber, disabled: true}, Validators.required],
-        totalPrice: [{value: this.data.totalPrice, disabled: true}, Validators.required],
+        totalPrice: [{value: this.data.totalPrice / 2, disabled: true}, Validators.required],
         email: [{value: this.data.email, disabled: true}, Validators.required],
         bookingDate: [{value: this.data.bookingDate, disabled: true}, Validators.required],
-        startDate: [{value: this.data.startDate, disabled: false}, Validators.required],
+        startDate: [{value: this.data.startDate, disabled: true}, Validators.required],
         endDate: [{value: this.data.endDate, disabled: false}, Validators.required],
         service: [null, Validators.required],
       });
@@ -97,7 +94,6 @@ export class ExampleDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.listServiceOfHouse);
     this.listServiceOfHouse = this.data.service;
     const house = {
       id: this.data.houseBill.id
@@ -109,7 +105,9 @@ export class ExampleDialogComponent implements OnInit {
       this.listHouseDay = listDateByHouse;
     });
     this.priceService = 0;
-    this.idHouse = this.data.houseBill.id;
+    for (let i = 0; i < this.listServiceOfHouse.length; i++) {
+      this.priceService += this.listServiceOfHouse[i].price;
+    }
   }
 
 
@@ -140,18 +138,10 @@ export class ExampleDialogComponent implements OnInit {
   }
 
   countPrice() {
-    let check = true;
+    // tslint:disable-next-line:prefer-const
+    this.priceService = 0;
     for (let i = 0; i < this.listServiceOfHouse.length; i++) {
-      check = false;
-      for (let j = 0; j < this.data.service.length; j++) {
-        if (this.listServiceOfHouse[i].id == this.data.service[j].id) {
-          check = true;
-          break;
-        }
-      }
-      if (!check) {
-        this.priceService += this.listServiceOfHouse[i].price;
-      }
+      this.priceService += this.listServiceOfHouse[i].price;
     }
   }
 
@@ -193,21 +183,32 @@ export class ExampleDialogComponent implements OnInit {
     mywindow.document.write('</body></html>');
     mywindow.document.close(); // necessary for IE >= 10
     mywindow.focus(); // necessary for IE >= 10*/
-    setTimeout(function() {
-      mywindow.print();
-      mywindow.close();
-    }, 1000);
+    if (this.data.voucher != null || this.data.voucher !== undefined) {
+      if (this.data.voucher > 100) {
+        // tslint:disable-next-line:max-line-length
+        this.totalPrice = (this.priceService + this.priceHomeStay) - this.data.voucher;
+      } else {
+        // tslint:disable-next-line:max-line-length
+        this.totalPrice = (this.priceService + this.priceHomeStay) * ((100 - this.data.voucher) / 100);
+      }
+    } else {
+      this.totalPrice = (this.priceService + this.priceHomeStay);
+    }
     this.bill = {
       nameUser: this.data.nameUser,
       telephoneNumber: this.data.telephoneNumber,
       bookingDate: this.data.bookingDate,
-      startDate: this.formGroup.get('startDate').value,
-      endDate: this.formGroup.get('endDate').value,
+      startDate: this.data.startDate,
+      endDate: this.data.endDate,
+      endDateFinal: this.formGroup.get('endDate').value,
       email: this.data.email,
-      totalPrice: this.data.totalPrice,
+      totalPrice: this.totalPrice,
       service: JSON.stringify(this.listServiceOfHouse),
       bill: {id: this.data.id},
-      voucher: this.data.voucher
+      voucher: this.data.voucher,
+      houseBill: {
+        id: this.data.houseBill.id
+      },
     };
     let bill;
     bill = {
@@ -215,6 +216,10 @@ export class ExampleDialogComponent implements OnInit {
     };
     this.usageBillService.createUsageBill(this.bill).subscribe(res1 => {
         this.billService.pay(bill).subscribe(res => {
+          setTimeout(function() {
+            mywindow.print();
+            mywindow.close();
+          }, 1000);
           // this.closeModalReloadData();
         });
         // tslint:disable-next-line:only-arrow-functions
@@ -253,9 +258,11 @@ export class ExampleDialogComponent implements OnInit {
   }
 
   myDateFilter = (d: Date | null): boolean => {
+    this.priceHomeStay = 0;
     const sd = new Date(this.formGroup.get('startDate').value).getTime();
     const ed = new Date(this.formGroup.get('endDate').value).getTime();
-    this.priceHomStay = (((ed - sd) / 86400000)) * this.data.houseBill.price;
+    this.endDateFinal = new Date(this.formGroup.get('endDate').value);
+    this.priceHomeStay = ((((ed - sd) / 86400000)) * this.data.houseBill.price) * ((100 - this.data.houseBill.discount) / 100);
     const day = (d || new Date());
     let isHide = false;
     for (let i = 0; i < this.listHouseDay.length; i++) {
@@ -269,7 +276,7 @@ export class ExampleDialogComponent implements OnInit {
   };
 
   public closeModalReloadData(): void {
-    this.eventEmit.emit(this.idHouse);
+    this.eventEmit.emit(this.data.houseBill.id);
   }
 
   onNoClick(): void {

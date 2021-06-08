@@ -138,10 +138,10 @@
                     ">
                     <td><label>- {{service.name}}, giá {{service.price |currency: 'VND'}}</label></td>
                     <td style="width: 30px">
-                      <button type="button" class="btn btn-block btn-danger" style="color: white"
-                              (click)="delete(service)">
-                        <i class="fas fa-trash"></i>
-                      </button>
+                      <a
+                        (click)="delete(service)">
+                        <i class="fas fa-times"></i>
+                      </a>
                     </td>
                   </tr>
                 </table>
@@ -186,7 +186,7 @@
                 <span>{{priceService |currency: 'VND'}}</span>
               </div>
               <div class="checkout__order__subtotal">Tiền thuê HomeStay
-                <span>{{priceHomStay |currency: 'VND'}}</span></div>
+                <span>{{(priceHomStay * (100 - currentHouse.discount) / 100) |currency: 'VND'}}</span></div>
               <div class="checkout__order__total" *ngIf="!voucher">Tổng tiền
                 <span>{{((priceService + priceHomStay * (100 - currentHouse.discount) / 100)|currency: 'VND')}}</span>
               </div>
