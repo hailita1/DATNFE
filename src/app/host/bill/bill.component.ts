@@ -91,7 +91,7 @@ export class BillComponent implements OnInit {
   }
 
   deleteBill() {
-    this.billService.deleteBill(this.bill).subscribe(res => {
+    this.billService.cancelOrder(this.bill).subscribe(res => {
       $(function() {
         $('#modal-delete').modal('hide');
       });
@@ -105,7 +105,7 @@ export class BillComponent implements OnInit {
 
         Toast.fire({
           type: 'success',
-          title: 'Xóa thành công'
+          title: 'Hủy đơn đặt thành công'
         });
       });
       this.changeHouse(this.idHouse);
@@ -120,7 +120,7 @@ export class BillComponent implements OnInit {
 
         Toast.fire({
           type: 'error',
-          title: 'Xóa thất bại'
+          title: 'Hủy đơn đặt thất bại'
         });
       });
     });

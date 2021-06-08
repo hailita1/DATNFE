@@ -53,7 +53,15 @@
           voucher:
           Giảm {{data.voucher}}% trên tổng hóa đơn</p>
         <div class="checkout__order__total" *ngIf="data.status != 'Đã thanh toán'">
-          <div>
+          <div *ngIf="checkDate ==1">
+            <p style="font-weight: bold; text-align: center; font-size: 24px"
+               *ngIf="this.data.voucher > 100">Số tiền bạn cần thanh toán
+              là: {{(((priceService + priceHomeStay - data.voucher) * 1.2 - data.totalPrice / 2))|currency: 'VND'}}</p>
+            <p style="font-weight: bold; text-align: center; font-size: 24px"
+               *ngIf="this.data.voucher < 100">Số tiền bạn cần thanh toán
+              là: {{((((priceService + priceHomeStay) * ((100 - data.voucher) / 100))) * 1.2 - data.totalPrice / 2)|currency: 'VND'}}</p>
+          </div>
+          <div *ngIf="checkDate ==2">
             <p style="font-weight: bold; text-align: center; font-size: 24px"
                *ngIf="this.data.voucher > 100">Số tiền bạn cần thanh toán
               là: {{((priceService + priceHomeStay - data.voucher) - data.totalPrice / 2)|currency: 'VND'}}</p>
@@ -61,14 +69,6 @@
                *ngIf="this.data.voucher < 100">Số tiền bạn cần thanh toán
               là: {{(((priceService + priceHomeStay) * ((100 - data.voucher) / 100))) - data.totalPrice / 2|currency: 'VND'}}</p>
           </div>
-          <!--          <div *ngIf="checkDate==1">-->
-          <!--            <p style="font-weight: bold; text-align: center; font-size: 24px"-->
-          <!--               *ngIf="this.data.voucher > 100">Số tiền bạn cần thanh toán-->
-          <!--              là: {{((priceService + priceHomeStay - data.voucher) + data.totalPrice / 2)|currency: 'VND'}}</p>-->
-          <!--            <p style="font-weight: bold; text-align: center; font-size: 24px"-->
-          <!--               *ngIf="this.data.voucher < 100">Số tiền bạn cần thanh toán-->
-          <!--              là: {{(((priceService + priceHomeStay) * ((100 - data.voucher) / 100))) + data.totalPrice / 2|currency: 'VND'}}</p>-->
-          <!--          </div>-->
         </div>
         <div>
           <span style="font-weight: bold; color: red"><i class="fas fa-exclamation-circle"></i> Lưu ý: </span>

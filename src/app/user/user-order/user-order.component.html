@@ -145,10 +145,10 @@
             <tr *ngFor="let bill of listBill; index as i">
               <td>{{i + 1}}</td>
               <td>
-                {{bill.id}}
+                {{bill.bookingDate | date:'dd/MM/yyyy'}}
               </td>
               <td>
-                {{bill.totalPrice}}
+                {{bill.totalPrice | currency:'VND'}}
               </td>
               <td>
                 {{bill.status}}
@@ -229,13 +229,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Hủy đơn hàng</h4>
+        <h4 class="modal-title">Hủy đơn đặt</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Bạn có muốn hủy đơn hàng này không ?</p>
+        <p>Bạn có muốn hủy đơn đặt này không ?</p>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>

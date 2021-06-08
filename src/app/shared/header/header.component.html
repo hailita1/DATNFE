@@ -66,7 +66,7 @@
               <div>Theo dõi đơn đặt</div>
               <ul *ngIf="currentUser">
                 <li><a [routerLink]="['/order', { status:true }]" style="font-size: 12px">Đã đặt</a></li>
-                <li><a [routerLink]="['/order', { status:false }]" style="font-size: 12px">Chờ xác nhận</a></li>
+                <li><a [routerLink]="['/order', { status:false }]" style="font-size: 12px">Đơn đã hủy</a></li>
               </ul>
               <ul *ngIf="!currentUser">
                 <li><a [routerLink]="['/login']" style="font-size: 12px">Đăng nhập</a></li>

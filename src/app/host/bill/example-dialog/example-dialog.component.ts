@@ -46,6 +46,7 @@ export class ExampleDialogComponent implements OnInit {
   minDate = new Date();
   endDateFinal: Date;
   checkDate: number;
+  private date: Date;
 
   constructor(
     public dialogRef: MatDialogRef<ExampleDialogComponent>,
@@ -241,7 +242,8 @@ export class ExampleDialogComponent implements OnInit {
     const sd = new Date(this.formGroup.get('startDate').value).getTime();
     const ed = new Date(this.formGroup.get('endDate').value).getTime();
     this.endDateFinal = new Date(this.formGroup.get('endDate').value);
-    if (ed - (this.minDate.getTime() + 2 * 86400000) > 0) {
+    this.date = new Date(this.data.endDate);
+    if (this.date.getTime() - ed > 0) {
       this.checkDate = 1;
     } else {
       this.checkDate = 2;
