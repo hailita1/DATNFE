@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Bill} from '../../../model/bill';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserToken} from '../../../model/user-token';
@@ -21,7 +21,7 @@ declare var Swal: any;
   styleUrls: ['./example-dialog.component.scss']
 })
 export class ExampleDialogComponent implements OnInit {
-  @Output() eventEmit: EventEmitter<any> = new EventEmitter<any>();
+  @Output() eventEmit = new EventEmitter<any>();
   formGroup: FormGroup;
   closeResult: string;
   checkButton = false;
@@ -45,9 +45,11 @@ export class ExampleDialogComponent implements OnInit {
   listHouseDay: HouseDay[] = [];
   minDate = new Date();
   endDateFinal: Date;
+  checkDate: number;
 
   constructor(
     public dialogRef: MatDialogRef<ExampleDialogComponent>,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: Bill,
     private fb: FormBuilder,
     private usageBillService: UsageBillService,
@@ -101,7 +103,14 @@ export class ExampleDialogComponent implements OnInit {
     this.serviceService.getAllServiceStatusTrue(house).subscribe(listService => {
       this.listServiceHouse = listService;
     });
-    this.billService.getAllHouseDayByHouse(house).subscribe(listDateByHouse => {
+
+    const bill = {
+      endDate: this.data.endDate,
+      houseBill: {
+        id: this.data.houseBill.id
+      }
+    };
+    this.billService.getAllHouseDayByHouseBill(bill).subscribe(listDateByHouse => {
       this.listHouseDay = listDateByHouse;
     });
     this.priceService = 0;
@@ -215,53 +224,28 @@ export class ExampleDialogComponent implements OnInit {
       id: this.data.id
     };
     this.usageBillService.createUsageBill(this.bill).subscribe(res1 => {
-        this.billService.pay(bill).subscribe(res => {
-          setTimeout(function() {
-            mywindow.print();
-            mywindow.close();
-          }, 1000);
-          // this.closeModalReloadData();
-        });
-        // tslint:disable-next-line:only-arrow-functions
-        $(function() {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
-
-          Toast.fire({
-            type: 'success',
-            title: 'Cập nhật thành công'
-          });
-        });
+      this.billService.pay(bill).subscribe(res => {
+        setTimeout(function() {
+          mywindow.print();
+          mywindow.close();
+        }, 1000);
+        this.createMessage();
         this.dialogRef.close();
-      },
-      err => {
-        // tslint:disable-next-line:only-arrow-functions
-        $(function() {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-          });
-
-          Toast.fire({
-            type: 'error',
-            title: 'Cập nhật thất bại'
-          });
-        });
       });
-    this.dialogRef.close();
+    });
   }
 
   myDateFilter = (d: Date | null): boolean => {
+    this.checkDate = 0;
     this.priceHomeStay = 0;
     const sd = new Date(this.formGroup.get('startDate').value).getTime();
     const ed = new Date(this.formGroup.get('endDate').value).getTime();
     this.endDateFinal = new Date(this.formGroup.get('endDate').value);
+    if (ed - (this.minDate.getTime() + 2 * 86400000) > 0) {
+      this.checkDate = 1;
+    } else {
+      this.checkDate = 2;
+    }
     this.priceHomeStay = ((((ed - sd) / 86400000)) * this.data.houseBill.price) * ((100 - this.data.houseBill.discount) / 100);
     const day = (d || new Date());
     let isHide = false;
@@ -275,12 +259,12 @@ export class ExampleDialogComponent implements OnInit {
     return !isHide;
   };
 
-  public closeModalReloadData(): void {
-    this.eventEmit.emit(this.data.houseBill.id);
-  }
-
   onNoClick(): void {
     this.listServiceOfHouse = [];
     this.dialogRef.close();
+  }
+
+  createMessage() {
+    this.houseService.changeMessage(this.data.houseBill.id);
   }
 }

@@ -85,12 +85,14 @@ export class CheckoutComponent implements OnInit {
     });
     this.getAllCategories();
     this.getBill();
-    this.houseService.currentMessage.subscribe(id => this.idHouse = id);
+    this.houseService.currentMessage.subscribe(id => {
+      this.idHouse = id;
+      this.getAllHouseDayByHouse(this.idHouse);
+      this.getAllService(this.idHouse);
+    });
     this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
     if (this.idHouse !== null && this.idHouse !== undefined) {
       this.currentHouse = await this.getHouse(this.idHouse);
-      this.getAllHouseDayByHouse(this.idHouse);
-      this.getAllService(this.idHouse);
     }
     this.getAllVoucher();
     this.billForm.value.email = this.currentUser.email;
@@ -99,6 +101,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   private initConfig(): void {
+
     this.checkPay = false;
     this.payPalConfig = {
       clientId: 'AcQjAylT-DgZJT3CmfhB38y70DGNF3eCRz3fBF945BNJgs45oJqpEOY-5Oxm5Uqfb4hkGpSYLfuQQAKF',
@@ -152,7 +155,7 @@ export class CheckoutComponent implements OnInit {
       onClick: (data, actions) => {
         this.checkPay = true;
         if (this.voucher != null || this.voucher !== undefined) {
-          if (this.voucher.typeVoucher === '0') {
+          if (this.voucher.typeVoucher === 0) {
             // tslint:disable-next-line:max-line-length
             this.totalPrice = (this.priceService + this.priceHomStay * (100 - this.currentHouse.discount) / 100) - this.voucher.discount;
           } else {
@@ -209,7 +212,7 @@ export class CheckoutComponent implements OnInit {
     if (this.billForm.get('startDate').value != '' && this.billForm.get('endDate').value != '') {
       this.isSubmitted = true;
       if (this.voucher != null || this.voucher !== undefined) {
-        if (this.voucher.typeVoucher === '0') {
+        if (this.voucher.typeVoucher === 0) {
           // tslint:disable-next-line:max-line-length
           this.totalPrice = (this.priceService + this.priceHomStay * (100 - this.currentHouse.discount) / 100) - this.voucher.discount;
         } else {
@@ -354,7 +357,6 @@ export class CheckoutComponent implements OnInit {
     if (utilitie2.length == 0) {
       this.listServiceOfHouse.push(utilitie1[0]);
     }
-    console.log(this.listServiceOfHouse);
     this.countPrice();
   }
 

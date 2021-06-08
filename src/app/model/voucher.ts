@@ -1,7 +1,7 @@
 export interface Voucher {
   id?: number;
   voucher_code?: string;
-  typeVoucher?: string;
+  typeVoucher?: number;
   title?: string;
   discount?: number;
   status?: boolean;

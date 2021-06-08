@@ -73,4 +73,8 @@ export class BillService {
   getAllHouseDayByHouse(object: Object): Observable<HouseDay[]> {
     return this.http.post<HouseDay[]>(API_URL + `/housedays/listHouseDay`, object);
   }
+
+  getAllHouseDayByHouseBill(object: Object): Observable<HouseDay[]> {
+    return this.http.post<HouseDay[]>(API_URL + `/housedays/listHouseDayBill`, object);
+  }
 }

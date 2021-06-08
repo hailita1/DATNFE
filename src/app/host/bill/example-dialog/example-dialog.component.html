@@ -48,17 +48,33 @@
         <p *ngIf="data.voucher>100"><span
           style="color: red; font-weight: bold; margin-bottom: 0px">* Voucher: </span> Bạn đã sử dụng
           voucher:
-          Giảm {{data.voucher| currency:'VND'}}</p>
+          Giảm {{data.voucher| currency:'VND'}} trên tổng hóa đơn</p>
         <p *ngIf="data.voucher<100"><span style="color: red; font-weight: bold">* Voucher: </span> Bạn đã sử dụng
           voucher:
-          Giảm {{data.voucher}}%</p>
+          Giảm {{data.voucher}}% trên tổng hóa đơn</p>
         <div class="checkout__order__total" *ngIf="data.status != 'Đã thanh toán'">
-          <p style="font-weight: bold"
-             *ngIf="this.data.voucher > 100">Số tiền bạn cần thanh toán
-            là: {{((priceService + priceHomeStay - data.voucher) - data.totalPrice / 2)|currency: 'VND'}}</p>
-          <p style="font-weight: bold"
-             *ngIf="this.data.voucher < 100">Số tiền bạn cần thanh toán
-            là: {{(((priceService + priceHomeStay) * ((100 - data.voucher) / 100))) - data.totalPrice / 2|currency: 'VND'}}</p>
+          <div>
+            <p style="font-weight: bold; text-align: center; font-size: 24px"
+               *ngIf="this.data.voucher > 100">Số tiền bạn cần thanh toán
+              là: {{((priceService + priceHomeStay - data.voucher) - data.totalPrice / 2)|currency: 'VND'}}</p>
+            <p style="font-weight: bold; text-align: center; font-size: 24px"
+               *ngIf="this.data.voucher < 100">Số tiền bạn cần thanh toán
+              là: {{(((priceService + priceHomeStay) * ((100 - data.voucher) / 100))) - data.totalPrice / 2|currency: 'VND'}}</p>
+          </div>
+          <!--          <div *ngIf="checkDate==1">-->
+          <!--            <p style="font-weight: bold; text-align: center; font-size: 24px"-->
+          <!--               *ngIf="this.data.voucher > 100">Số tiền bạn cần thanh toán-->
+          <!--              là: {{((priceService + priceHomeStay - data.voucher) + data.totalPrice / 2)|currency: 'VND'}}</p>-->
+          <!--            <p style="font-weight: bold; text-align: center; font-size: 24px"-->
+          <!--               *ngIf="this.data.voucher < 100">Số tiền bạn cần thanh toán-->
+          <!--              là: {{(((priceService + priceHomeStay) * ((100 - data.voucher) / 100))) + data.totalPrice / 2|currency: 'VND'}}</p>-->
+          <!--          </div>-->
+        </div>
+        <div>
+          <span style="font-weight: bold; color: red"><i class="fas fa-exclamation-circle"></i> Lưu ý: </span>
+          <span>Nếu khách hàng trả
+          phòng trước hợp đồng thì cộng 20% tổng hóa
+          đơn</span>
         </div>
       </div>
       <div class="col-6">
@@ -217,8 +233,7 @@
             <br> - Số lượng phòng: {{data.houseBill.numberRoom}}</td>
           <td style="text-align: center">{{data.startDate | date:'dd/MM/yyyy' }}</td>
           <td style="text-align: center">{{endDateFinal | date:'dd/MM/yyyy' }}</td>
-          <td style="text-align: center" *ngIf="data.voucher < 100"> {{data.houseBill.discount}}%</td>
-          <td style="text-align: center" *ngIf="data.voucher > 100"> {{data.houseBill.discount | currency: 'VND'}}</td>
+          <td style="text-align: center"> {{data.houseBill.discount}}%</td>
           <td style="text-align: center">{{data.houseBill.price | currency: 'VND'}} / đêm</td>
           <td style="text-align: center">
             {{(priceHomeStay)}}
@@ -263,8 +278,8 @@
       </table>
 
       <div class="in-bao-gia-footer">
-        <p *ngIf="data.voucher > 100">Bạn sử dụng voucher: Giảm {{data.voucher | currency: 'VND'}} tổng đơn đặt</p>
-        <p *ngIf="data.voucher < 100">Bạn sử dụng voucher: Giảm {{data.voucher}}% tổng đơn đặt</p>
+        <p *ngIf="data.voucher > 100">Bạn sử dụng voucher: Giảm {{data.voucher | currency: 'VND'}} tổng hóa đơn</p>
+        <p *ngIf="data.voucher < 100">Bạn sử dụng voucher: Giảm {{data.voucher}}% tổng hóa đơn</p>
         <p *ngIf="!data.voucher">Bạn không sử dụng vocher </p>
         <h3 *ngIf="data.voucher > 100" style="color: red; text-align: center">Tổng tiền cần phải thanh toán
           là: {{((priceService + priceHomeStay - data.voucher) - data.totalPrice / 2)|currency: 'VND'}}</h3>

@@ -33,6 +33,7 @@ export class BillComponent implements OnInit {
   listHouseDay: HouseDay[] = [];
   isSelected = true;
   idHouse: number;
+  idHouseBill: any;
   minDate = new Date();
 
   constructor(private categoryService: CategoryService,
@@ -64,6 +65,9 @@ export class BillComponent implements OnInit {
 
   ngOnInit() {
     this.getllHouseByHost();
+    this.houseService.currentMessage.subscribe(id => {
+      this.changeHouse(id);
+    });
   }
 
   getBill(item: Bill) {
@@ -199,7 +203,7 @@ export class BillComponent implements OnInit {
     return this.houseService.getHouse(id).toPromise();
   }
 
-  async changeHouse(event: number) {
+  async changeHouse(event: any) {
     this.idHouse = event;
     const bill = {
       id: event
