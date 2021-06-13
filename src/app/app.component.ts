@@ -10,5 +10,5 @@ firebase.initializeApp(environment.firebaseConfig);
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'market-frontend';
+  title = 'HomeStay-frontend';
 }

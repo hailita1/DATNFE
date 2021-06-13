@@ -146,8 +146,8 @@ export class CategoryDetailComponent implements OnInit {
 
   getAllHouseLatest() {
     this.houseService.getAllHouseStatusTrue().subscribe(listProduct => {
-      if (listProduct.length > 2) {
-        for (let i = 0; i < 2; i++) {
+      if (listProduct.length > 4) {
+        for (let i = 0; i < 4; i++) {
           this.listHouseLatest.push(listProduct[i]);
         }
       } else {

@@ -5,14 +5,10 @@ import {Router} from '@angular/router';
 import {Category} from '../../model/category';
 import {UserToken} from '../../model/user-token';
 import {Item} from '../../model/item';
-import {ShoppingCart} from '../../model/shopping-cart';
-import {ShoppingCartService} from '../../service/shopping-cart/shopping-cart.service';
 import {UserService} from '../../service/user/user.service';
-import {Notification} from '../../model/notification';
 import {NotificationService} from '../../service/notification/notification.service';
 import {User} from '../../model/user';
 import {NotificationUser} from '../../model/notificationUser';
-import {CategoryItemComponent} from '../../host/category/category-item/category-item.component';
 import {UserItemComponent} from './user-item/user-item.component';
 import {ChagepasswordComponent} from './chagepassword/chagepassword.component';
 
@@ -67,12 +63,12 @@ export class HeaderComponent implements OnInit {
       });
     });
     this.getAllCategories();
-    // if (this.currentUser != null) {
-    //   this.user.id = this.currentUser.id;
-    //   setInterval(() => {
-    //     this.getAllNotificationByUser();
-    //   }, 2000);
-    // }
+    if (this.currentUser != null) {
+      this.user.id = this.currentUser.id;
+      setInterval(() => {
+        this.getAllNotificationByUser();
+      }, 2000);
+    }
   }
 
   initModal(model: any, type = null): void {

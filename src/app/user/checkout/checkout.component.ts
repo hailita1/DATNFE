@@ -87,11 +87,13 @@ export class CheckoutComponent implements OnInit {
     this.getBill();
     this.houseService.currentMessage.subscribe(id => {
       this.idHouse = id;
-      this.getAllHouseDayByHouse(this.idHouse);
-      this.getAllService(this.idHouse);
+      if (this.idHouse != null && this.idHouse !== undefined && this.idHouse !== '') {
+        this.getAllHouseDayByHouse(this.idHouse);
+        this.getAllService(this.idHouse);
+      }
     });
     this.idUser = JSON.parse(localStorage.getItem('user') || '{id}').id;
-    if (this.idHouse !== null && this.idHouse !== undefined) {
+    if (this.idHouse != null && this.idHouse !== undefined && this.idHouse !== '') {
       this.currentHouse = await this.getHouse(this.idHouse);
     }
     this.getAllVoucher();
@@ -284,7 +286,7 @@ export class CheckoutComponent implements OnInit {
                 });
                 Toast.fire({
                   type: 'success',
-                  title: 'Đơn đặt đã tạo, vui lòng chờ xác nhận'
+                  title: 'Đặt thuê thành công'
                 });
               });
               this.billForm.reset();
@@ -297,6 +299,7 @@ export class CheckoutComponent implements OnInit {
               this.voucher.discount = 0;
               this.voucher.title = '';
               this.createNotification();
+              this.createNotification1();
               this.updateNumberHires();
             },
             err => {
@@ -310,7 +313,7 @@ export class CheckoutComponent implements OnInit {
 
                 Toast.fire({
                   type: 'error',
-                  title: 'Đơn đặt của bạn thất bại'
+                  title: 'Đặt thuê thất bại'
                 });
               });
               this.isLoading = false;
@@ -449,6 +452,20 @@ export class CheckoutComponent implements OnInit {
         {
           email: this.currentUser.email,
           id: this.currentUser.id,
+        }
+      ]
+    };
+    this.notificationService.createNotification(notification).subscribe();
+  }
+
+  createNotification1() {
+    const notification = {
+      content: this.currentUser.name + ' đã đặt thuê ' + this.currentHouse.name,
+      status: true,
+      user: [
+        {
+          email: this.currentHouse.user.email,
+          id: this.currentHouse.user.id,
         }
       ]
     };
