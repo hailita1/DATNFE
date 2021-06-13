@@ -67,6 +67,7 @@ export class HeaderComponent implements OnInit {
       this.user.id = this.currentUser.id;
       setInterval(() => {
         this.getAllNotificationByUser();
+        this.loadFavorite();
       }, 2000);
     }
   }
