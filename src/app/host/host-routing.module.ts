@@ -6,11 +6,12 @@ import {ServiceComponent} from './service/service.component';
 import {BillComponent} from './bill/bill.component';
 import {UtilitiesComponent} from './utilities/utilities.component';
 import {AuthGuard} from '../helper/auth-guard';
+import {ChartComponent} from './chart/chart.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'house',
+    redirectTo: 'chart',
     pathMatch: 'full'
   },
   {
@@ -33,6 +34,11 @@ const routes: Routes = [
     path: 'utilities',
     canActivate: [AuthGuard],
     component: UtilitiesComponent,
+  },
+  {
+    path: 'chart',
+    canActivate: [AuthGuard],
+    component: ChartComponent,
   }
 ];
 

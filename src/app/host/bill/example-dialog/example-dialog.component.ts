@@ -219,6 +219,7 @@ export class ExampleDialogComponent implements OnInit {
       houseBill: {
         id: this.data.houseBill.id
       },
+      idHost: this.data.houseBill.user.id
     };
     let bill;
     bill = {

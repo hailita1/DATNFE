@@ -16,4 +16,5 @@ export interface Bill {
   user?: any;
   service?: any[];
   bill?: any;
+  idHost?: any;
 }

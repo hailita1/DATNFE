@@ -62,7 +62,7 @@ export class ProductDetailComponent implements OnInit {
           thumbImage: this.currentHouse.images[i].link
         };
       }
-      this.getAllService(this.id)
+      this.getAllService(this.id);
       this.getAllHouseRelated(this.currentHouse.category);
     });
     this.authenticationService.currentUser.subscribe(value => {

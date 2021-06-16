@@ -17,9 +17,10 @@ import {NgImageSliderModule} from 'ng-image-slider';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {MatDatepickerModule, MatDialogModule, MatDividerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import {ExampleDialogComponent} from './bill/example-dialog/example-dialog.component';
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
-  declarations: [HouseComponent, CategoryComponent, ServiceComponent, BillComponent, UtilitiesComponent, CategoryItemComponent, ServiceItemComponent, UtilitiesItemComponent, ItemHouseComponent, ExampleDialogComponent],
+  declarations: [HouseComponent, CategoryComponent, ServiceComponent, BillComponent, UtilitiesComponent, CategoryItemComponent, ServiceItemComponent, UtilitiesItemComponent, ItemHouseComponent, ExampleDialogComponent, ChartComponent],
   entryComponents: [ExampleDialogComponent],
   imports: [
     CommonModule,

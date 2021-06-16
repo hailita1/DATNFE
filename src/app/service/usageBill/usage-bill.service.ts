@@ -31,4 +31,12 @@ export class UsageBillService {
   getUsageBill(id: number): Observable<object> {
     return this.http.get<object>(API_URL + `/usageBill/${id}`);
   }
+
+  sumPrice(month: number, year: number, id: number): Observable<number> {
+    return this.http.get<number>(API_URL + `/usageBill/total-price?month=` + month + '&year=' + year + '&id=' + id);
+  }
+
+  sumPriceByHouse(month: number, year: number, idHost: number, idHouse: number): Observable<number> {
+    return this.http.get<number>(API_URL + `/usageBill/total-price-by-house?month=` + month + '&year=' + year + '&idHost=' + idHost + '&idHouse=' + idHouse);
+  }
 }
