@@ -42,6 +42,7 @@ export class ProductDetailComponent implements OnInit {
   page = 1;
   pageSize = 10;
   listService: Service[] = [];
+  link: string;
 
   constructor(private categoryService: CategoryService,
               private houseService: HouseService,
@@ -64,6 +65,10 @@ export class ProductDetailComponent implements OnInit {
       }
       this.getAllService(this.id);
       this.getAllHouseRelated(this.currentHouse.category);
+    });
+    this.activatedRoute.params.subscribe(res => {
+      this.link = '/house/' + res.id;
+      localStorage.setItem('link', JSON.stringify(this.link));
     });
     this.authenticationService.currentUser.subscribe(value => {
       this.currentUser = value;

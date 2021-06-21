@@ -27,6 +27,7 @@ export class Login1Component implements OnInit {
   submitted = false;
   currentUser: UserToken;
   hasRoleAdmin = false;
+  linkUrl: string;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -52,7 +53,12 @@ export class Login1Component implements OnInit {
   }
 
   ngOnInit() {
-    this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl || '/';
+    this.linkUrl = JSON.parse(localStorage.getItem('link'));
+    if (this.linkUrl === null) {
+      this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl || '/';
+    } else {
+      this.returnUrl = this.linkUrl;
+    }
   }
 
   login() {
@@ -84,6 +90,7 @@ export class Login1Component implements OnInit {
               title: 'Đăng nhập thành công'
             });
           });
+          localStorage.removeItem('link');
         },
         () => {
           this.loading = false;

@@ -46,6 +46,7 @@ export class QuickviewComponent implements OnInit {
     this.currentHouse = model;
     this.open(this.childModal);
     this.id = model.id;
+    this.getAllReview(model.id);
     for (var i = 0; i < this.currentHouse.images.length; i++) {
       this.imageObject[i] = {
         image: this.currentHouse.images[i].link,
