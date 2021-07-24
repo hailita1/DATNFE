@@ -162,6 +162,7 @@ export class CategoryDetailComponent implements OnInit {
   }
 
   changeStatus(event: any) {
+
     // tslint:disable-next-line: radix
     switch (parseInt(event)) {
       case -1:
